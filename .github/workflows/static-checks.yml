@@ -43,6 +43,7 @@ jobs:
           node --check league-routes.js
           node --check league-route-shell.js
           node --check qualification-bracket.js
+          node --check qualification-current-state.js
           node --check prediction-engine.js
           node --check prediction-ai-controller.js
           node --check prediction-bridge.js
@@ -73,6 +74,7 @@ jobs:
           node --check scripts/update-uefa-coefficients.mjs
           node --check scripts/stabilize-coefficient-snapshot.mjs
           node --check scripts/build-home-advantage-profiles.mjs
+          node --check scripts/check-home-advantage-profiles.mjs
       - name: Check generated team pools and coefficients
         run: |
           node scripts/generate-team-pools.mjs
@@ -85,8 +87,7 @@ jobs:
           node tests/roster-manager.test.js
       - name: Check generated home advantage profiles
         run: |
-          node scripts/build-home-advantage-profiles.mjs
-          git diff --exit-code -- generated-home-advantage-profiles.js
+          node scripts/check-home-advantage-profiles.mjs
           node tests/home-advantage-model.test.js
       - name: Check base HTML and controls
         run: |

@@ -51,12 +51,14 @@ for (let run = 0; run < 20; run += 1) {
   load('generated-team-pools.js', context);
   load('generated-club-coefficients.js', context);
   load('qualification-bracket.js', context);
+  load('qualification-current-state.js', context);
   load('team-pool-loader.js', context);
   load('coefficient-pots.js', context);
 
   const competitions = context.window.UCLDRAW_DATA.competitions;
   const diagnostics = context.window.UCLDRAW_POOL_DIAGNOSTICS;
   const qualification = context.window.UCLDRAW_QUALIFICATION_RESULT;
+  const qualificationState = context.window.UCLDRAW_QUALIFICATION_STATE;
 
   for (const id of ['ucl', 'uel', 'uecl']) {
     const competition = competitions[id];
@@ -108,6 +110,20 @@ for (let run = 0; run < 20; run += 1) {
   assert.equal(qualification.qualifiers.ucl.length, 7);
   assert.equal(qualification.qualifiers.uel.length, 23);
   assert.equal(qualification.qualifiers.uecl.length, 36);
+
+  const uclIds = new Set(competitions.ucl.teams.map((team) => team.poolSlug));
+  const uelIds = new Set(competitions.uel.teams.map((team) => team.poolSlug));
+  for (const teamId of qualificationState.eliminatedFromUclIds) {
+    assert.ok(!uclIds.has(teamId), `${teamId} must not remain in the Champions League roster after UCL Q3 elimination`);
+  }
+  for (const teamId of qualificationState.fixedUelLeaguePhaseIds) {
+    assert.ok(uelIds.has(teamId), `${teamId} must be fixed in the Europa League league phase`);
+  }
+
+  const sturm = competitions.uel.teams.find((team) => team.poolSlug === 'strumgraz');
+  assert.ok(sturm, 'Sturm Graz must be in the Europa League league phase');
+  assert.equal(sturm.crest, 'pools/europa/guaranteed/strumgraz', 'Sturm Graz must use its moved Europa League crest path');
+  assert.ok(!competitions.ucl.teams.some((team) => team.poolSlug === 'strumgraz'), 'Sturm Graz must not be selected in Champions League');
 }
 
-console.log('Team pool generation checks passed.');
+console.log('Team pool generation and resolved qualification checks passed.');

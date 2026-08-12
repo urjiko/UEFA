@@ -10,11 +10,6 @@
   const EXPORT_SCALE = 2;
   const OUTPUT_WIDTH = CARD_WIDTH * EXPORT_SCALE;
   const OUTPUT_HEIGHT = CARD_HEIGHT * EXPORT_SCALE;
-  const journeyTitles = Object.freeze({
-    ucl: 'Şampiyonlar Ligi Yolculuğu',
-    uel: 'Avrupa Ligi Yolculuğu',
-    uecl: 'Konferans Ligi Yolculuğu'
-  });
 
   let cachedKey = '';
   let cachedExport = null;
@@ -22,6 +17,7 @@
   let floatingObserver = null;
   let observedRow = null;
   let refreshQueued = false;
+  let shareMenu = null;
 
   function slug(value = '') {
     return String(value)
@@ -107,8 +103,7 @@
       const canvas = await renderExportCard(snapshot);
       const blob = await canvasToBlob(canvas);
       const filename = `2026-27-${slug(snapshot.activeName)}-${snapshot.competition.id}-yolculugu-2400x3200.png`;
-      const title = `2026-27 ${snapshot.activeName} ${journeyTitles[snapshot.competition.id] || snapshot.competition.shortName}`;
-      return { snapshot, canvas, blob, filename, title };
+      return { snapshot, canvas, blob, filename };
     })();
 
     try {
@@ -125,55 +120,114 @@
     cachedExport = null;
   }
 
-  async function downloadCurrent() {
-    const output = await prepareExport();
-    downloadBlob(output.blob, output.filename);
-    showToast('2400×3200 PNG indirildi.');
-    return 'downloaded';
+  function clipboardAvailable() {
+    return Boolean(navigator.clipboard?.write && typeof ClipboardItem !== 'undefined');
   }
 
   async function copyCurrent() {
+    if (!clipboardAvailable()) {
+      throw new Error('Tarayıcı görseli doğrudan panoya kopyalamayı desteklemiyor.');
+    }
     const output = await prepareExport();
-    if (!navigator.clipboard?.write || typeof ClipboardItem === 'undefined') {
-      downloadBlob(output.blob, output.filename);
-      showToast('Tarayıcı görsel kopyalamayı desteklemedi; PNG indirildi.');
-      return 'downloaded';
-    }
-
-    try {
-      await navigator.clipboard.write([
-        new ClipboardItem({ 'image/png': output.blob })
-      ]);
-      showToast('Görsel panoya kopyalandı.');
-      return 'copied';
-    } catch (error) {
-      console.warn('Clipboard image export failed; downloading instead.', error);
-      downloadBlob(output.blob, output.filename);
-      showToast('Panoya kopyalanamadı; PNG indirildi.');
-      return 'downloaded';
-    }
+    const item = new ClipboardItem({ 'image/png': output.blob });
+    await navigator.clipboard.write([item]);
+    showToast('Tek görsel panoya kopyalandı.');
+    return 'copied';
   }
 
-  async function shareCurrent() {
+  async function downloadCurrent() {
     const output = await prepareExport();
-    const file = new File([output.blob], output.filename, { type: 'image/png' });
-    if (navigator.share && navigator.canShare?.({ files: [file] })) {
-      await navigator.share({ title: output.title, files: [file] });
-      showToast('Yüksek çözünürlüklü görsel paylaşmaya hazır.');
-      return 'shared';
-    }
     downloadBlob(output.blob, output.filename);
-    showToast('Paylaşım desteklenmedi; PNG indirildi.');
+    showToast('2400×3200 PNG kaydedildi.');
     return 'downloaded';
   }
 
-  function createExportButton(label, action, extraClass = '') {
+  function createShareButton(extraClass = '') {
     const button = document.createElement('button');
     button.type = 'button';
-    button.className = `action-button prediction-export-v9-button ${extraClass}`.trim();
-    button.dataset.exportAction = action;
+    button.className = `action-button prediction-export-v9-button prediction-export-share-v9-button ${extraClass}`.trim();
+    button.textContent = 'Paylaş';
+    button.setAttribute('aria-label', 'Tahmin görselini paylaş');
+    return button;
+  }
+
+  function createMenuAction(label, action, extraClass = '') {
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = `action-button prediction-share-menu-action-v9 ${extraClass}`.trim();
+    button.dataset.shareAction = action;
     button.textContent = label;
     return button;
+  }
+
+  function createShareMenu() {
+    const backdrop = document.createElement('div');
+    backdrop.className = 'prediction-share-menu-v9';
+    backdrop.hidden = true;
+
+    const panel = document.createElement('section');
+    panel.className = 'prediction-share-menu-panel-v9';
+    panel.setAttribute('role', 'dialog');
+    panel.setAttribute('aria-modal', 'true');
+    panel.setAttribute('aria-label', 'Tahmin görselini paylaş');
+
+    const heading = document.createElement('div');
+    heading.className = 'prediction-share-menu-heading-v9';
+    const title = document.createElement('strong');
+    title.textContent = 'Tahmin Görseli';
+    const close = createMenuAction('×', 'close', 'prediction-share-menu-close-v9');
+    close.setAttribute('aria-label', 'Paylaşım menüsünü kapat');
+    heading.append(title, close);
+
+    const actions = document.createElement('div');
+    actions.className = 'prediction-share-menu-actions-v9';
+    const copy = createMenuAction('Görseli Kopyala', 'copy', 'primary');
+    const save = createMenuAction('Görseli Kaydet', 'download');
+    if (!clipboardAvailable()) {
+      copy.disabled = true;
+      copy.title = 'Bu tarayıcı görsel kopyalamayı desteklemiyor.';
+    }
+    actions.append(copy, save);
+
+    const note = document.createElement('small');
+    note.className = 'prediction-share-menu-note-v9';
+    note.textContent = clipboardAvailable()
+      ? 'Kopyala seçeneği panoya yalnızca tek PNG yazar.'
+      : 'Kopyalama desteklenmiyor; görseli kaydedebilirsin.';
+
+    panel.append(heading, actions, note);
+    backdrop.appendChild(panel);
+    document.body.appendChild(backdrop);
+    return backdrop;
+  }
+
+  function ensureShareMenu() {
+    if (!shareMenu) shareMenu = createShareMenu();
+    return shareMenu;
+  }
+
+  function closeShareMenu() {
+    if (!shareMenu) return;
+    shareMenu.hidden = true;
+    delete shareMenu.dataset.busy;
+  }
+
+  function openShareMenu() {
+    const menu = ensureShareMenu();
+    menu.hidden = false;
+    menu.querySelector('.prediction-share-menu-action-v9:not(:disabled)')?.focus({ preventScroll: true });
+  }
+
+  async function shareCurrent() {
+    await prepareExport();
+    openShareMenu();
+    return 'menu';
+  }
+
+  function normalizeShareGroup(group) {
+    const buttons = [...group.querySelectorAll(':scope > .prediction-export-v9-button')];
+    if (buttons.length === 1 && buttons[0].classList.contains('prediction-export-share-v9-button')) return;
+    group.replaceChildren(createShareButton('primary'));
   }
 
   function ensureExportActions() {
@@ -189,13 +243,9 @@
     if (!group) {
       group = document.createElement('div');
       group.className = 'prediction-export-group-v9';
-      group.append(
-        createExportButton('PNG İndir', 'download', 'primary prediction-export-download-v9-button'),
-        createExportButton('Kopyala', 'copy', 'prediction-export-copy-v9-button'),
-        createExportButton('Paylaş', 'share', 'prediction-export-share-v9-button')
-      );
       row.appendChild(group);
     }
+    normalizeShareGroup(group);
 
     const complete = predictionsComplete();
     group.hidden = !complete;
@@ -210,11 +260,7 @@
     const wrapper = document.createElement('div');
     wrapper.className = 'prediction-export-floating-v9';
     wrapper.hidden = true;
-    wrapper.append(
-      createExportButton('PNG İndir', 'download', 'primary'),
-      createExportButton('Kopyala', 'copy'),
-      createExportButton('Paylaş', 'share')
-    );
+    wrapper.appendChild(createShareButton('primary'));
     document.body.appendChild(wrapper);
     return wrapper;
   }
@@ -249,6 +295,7 @@
       && predictionsComplete();
     if (!active) {
       floatingActions.hidden = true;
+      closeShareMenu();
       return;
     }
 
@@ -266,33 +313,28 @@
       ...document.querySelectorAll('.prediction-export-floating-v9 .prediction-export-v9-button')
     ];
     buttons.forEach((button) => { button.disabled = busy; });
-    if (clickedButton) {
-      if (busy) {
-        clickedButton.dataset.idleText = clickedButton.textContent;
-        clickedButton.textContent = 'Hazırlanıyor...';
-      } else {
-        clickedButton.textContent = clickedButton.dataset.idleText || clickedButton.textContent;
-        delete clickedButton.dataset.idleText;
-      }
+    if (!clickedButton) return;
+
+    if (busy) {
+      clickedButton.dataset.idleText = clickedButton.textContent;
+      clickedButton.textContent = 'Hazırlanıyor...';
+    } else {
+      clickedButton.textContent = clickedButton.dataset.idleText || 'Paylaş';
+      delete clickedButton.dataset.idleText;
     }
   }
 
-  async function runExportAction(button) {
+  async function runShareAction(button) {
     const row = document.querySelector('#predictionSection .prediction-share-actions-v4');
     const group = row?.querySelector(':scope > .prediction-export-group-v9');
     if (!group || group.dataset.busy === 'true' || !predictionsComplete()) return;
 
     setBusy(group, button, true);
     try {
-      const action = button.dataset.exportAction;
-      if (action === 'copy') await copyCurrent();
-      else if (action === 'share') await shareCurrent();
-      else await downloadCurrent();
+      await shareCurrent();
     } catch (error) {
-      if (error?.name !== 'AbortError') {
-        console.error(error);
-        showToast(error?.message || 'Görsel çıktısı oluşturulamadı.');
-      }
+      console.error(error);
+      showToast(error?.message || 'Görsel çıktısı oluşturulamadı.');
     } finally {
       setBusy(group, button, false);
       ensureExportActions();
@@ -300,13 +342,60 @@
     }
   }
 
+  async function runMenuAction(button) {
+    const menu = ensureShareMenu();
+    if (menu.dataset.busy === 'true') return;
+    const action = button.dataset.shareAction;
+    if (action === 'close') {
+      closeShareMenu();
+      return;
+    }
+
+    menu.dataset.busy = 'true';
+    const actions = [...menu.querySelectorAll('.prediction-share-menu-action-v9')];
+    actions.forEach((candidate) => { candidate.disabled = true; });
+    const idleText = button.textContent;
+    button.textContent = action === 'copy' ? 'Kopyalanıyor...' : 'Kaydediliyor...';
+
+    try {
+      if (action === 'copy') await copyCurrent();
+      else await downloadCurrent();
+      closeShareMenu();
+    } catch (error) {
+      console.error(error);
+      showToast(error?.message || 'Görsel işlemi tamamlanamadı.');
+    } finally {
+      delete menu.dataset.busy;
+      actions.forEach((candidate) => {
+        candidate.disabled = candidate.dataset.shareAction === 'copy' && !clipboardAvailable();
+      });
+      button.textContent = idleText;
+    }
+  }
+
   document.addEventListener('click', (event) => {
-    const button = event.target.closest?.('.prediction-export-v9-button');
-    if (!button) return;
-    event.preventDefault();
-    event.stopImmediatePropagation();
-    runExportAction(button);
+    const menuButton = event.target.closest?.('.prediction-share-menu-action-v9');
+    if (menuButton) {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      runMenuAction(menuButton);
+      return;
+    }
+
+    const shareButton = event.target.closest?.('.prediction-export-v9-button');
+    if (shareButton) {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      runShareAction(shareButton);
+      return;
+    }
+
+    if (shareMenu && !shareMenu.hidden && event.target === shareMenu) closeShareMenu();
   }, true);
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && shareMenu && !shareMenu.hidden) closeShareMenu();
+  });
 
   function queueRefresh() {
     if (refreshQueued) return;
@@ -334,16 +423,19 @@
   document.addEventListener('input', (event) => {
     if (!event.target.closest?.('#predictionSection')) return;
     invalidateExportCache();
+    closeShareMenu();
     queueRefresh();
   }, true);
   document.addEventListener('change', (event) => {
     if (!event.target.closest?.('#predictionSection')) return;
     invalidateExportCache();
+    closeShareMenu();
     queueRefresh();
   }, true);
 
   window.addEventListener('ucldraw:ai-predictions-applied', () => {
     invalidateExportCache();
+    closeShareMenu();
     queueRefresh();
   });
   window.addEventListener('resize', queueRefresh, { passive: true });
@@ -352,9 +444,9 @@
   window.UCLDRAW_PREDICTION_SHARE_V9 = Object.freeze({
     renderExportCard,
     prepareExport,
-    downloadCurrent,
-    copyCurrent,
     shareCurrent,
+    copyCurrent,
+    downloadCurrent,
     outputWidth: OUTPUT_WIDTH,
     outputHeight: OUTPUT_HEIGHT
   });

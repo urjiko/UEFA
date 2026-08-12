@@ -40,6 +40,9 @@ jobs:
           node --check roster-manager.js
           node --check roster-search-ui.js
           node --check league-music.js
+          node --check league-routes.js
+          node --check league-route-shell.js
+          node --check qualification-bracket.js
           node --check prediction-engine.js
           node --check prediction-ai-controller.js
           node --check prediction-bridge.js
@@ -54,6 +57,7 @@ jobs:
           node --check prediction-share-v7.js
           node --check prediction-share-v8.js
           node --check prediction-share-v9.js
+          node --check site-footer.js
           node --check ui-refinement-v4.js
           node --check ui-refinement-v5.js
           node --check champions-font-loader.js
@@ -61,20 +65,29 @@ jobs:
           node --check branding-fixes.js
           node --check generated-team-pools.js
           node --check generated-club-coefficients.js
+          node --check generated-home-advantage-profiles.js
           node --check team-pool-loader.js
           node --check coefficient-pots.js
           node --check scripts/generate-team-pools.mjs
+          node --check scripts/generate-league-routes.mjs
           node --check scripts/update-uefa-coefficients.mjs
           node --check scripts/stabilize-coefficient-snapshot.mjs
+          node --check scripts/build-home-advantage-profiles.mjs
       - name: Check generated team pools and coefficients
         run: |
           node scripts/generate-team-pools.mjs
           git diff --exit-code -- generated-team-pools.js
+          node tests/qualification-bracket.test.js
           node tests/team-pools.test.js
           node tests/coefficient-pots.test.js
           node tests/uefa-coefficients.test.mjs
           node tests/generated-coefficients.test.js
           node tests/roster-manager.test.js
+      - name: Check generated home advantage profiles
+        run: |
+          node scripts/build-home-advantage-profiles.mjs
+          git diff --exit-code -- generated-home-advantage-profiles.js
+          node tests/home-advantage-model.test.js
       - name: Check base HTML and controls
         run: |
           node tests/ui-v3.test.js
@@ -87,6 +100,9 @@ jobs:
           node tests/ui-refinement-v4.test.js
           node tests/header-lock-share-v7.test.js
           node tests/prediction-export-v9.test.js
+          node scripts/generate-league-routes.mjs
+          git diff --exit-code -- champions-league/index.html europa-league/index.html conference-league/index.html
+          node tests/league-routes.test.js
       - name: Check existing music roster and prediction controls
         run: |
           node tests/music-roster-ui.test.js

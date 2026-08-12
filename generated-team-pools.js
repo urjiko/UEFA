@@ -45,26 +45,16 @@
     "q3": [
       "bodo.png",
       "lyon.png",
-      "nec.png",
-      "olympiacos.png",
-      "spartapraha.png",
-      "union.png"
+      "nec.png"
     ],
     "q2": [
-      "aarhus.png",
-      "ararat.png",
       "celje.png",
-      "crvenazvezda.png",
       "dinamo.png",
       "fenerbahce.png",
       "hapoelbeersheva.png",
-      "kairat.png",
       "levskisofia.png",
-      "mjallby.png",
       "sabah.png",
-      "slovanbratislava.png",
-      "strumgraz.png",
-      "zalgiris.png"
+      "slovanbratislava.png"
     ]
   },
   "europa": {
@@ -78,17 +68,27 @@
       "juventus.png",
       "marseille.png",
       "milan.png",
+      "olympiacos.png",
       "realsociedad.png",
       "rennais.png",
+      "spartapraha.png",
+      "strumgraz.png",
       "sunderland.png",
-      "torreense.png"
+      "torreense.png",
+      "union.png"
     ],
     "playoffs": [
+      "aarhus.png",
+      "ararat.png",
       "crete.png",
+      "crvenazvezda.png",
+      "kairat.png",
       "lillestrom.png",
+      "mjallby.png",
       "trabzonspor.png",
       "truidense.png",
-      "viktoriaplzen.png"
+      "viktoriaplzen.png",
+      "zalgiris.png"
     ],
     "q3": [
       "craiova.png",

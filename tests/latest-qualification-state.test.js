@@ -48,6 +48,7 @@ load('generated-team-pools.js', context);
 load('generated-club-coefficients.js', context);
 load('qualification-bracket.js', context);
 load('qualification-current-state.js', context);
+load('qualification-identity-fixes.js', context);
 
 const manifest = JSON.parse(JSON.stringify(context.window.UCLDRAW_POOL_MANIFEST));
 function removeEverywhere(competitionKey, filename) {

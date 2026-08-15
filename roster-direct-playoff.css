@@ -1,0 +1,140 @@
+.direct-playoff-modal {
+  width: min(720px, calc(100vw - 32px));
+}
+
+.direct-playoff-header {
+  display: grid;
+  gap: 8px;
+  margin-bottom: 22px;
+}
+
+.direct-playoff-header > span {
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  opacity: 0.68;
+}
+
+.direct-playoff-header h2,
+.direct-playoff-header p {
+  margin: 0;
+}
+
+.direct-playoff-header p {
+  opacity: 0.76;
+  line-height: 1.5;
+}
+
+.direct-playoff-matchup {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  gap: 14px;
+  align-items: stretch;
+}
+
+.direct-playoff-team {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  min-width: 0;
+  padding: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.direct-playoff-team.is-current {
+  opacity: 0.72;
+}
+
+.direct-playoff-team.is-alternative {
+  background: rgba(255, 255, 255, 0.11);
+}
+
+.direct-playoff-team > div {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+}
+
+.direct-playoff-team strong {
+  font-size: 1.05rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.direct-playoff-team-label,
+.direct-playoff-team-meta {
+  font-size: 0.76rem;
+  opacity: 0.68;
+}
+
+.direct-playoff-team-label {
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.direct-playoff-crest {
+  position: relative;
+  display: grid;
+  place-items: center;
+  flex: 0 0 54px;
+  width: 54px;
+  height: 54px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.08);
+  overflow: hidden;
+  font-size: 0.78rem;
+  font-weight: 800;
+}
+
+.direct-playoff-crest img {
+  position: absolute;
+  inset: 7px;
+  width: calc(100% - 14px);
+  height: calc(100% - 14px);
+  object-fit: contain;
+}
+
+.direct-playoff-swap {
+  align-self: center;
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: rgba(255, 255, 255, 0.08);
+  font-size: 1.25rem;
+  font-weight: 800;
+}
+
+.direct-playoff-note,
+.direct-playoff-status {
+  margin: 18px 0 0;
+  font-size: 0.86rem;
+  line-height: 1.5;
+  opacity: 0.72;
+}
+
+.direct-playoff-status {
+  opacity: 1;
+  font-weight: 700;
+}
+
+.direct-playoff-actions {
+  margin-top: 20px;
+}
+
+@media (max-width: 620px) {
+  .direct-playoff-matchup {
+    grid-template-columns: 1fr;
+  }
+
+  .direct-playoff-swap {
+    justify-self: center;
+    transform: rotate(90deg);
+  }
+}

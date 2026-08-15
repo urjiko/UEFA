@@ -153,3 +153,4 @@ assert.ok(Array.isArray(dispatched.at(-1)?.detail?.slotChanges));
 assert.ok(stored.has('ucldraw:qualification-slot-assignments:v1'), 'coherent slot assignments must persist across league route reloads');
 
 console.log('Resolved qualification-slot roster checks passed.');
+require('./latest-qualification-state.test.js');

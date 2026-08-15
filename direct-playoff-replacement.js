@@ -15,6 +15,16 @@
     return outgoingOrSlug || null;
   }
 
+  function resolveCandidate(competitionId, incomingOrSlug) {
+    if (typeof incomingOrSlug === 'string') return manager.candidateTeam(competitionId, incomingOrSlug);
+    return incomingOrSlug || null;
+  }
+
+  function selectedOccupantForSlot(competitionId, slot) {
+    return data.competitions[competitionId]?.teams
+      .find((team) => manager.slotForTeam(team)?.id === slot.id) || null;
+  }
+
   function directOpponent(competitionId, outgoingOrSlug) {
     const outgoing = resolveOutgoing(competitionId, outgoingOrSlug);
     if (!outgoing || !manager.isRemovable(competitionId, outgoing)) return null;
@@ -31,6 +41,28 @@
     if (!opponent) return null;
 
     return Object.freeze({ outgoing, opponent, slot });
+  }
+
+  function directCandidate(competitionId, incomingOrSlug) {
+    const incoming = resolveCandidate(competitionId, incomingOrSlug);
+    if (!incoming || manager.selectedTeam(competitionId, incoming.poolSlug)) return null;
+
+    const incomingId = teamId(incoming);
+    if (!incomingId) return null;
+
+    const slots = manager.qualificationSlots.filter((slot) => (
+      slot.competitionId === competitionId
+      && slot.candidateIds.length === 2
+      && slot.candidateIds.includes(incomingId)
+    ));
+
+    for (const slot of slots) {
+      const outgoing = selectedOccupantForSlot(competitionId, slot);
+      if (!outgoing || teamId(outgoing) === incomingId || !manager.isRemovable(competitionId, outgoing)) continue;
+      return Object.freeze({ outgoing, opponent: incoming, slot });
+    }
+
+    return null;
   }
 
   function runtimeAssignments() {
@@ -117,15 +149,35 @@
     });
   }
 
+  function directCandidateScenario(competitionId, incomingOrSlug) {
+    const pair = directCandidate(competitionId, incomingOrSlug);
+    if (!pair) return null;
+    return Object.freeze({
+      competitionId,
+      outgoing: pair.outgoing,
+      incoming: pair.opponent,
+      slot: pair.slot
+    });
+  }
+
   function replaceWithDirectOpponent(competitionId, outgoingOrSlug) {
     const pair = directOpponent(competitionId, outgoingOrSlug);
     if (!pair) throw new Error('Bu takım için tek bir play-off rakibi bulunamadı.');
     return persistDirectSwap(pair);
   }
 
+  function replaceWithCandidate(competitionId, incomingOrSlug) {
+    const pair = directCandidate(competitionId, incomingOrSlug);
+    if (!pair) throw new Error('Bu takımın yerine geçebileceği mevcut play-off takımı bulunamadı.');
+    return persistDirectSwap(pair);
+  }
+
   window.UCLDRAW_DIRECT_PLAYOFF_REPLACEMENT = Object.freeze({
     directOpponent,
+    directCandidate,
     directOpponentScenario,
-    replaceWithDirectOpponent
+    directCandidateScenario,
+    replaceWithDirectOpponent,
+    replaceWithCandidate
   });
 })();

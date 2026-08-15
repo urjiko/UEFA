@@ -161,7 +161,8 @@ assert.equal(state.runtimeDirectEuropaCount, 13, 'runtime direct Europa entrants
 assert.equal(bracket.teams.klaksvik.source.competitionKey, 'conference');
 assert.equal(bracket.teams.klaksvik.source.stage, 'playoffs');
 assert.equal(bracket.teams.klaksvik.source.fileSlug, 'klaksvik');
-assert.equal(bracket.teams.kuopio.source.fileSlug, 'kups');
+assert.equal(bracket.teams.kuopio.source.fileSlug, 'kuopio');
+assert.equal(bracket.teams.shamrockrovers.source.fileSlug, 'shamrockrovers');
 assert.equal(bracket.teams.rangers.source.competitionKey, 'conference');
 assert.equal(bracket.teams.jagiellonia.source.competitionKey, 'europa');
 

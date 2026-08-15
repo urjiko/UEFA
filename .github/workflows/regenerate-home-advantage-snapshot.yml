@@ -25,6 +25,7 @@ jobs:
       - name: Commit generated snapshot
         shell: bash
         run: |
+          # Keep this workflow temporary; only the generated snapshot belongs in the PR.
           if git diff --quiet -- generated-home-advantage-profiles.js; then
             echo "Snapshot already current."
             exit 0

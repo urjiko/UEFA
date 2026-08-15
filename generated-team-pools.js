@@ -132,6 +132,7 @@
       "interclubdescaldes.png",
       "interturku.png",
       "jablonec.png",
+      "klaksvik.png",
       "kups.png",
       "larne.png",
       "lincoln.png",

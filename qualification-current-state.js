@@ -15,22 +15,13 @@
   const originalUeclQ3 = originalRounds.find((round) => round.id === 'uecl-q3');
   if (!originalUclQ3 || !originalUelQ3 || !originalUeclQ3) return;
 
-  const FILE_SLUG_OVERRIDES = Object.freeze({
-    lincoln: 'lincoln',
-    kuopio: 'kups',
-    shamrockrovers: 'shamrock',
-    egnatia: 'egnatia',
-    thun: 'thun',
-    hearts: 'hearts'
-  });
-
   function entryFile(entry) {
     return typeof entry === 'string' ? entry : entry?.file;
   }
 
   function fileSlugFor(team) {
     if (!team?.id) return null;
-    return FILE_SLUG_OVERRIDES[team.id] || team.source?.fileSlug || team.poolSlug || team.id;
+    return team.source?.fileSlug || team.poolSlug || team.id;
   }
 
   function stageHas(competitionKey, stage, fileSlug) {

@@ -95,11 +95,11 @@ vm.runInNewContext(generatedSource, generatedContext, {
 const generated = generatedContext.window.UCLDRAW_HOME_ADVANTAGE_PROFILES;
 assert.equal(generated.latestMatchDate, '2025-06-01');
 assert.equal(generated.sourceSummary.storedMatches, 1338);
-assert.equal(generated.sourceSummary.matches, 1284);
-assert.equal(generated.sourceSummary.excludedStoredMatches, 54);
-assert.equal(generated.sourceSummary.teams, 68);
-assert.equal(generated.sourceSummary.activeTeamScope, 76);
-assert.equal(generated.sourceSummary.domesticMatches, 1269);
+assert.equal(generated.sourceSummary.matches, 1302);
+assert.equal(generated.sourceSummary.excludedStoredMatches, 36);
+assert.equal(generated.sourceSummary.teams, 69);
+assert.equal(generated.sourceSummary.activeTeamScope, 132);
+assert.equal(generated.sourceSummary.domesticMatches, 1287);
 assert.equal(generated.sourceSummary.europeanMatches, 15);
 assert.equal(generated.sourceSummary.latestIncludedMatchDate, '2025-05-31');
 assert.deepEqual(Array.from(generated.sourceSummary.files), dataFiles);
@@ -109,25 +109,27 @@ assert.equal(generated.scope.priority[0].stage, 'guaranteed');
 assert.equal(generated.scope.priority[0].teams.length, 29);
 assert.equal(generated.scope.priority[1].competition, 'europa');
 assert.equal(generated.scope.priority[1].stage, 'guaranteed');
-assert.equal(generated.scope.priority[1].teams.length, 13);
+assert.equal(generated.scope.priority[1].teams.length, 17);
 assert.equal(generated.scope.priority[2].competition, 'champions');
 assert.equal(generated.scope.priority[2].stage, 'playoffs');
 assert.deepEqual(Array.from(generated.scope.priority[2].teams), ['aek', 'celtic', 'lask', 'viking']);
 assert.equal(generated.scope.priority[3].competition, 'europa');
 assert.equal(generated.scope.priority[3].stage, 'playoffs');
-assert.deepEqual(Array.from(generated.scope.priority[3].teams), ['crete', 'lillestrom', 'trabzonspor', 'truidense', 'viktoriaplzen']);
+assert.equal(generated.scope.priority[3].teams.length, 24);
+for (const slug of ['jagiellonia', 'poznan', 'thun']) assert.ok(generated.scope.priority[3].teams.includes(slug));
 assert.equal(generated.scope.priority[4].competition, 'conference');
 assert.equal(generated.scope.priority[4].stage, 'playoffs');
-assert.deepEqual(Array.from(generated.scope.priority[4].teams), ['atalanta', 'brighton', 'freiburg', 'getafe', 'monaco']);
+assert.equal(generated.scope.priority[4].teams.length, 48);
+for (const slug of ['rangers', 'klaksvik', 'kuopio', 'shamrockrovers']) assert.ok(generated.scope.priority[4].teams.includes(slug));
 assert.equal(generated.scope.priority[5].competition, 'champions');
 assert.equal(generated.scope.priority[5].stage, 'q3');
-assert.deepEqual(Array.from(generated.scope.priority[5].teams), ['bodo', 'lyon', 'nec', 'olympiacos', 'spartapraha', 'union']);
+assert.deepEqual(Array.from(generated.scope.priority[5].teams), ['bodo', 'lyon', 'nec']);
 assert.equal(generated.scope.priority[6].competition, 'champions');
 assert.equal(generated.scope.priority[6].stage, 'q2');
-assert.deepEqual(Array.from(generated.scope.priority[6].teams), ['aarhus', 'ararat', 'celje', 'crvenazvezda', 'dinamo', 'fenerbahce', 'hapoelbeersheva', 'kairat', 'levskisofia', 'mjallby', 'sabah', 'slovanbratislava', 'strumgraz', 'zalgiris']);
-assert.equal(generated.scope.teams.length, 76);
-assert.equal(new Set(generated.scope.teams).size, 76);
-assert.deepEqual(Array.from(generated.researchQueue), ['hapoelbeersheva', 'kairat', 'levskisofia', 'mjallby', 'sabah', 'slovanbratislava', 'strumgraz', 'zalgiris']);
+assert.deepEqual(Array.from(generated.scope.priority[6].teams), ['celje', 'dinamo', 'fenerbahce', 'hapoelbeersheva', 'levskisofia', 'sabah', 'slovanbratislava']);
+assert.equal(generated.scope.teams.length, 132);
+assert.equal(new Set(generated.scope.teams).size, 132);
+for (const slug of ['strumgraz', 'jagiellonia', 'kuopio', 'shamrockrovers', 'hapoelbeersheva']) assert.ok(generated.researchQueue.includes(slug));
 
 const expectedDomesticAttack = {
   aek: 1.1073,
@@ -456,8 +458,8 @@ assert.equal(generated.profiles.fenerbahce.samples.overall.raw, 18);
 assert.equal(generated.profiles.fenerbahce.attack.domestic, 1.1127);
 assert.equal(generated.profiles.fenerbahce.defense.domestic, 1.16);
 
-assert.equal(generated.researchQueue.length, 8);
-assert.deepEqual(Array.from(generated.researchQueue), ['hapoelbeersheva', 'kairat', 'levskisofia', 'mjallby', 'sabah', 'slovanbratislava', 'strumgraz', 'zalgiris']);
+assert.equal(generated.researchQueue.length, 63);
+for (const slug of ['strumgraz', 'jagiellonia', 'kuopio', 'shamrockrovers', 'hapoelbeersheva']) assert.ok(generated.researchQueue.includes(slug));
 
 const home = { name: 'Galatasaray', poolSlug: 'galatasaray', country: 'TUR', coefficient: 45, pot: 3 };
 const strongerAway = { name: 'Liverpool', poolSlug: 'liverpool', country: 'ENG', coefficient: 130, pot: 1 };

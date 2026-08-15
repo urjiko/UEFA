@@ -85,6 +85,8 @@ const manager = context.window.UCLDRAW_ROSTER_MANAGER;
 const data = context.window.UCLDRAW_DATA;
 
 assert.equal(latest.snapshotDate, '2026-08-15');
+assert.equal(Object.keys(latest.resolvedUelQ3).length, 13, 'all 13 Europa League Q3 ties must be resolved');
+assert.equal(Object.keys(latest.resolvedUeclQ3).length, 30, 'all 30 Conference League Q3 ties must be resolved');
 assert.equal(latest.resolvedUelQ3['uel-q3-jagiellonia-rangers'].winnerId, 'jagiellonia');
 assert.equal(latest.resolvedUelQ3['uel-q3-jagiellonia-rangers'].loserId, 'rangers');
 assert.equal(latest.resolvedUelQ3['uel-q3-poznan-klaksvik'].winnerId, 'poznan');

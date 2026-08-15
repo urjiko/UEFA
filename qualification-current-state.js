@@ -3,18 +3,34 @@
 
   const bracket = window.UCLDRAW_QUALIFICATION_BRACKET;
   const sourceManifest = window.UCLDRAW_POOL_MANIFEST;
-  if (!bracket?.rounds || !bracket?.simulate || !bracket?.teams || !sourceManifest?.champions || !sourceManifest?.europa) {
+  if (!bracket?.rounds || !bracket?.simulate || !bracket?.teams || !sourceManifest?.champions || !sourceManifest?.europa || !sourceManifest?.conference) {
     return;
   }
 
-  const SNAPSHOT_DATE = '2026-08-12';
+  const SNAPSHOT_DATE = '2026-08-15';
   const originalSimulate = bracket.simulate;
   const originalRounds = bracket.rounds;
   const originalUclQ3 = originalRounds.find((round) => round.id === 'ucl-q3');
-  if (!originalUclQ3) return;
+  const originalUelQ3 = originalRounds.find((round) => round.id === 'uel-q3');
+  const originalUeclQ3 = originalRounds.find((round) => round.id === 'uecl-q3');
+  if (!originalUclQ3 || !originalUelQ3 || !originalUeclQ3) return;
+
+  const FILE_SLUG_OVERRIDES = Object.freeze({
+    lincoln: 'lincoln',
+    kuopio: 'kups',
+    shamrockrovers: 'shamrock',
+    egnatia: 'egnatia',
+    thun: 'thun',
+    hearts: 'hearts'
+  });
 
   function entryFile(entry) {
     return typeof entry === 'string' ? entry : entry?.file;
+  }
+
+  function fileSlugFor(team) {
+    if (!team?.id) return null;
+    return FILE_SLUG_OVERRIDES[team.id] || team.source?.fileSlug || team.poolSlug || team.id;
   }
 
   function stageHas(competitionKey, stage, fileSlug) {
@@ -29,37 +45,106 @@
       .some((stage) => stageHas(competitionKey, stage, fileSlug));
   }
 
-  const resolvedUclQ3 = {};
-  originalUclQ3.ties.forEach((entry) => {
-    const first = entry.first;
-    const second = entry.second;
-    if (!first?.id || !second?.id) return;
+  function resolveUclQ3() {
+    const resolved = {};
+    originalUclQ3.ties.forEach((entry) => {
+      const first = entry.first;
+      const second = entry.second;
+      if (!first?.id || !second?.id) return;
 
-    const firstInChampions = competitionHas('champions', first.source?.fileSlug);
-    const secondInChampions = competitionHas('champions', second.source?.fileSlug);
-    if (firstInChampions === secondInChampions) return;
+      const firstInChampions = competitionHas('champions', fileSlugFor(first));
+      const secondInChampions = competitionHas('champions', fileSlugFor(second));
+      if (firstInChampions === secondInChampions) return;
 
-    const winner = firstInChampions ? first : second;
-    const loser = firstInChampions ? second : first;
-    const europaStage = entry.route === 'league' ? 'guaranteed' : 'playoffs';
-    if (!stageHas('europa', europaStage, loser.source?.fileSlug)) return;
+      const winner = firstInChampions ? first : second;
+      const loser = firstInChampions ? second : first;
+      const europaStage = entry.route === 'league' ? 'guaranteed' : 'playoffs';
+      if (!stageHas('europa', europaStage, fileSlugFor(loser))) return;
 
-    resolvedUclQ3[entry.id] = Object.freeze({
-      tieId: entry.id,
-      route: entry.route,
-      winnerId: winner.id,
-      loserId: loser.id,
-      europaStage
+      resolved[entry.id] = Object.freeze({
+        tieId: entry.id,
+        route: entry.route,
+        winnerId: winner.id,
+        loserId: loser.id,
+        winnerCompetition: 'champions',
+        loserCompetition: 'europa',
+        loserStage: europaStage
+      });
     });
+    return Object.freeze(resolved);
+  }
+
+  function resolveUelQ3() {
+    const resolved = {};
+    originalUelQ3.ties.forEach((entry) => {
+      const first = entry.first;
+      const second = entry.second;
+      if (!first?.id || !second?.id) return;
+
+      const firstInEuropaPlayoffs = stageHas('europa', 'playoffs', fileSlugFor(first));
+      const secondInEuropaPlayoffs = stageHas('europa', 'playoffs', fileSlugFor(second));
+      if (firstInEuropaPlayoffs === secondInEuropaPlayoffs) return;
+
+      const winner = firstInEuropaPlayoffs ? first : second;
+      const loser = firstInEuropaPlayoffs ? second : first;
+      resolved[entry.id] = Object.freeze({
+        tieId: entry.id,
+        route: entry.route,
+        winnerId: winner.id,
+        loserId: loser.id,
+        winnerCompetition: 'europa',
+        winnerStage: 'playoffs',
+        loserCompetition: 'conference',
+        loserStage: 'playoffs'
+      });
+    });
+    return Object.freeze(resolved);
+  }
+
+  function resolveUeclQ3() {
+    const resolved = {};
+    originalUeclQ3.ties.forEach((entry) => {
+      const first = entry.first;
+      const second = entry.second;
+      if (!first?.id || !second?.id) return;
+
+      const firstInConferencePlayoffs = stageHas('conference', 'playoffs', fileSlugFor(first));
+      const secondInConferencePlayoffs = stageHas('conference', 'playoffs', fileSlugFor(second));
+      if (firstInConferencePlayoffs === secondInConferencePlayoffs) return;
+
+      const winner = firstInConferencePlayoffs ? first : second;
+      const loser = firstInConferencePlayoffs ? second : first;
+      resolved[entry.id] = Object.freeze({
+        tieId: entry.id,
+        route: entry.route,
+        winnerId: winner.id,
+        loserId: loser.id,
+        winnerCompetition: 'conference',
+        winnerStage: 'playoffs',
+        loserCompetition: null,
+        loserStage: null
+      });
+    });
+    return Object.freeze(resolved);
+  }
+
+  const resolvedUclQ3 = resolveUclQ3();
+  const resolvedUelQ3 = resolveUelQ3();
+  const resolvedUeclQ3 = resolveUeclQ3();
+  const resolvedStates = Object.freeze({
+    ...resolvedUclQ3,
+    ...resolvedUelQ3,
+    ...resolvedUeclQ3
   });
 
-  const resolvedStates = Object.freeze(resolvedUclQ3);
-  const eliminatedFromUclIds = Object.freeze(Object.values(resolvedStates).map((state) => state.loserId));
-  const fixedUelLeaguePhaseIds = Object.freeze(Object.values(resolvedStates)
+  const eliminatedFromUclIds = Object.freeze(Object.values(resolvedUclQ3).map((state) => state.loserId));
+  const eliminatedFromUelIds = Object.freeze(Object.values(resolvedUelQ3).map((state) => state.loserId));
+  const eliminatedFromEuropeIds = Object.freeze(Object.values(resolvedUeclQ3).map((state) => state.loserId));
+  const fixedUelLeaguePhaseIds = Object.freeze(Object.values(resolvedUclQ3)
     .filter((state) => state.route === 'league')
     .map((state) => state.loserId));
   const fixedUelLeaguePhaseFiles = new Set(fixedUelLeaguePhaseIds
-    .map((teamId) => bracket.teams[teamId]?.source?.fileSlug)
+    .map((teamId) => fileSlugFor(bracket.teams[teamId]))
     .filter(Boolean)
     .map((fileSlug) => `${fileSlug}.png`.toLocaleLowerCase('en-US')));
 
@@ -75,14 +160,22 @@
   });
 
   const sourceOverrides = new Map();
-  Object.values(resolvedStates).forEach((state) => {
-    const descriptor = bracket.teams[state.loserId];
-    if (!descriptor?.source?.fileSlug) return;
-    sourceOverrides.set(state.loserId, Object.freeze({
-      competitionKey: 'europa',
-      stage: state.europaStage,
-      fileSlug: descriptor.source.fileSlug
-    }));
+  function overrideSource(teamId, competitionKey, stage) {
+    const descriptor = bracket.teams[teamId];
+    const fileSlug = fileSlugFor(descriptor);
+    if (!descriptor || !fileSlug) return;
+    sourceOverrides.set(teamId, Object.freeze({ competitionKey, stage, fileSlug }));
+  }
+
+  Object.values(resolvedUclQ3).forEach((state) => {
+    overrideSource(state.loserId, 'europa', state.loserStage);
+  });
+  Object.values(resolvedUelQ3).forEach((state) => {
+    overrideSource(state.winnerId, 'europa', 'playoffs');
+    overrideSource(state.loserId, 'conference', 'playoffs');
+  });
+  Object.values(resolvedUeclQ3).forEach((state) => {
+    overrideSource(state.winnerId, 'conference', 'playoffs');
   });
 
   const teams = Object.freeze(Object.fromEntries(Object.entries(bracket.teams).map(([teamId, descriptor]) => [
@@ -105,7 +198,7 @@
       return Object.freeze({
         ...round,
         ties: Object.freeze(round.ties.map((entry) => {
-          const state = resolvedStates[entry.id];
+          const state = resolvedUclQ3[entry.id];
           if (!state) return entry;
           const activeTeamId = entry.route === 'league' ? state.loserId : state.winnerId;
           const activeTeam = teams[activeTeamId];
@@ -121,13 +214,27 @@
       });
     }
 
+    const roundResolved = round.id === 'uel-q3'
+      ? resolvedUelQ3
+      : round.id === 'uecl-q3'
+        ? resolvedUeclQ3
+        : null;
+
     return Object.freeze({
       ...round,
-      ties: Object.freeze(round.ties.map((entry) => Object.freeze({
-        ...entry,
-        first: settledParticipant(entry.first),
-        second: settledParticipant(entry.second)
-      })))
+      ties: Object.freeze(round.ties.map((entry) => {
+        const state = roundResolved?.[entry.id];
+        return Object.freeze({
+          ...entry,
+          first: settledParticipant(entry.first),
+          second: settledParticipant(entry.second),
+          ...(state ? {
+            resolved: true,
+            resolvedWinnerId: state.winnerId,
+            resolvedLoserId: state.loserId
+          } : {})
+        });
+      }))
     });
   }));
 
@@ -145,15 +252,17 @@
     });
   }
 
+  const simulationTies = Object.freeze(originalRounds.flatMap((round) => round.ties));
+
   function simulate(random = Math.random) {
     if (typeof random !== 'function') throw new TypeError('Eleme simülasyonu için random fonksiyonu gerekir.');
-    let q3Index = 0;
+    let tieIndex = 0;
     const forcedRandom = () => {
-      if (q3Index < originalUclQ3.ties.length) {
-        const entry = originalUclQ3.ties[q3Index];
-        q3Index += 1;
-        const state = resolvedStates[entry.id];
-        if (state) return entry.first.id === state.winnerId ? 0 : 0.999999;
+      const entry = simulationTies[tieIndex];
+      tieIndex += 1;
+      const state = resolvedStates[entry?.id];
+      if (state && entry?.first?.id && entry?.second?.id) {
+        return entry.first.id === state.winnerId ? 0 : 0.999999;
       }
       return random();
     };
@@ -175,8 +284,12 @@
       diagnostics: Object.freeze({
         ...result.diagnostics,
         bracketVersion: SNAPSHOT_DATE,
-        resolvedUclQ3Count: Object.keys(resolvedStates).length,
-        resolvedUclQ3: resolvedStates
+        resolvedUclQ3Count: Object.keys(resolvedUclQ3).length,
+        resolvedUelQ3Count: Object.keys(resolvedUelQ3).length,
+        resolvedUeclQ3Count: Object.keys(resolvedUeclQ3).length,
+        resolvedUclQ3,
+        resolvedUelQ3,
+        resolvedUeclQ3
       })
     });
   }
@@ -187,17 +300,28 @@
     simulate,
     teams,
     currentStateVersion: SNAPSHOT_DATE,
-    resolvedUclQ3: resolvedStates
+    resolvedUclQ3,
+    resolvedUelQ3,
+    resolvedUeclQ3
   });
 
-  const eliminatedSet = new Set(eliminatedFromUclIds);
+  const excludedSets = Object.freeze({
+    ucl: new Set(eliminatedFromUclIds),
+    uel: new Set(eliminatedFromUelIds),
+    uecl: new Set(eliminatedFromEuropeIds)
+  });
   const fixedUelSet = new Set(fixedUelLeaguePhaseIds);
-  const lockedSlotIds = new Set(Object.values(resolvedStates)
+  const lockedSlotIds = new Set(Object.values(resolvedUclQ3)
     .filter((state) => state.route === 'league')
     .map((state) => `uel:${state.tieId}:loser`));
 
   function teamId(team) {
     return team?.qualificationId || team?.poolSlug || null;
+  }
+
+  function isExcluded(competitionId, teamOrId) {
+    const id = typeof teamOrId === 'string' ? teamOrId : teamId(teamOrId);
+    return Boolean(id && excludedSets[competitionId]?.has(id));
   }
 
   function installRosterManagerHook() {
@@ -222,22 +346,20 @@
         ...manager,
         currentStateVersion: SNAPSHOT_DATE,
         allTeams(competitionId) {
-          const entries = manager.allTeams(competitionId);
-          return competitionId === 'ucl' ? entries.filter((team) => !eliminatedSet.has(teamId(team))) : entries;
+          return manager.allTeams(competitionId).filter((team) => !isExcluded(competitionId, team));
         },
         reserveTeams(competitionId) {
-          const entries = manager.reserveTeams(competitionId);
-          return competitionId === 'ucl' ? entries.filter((team) => !eliminatedSet.has(teamId(team))) : entries;
+          return manager.reserveTeams(competitionId).filter((team) => !isExcluded(competitionId, team));
         },
         candidateTeam(competitionId, slug) {
-          if (competitionId === 'ucl' && eliminatedSet.has(slug)) return null;
+          if (isExcluded(competitionId, slug)) return null;
           return manager.candidateTeam(competitionId, slug);
         },
         isGuaranteed(team) {
           return manager.isGuaranteed(team) || fixedUelSet.has(teamId(team));
         },
         isRemovable(competitionId, team) {
-          if (competitionId === 'ucl' && eliminatedSet.has(teamId(team))) return false;
+          if (isExcluded(competitionId, team)) return false;
           if (competitionId === 'uel' && fixedUelSet.has(teamId(team))) return false;
           return manager.isRemovable(competitionId, team);
         },
@@ -277,8 +399,12 @@
 
   window.UCLDRAW_QUALIFICATION_STATE = Object.freeze({
     snapshotDate: SNAPSHOT_DATE,
-    resolvedUclQ3: resolvedStates,
+    resolvedUclQ3,
+    resolvedUelQ3,
+    resolvedUeclQ3,
     eliminatedFromUclIds,
+    eliminatedFromUelIds,
+    eliminatedFromEuropeIds,
     fixedUelLeaguePhaseIds,
     runtimeDirectEuropaCount: window.UCLDRAW_POOL_MANIFEST.europa.guaranteed.length
   });

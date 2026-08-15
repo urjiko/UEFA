@@ -75,13 +75,25 @@ for (const faviconLink of [
   if (!html.includes(faviconLink)) throw new Error(`Missing site icon link: ${faviconLink}`);
 }
 
-const teamsIndex = html.indexOf('<script src="teams.js"></script>');
-const manifestIndex = html.indexOf('<script src="generated-team-pools.js"></script>');
-const poolLoaderIndex = html.indexOf('<script src="team-pool-loader.js"></script>');
-const brandingIndex = html.indexOf('<script src="branding-fixes.js"></script>');
-const appIndex = html.indexOf('<script src="app-v3.js"></script>');
-if (!(teamsIndex >= 0 && manifestIndex > teamsIndex && poolLoaderIndex > manifestIndex && brandingIndex > poolLoaderIndex && appIndex > brandingIndex)) {
-  throw new Error('Team pools and branding must load after base data and before the app.');
+function scriptIndex(file) {
+  return html.indexOf(`src="${file}`);
+}
+
+const teamsIndex = scriptIndex('teams.js');
+const manifestIndex = scriptIndex('generated-team-pools.js');
+const poolLoaderIndex = scriptIndex('team-pool-loader.js');
+const storageResetIndex = scriptIndex('qualification-storage-reset.js');
+const rosterManagerIndex = scriptIndex('roster-manager.js');
+const brandingIndex = scriptIndex('branding-fixes.js');
+const appIndex = scriptIndex('app-v3.js');
+if (!(teamsIndex >= 0
+  && manifestIndex > teamsIndex
+  && poolLoaderIndex > manifestIndex
+  && storageResetIndex > poolLoaderIndex
+  && rosterManagerIndex > storageResetIndex
+  && brandingIndex > rosterManagerIndex
+  && appIndex > brandingIndex)) {
+  throw new Error('Team pools, stale-state reset, roster manager and branding must load in a safe order before the app.');
 }
 if (!html.includes('<link rel="stylesheet" href="branding-fixes.css">')) {
   throw new Error('Branding stylesheet is not loaded.');

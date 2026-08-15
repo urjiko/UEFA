@@ -1,3 +1,5 @@
+'use strict';
+
 const fs = require('node:fs');
 const path = require('node:path');
 const assert = require('node:assert/strict');
@@ -9,8 +11,10 @@ const html = read('index.html');
 const music = read('league-music.js');
 const musicCss = read('league-music.css');
 const rosterUi = read('roster-search-ui.js');
-const singleOpponentUi = read('roster-single-opponent-ui.js');
 const rosterCss = read('roster-search.css');
+const directHelper = read('direct-playoff-replacement.js');
+const directUi = read('roster-single-opponent-ui.js');
+const directCss = read('roster-direct-playoff.css');
 
 for (const file of [
   'roster-manager.js',
@@ -25,8 +29,9 @@ for (const file of [
 
 assert.ok(html.indexOf('roster-manager.js') < html.indexOf('app-v3.js'), 'roster manager must load before the app');
 assert.ok(html.indexOf('app-v3.js') < html.indexOf('roster-search-ui.js'), 'search UI must load after the app');
-assert.ok(html.indexOf('roster-search-ui.js') < html.indexOf('roster-single-opponent-ui.js'), 'single-opponent simplifier must load after roster search UI');
+assert.ok(html.indexOf('roster-search-ui.js') < html.indexOf('roster-single-opponent-ui.js'), 'direct playoff UI must load after the base roster UI');
 assert.ok(html.indexOf('app-v3.js') < html.indexOf('league-music.js'), 'music observer must load after initial league rendering');
+assert.match(html, /roster-single-opponent-ui\.js\?v=20260815e/);
 
 assert.match(music, /ucl:\s*'music\/ucl_anthem\.mp3'/);
 assert.match(music, /uel:\s*'music\/uel_anthem\.mp3'/);
@@ -47,19 +52,29 @@ assert.match(rosterUi, /selectionPots\.addEventListener\('click'/);
 assert.match(rosterUi, /garanti katılımcı olduğu için kadrodan çıkarılamaz/i);
 assert.match(rosterUi, /Kadrodan değiştir/);
 assert.match(rosterUi, /36 takımı yeniden sıralar/);
-assert.doesNotThrow(() => new Function(singleOpponentUi), 'single-opponent UI helper must parse');
-assert.match(singleOpponentUi, /options\.length !== 1/);
-assert.match(singleOpponentUi, /filter\.remove\(\)/);
-assert.match(singleOpponentUi, /play-off eşleşmesindeki tek alternatifi/i);
 assert.match(rosterCss, /\.roster-replacement-modal/);
 assert.match(rosterCss, /\.roster-search-result\.is-reserve-roster/);
 assert.match(rosterCss, /\.roster-team-actions/);
 assert.match(rosterCss, /\.roster-locked-note/);
 assert.match(rosterCss, /\.roster-modal-search/);
 
+assert.doesNotThrow(() => new Function(directHelper), 'direct playoff helper must parse');
+assert.doesNotThrow(() => new Function(directUi), 'direct playoff UI must parse');
+assert.match(directHelper, /slot\.candidateIds\.length !== 2/);
+assert.match(directHelper, /replaceWithDirectOpponent/);
+assert.match(directUi, /Kadrodan değiştir ·/);
+assert.match(directUi, /PLAY-OFF EŞLEŞMESİ/);
+assert.match(directUi, /replaceWithDirectOpponent/);
+assert.match(directUi, /window\.location\.reload\(\)/);
+assert.doesNotMatch(directUi, /roster-modal-search/);
+assert.match(directCss, /\.direct-playoff-matchup/);
+assert.match(directCss, /\.direct-playoff-team\.is-alternative/);
+assert.match(directCss, /@media \(max-width: 620px\)/);
+
 const musicDirectory = path.join(root, 'music');
 for (const file of ['ucl_anthem.mp3', 'uel_anthem.mp3', 'con_anthem.mp3']) {
   assert.ok(fs.existsSync(path.join(musicDirectory, file)), `music/${file} must exist with exact casing`);
 }
 
-console.log('League music, guaranteed locks and pre-draw roster UI checks passed.');
+console.log('League music, guaranteed locks and direct playoff roster UI checks passed.');
+require('./direct-playoff-toggle.test.js');

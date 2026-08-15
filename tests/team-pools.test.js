@@ -52,6 +52,7 @@ for (let run = 0; run < 20; run += 1) {
   load('generated-club-coefficients.js', context);
   load('qualification-bracket.js', context);
   load('qualification-current-state.js', context);
+  load('qualification-identity-fixes.js', context);
   load('team-pool-loader.js', context);
   load('coefficient-pots.js', context);
 

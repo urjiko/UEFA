@@ -47,6 +47,7 @@ load('generated-team-pools.js', context);
 load('generated-club-coefficients.js', context);
 load('qualification-bracket.js', context);
 load('qualification-current-state.js', context);
+load('qualification-identity-fixes.js', context);
 load('team-pool-loader.js', context);
 load('coefficient-pots.js', context);
 load('roster-manager.js', context);

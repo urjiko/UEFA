@@ -1,7 +1,7 @@
 (() => {
   'use strict';
 
-  const REVISION = '20260815e';
+  const REVISION = '20260815f';
 
   function ensureStylesheet() {
     if (document.querySelector('link[data-direct-playoff-style]')) return;
@@ -69,13 +69,29 @@
       return data.competitions[leagueId()]?.teams.find((team) => team.name === name) || null;
     }
 
+    function candidateFromReplacementModal(modal) {
+      const name = modal?.querySelector('#rosterReplacementTitle')?.textContent?.trim();
+      if (!name) return null;
+      return manager.allTeams(leagueId()).find((team) => (
+        team.name === name && !manager.selectedTeam(leagueId(), team.poolSlug)
+      )) || null;
+    }
+
     function closeBackdrop(backdrop) {
       backdrop?.remove();
       document.body.style.overflow = '';
     }
 
+    function closeSearchResults() {
+      const results = document.getElementById('searchResults');
+      const input = document.getElementById('teamSearch');
+      if (results) results.hidden = true;
+      input?.setAttribute('aria-expanded', 'false');
+    }
+
     function openDirectSwitch(outgoing, pair, sourceBackdrop) {
       closeBackdrop(sourceBackdrop);
+      closeSearchResults();
 
       const backdrop = document.createElement('div');
       backdrop.className = 'modal-backdrop roster-replacement-backdrop direct-playoff-backdrop';
@@ -107,7 +123,7 @@
 
       const note = document.createElement('p');
       note.className = 'direct-playoff-note';
-      note.textContent = 'Bu seçim aynı play-off kontenjanını tersine çevirir. Tekrar değiştirmek istersen yeni takımın kartından aynı işlemi geri alabilirsin.';
+      note.textContent = 'Bu seçim aynı play-off kontenjanını tersine çevirir. Tekrar değiştirmek istersen yeni takımın kartından veya arama alanından aynı işlemi geri alabilirsin.';
 
       const status = document.createElement('p');
       status.className = 'direct-playoff-status';
@@ -171,12 +187,44 @@
       modal.dataset.directPlayoffWired = 'true';
     }
 
+    function wireReserveReplacementModal(backdrop) {
+      if (!(backdrop instanceof Element) || !backdrop.classList.contains('roster-replacement-backdrop')) return;
+      if (backdrop.classList.contains('roster-team-action-backdrop')
+        || backdrop.classList.contains('roster-incoming-picker-backdrop')
+        || backdrop.classList.contains('direct-playoff-backdrop')) return;
+
+      const modal = backdrop.querySelector('.roster-replacement-modal');
+      if (!modal || modal.dataset.directReserveWired === 'true') return;
+      modal.dataset.directReserveWired = 'true';
+
+      const incoming = candidateFromReplacementModal(modal);
+      const pair = incoming ? direct.directCandidate(leagueId(), incoming) : null;
+      if (!pair) return;
+
+      openDirectSwitch(pair.outgoing, pair, backdrop);
+    }
+
+    document.addEventListener('click', (event) => {
+      const button = event.target.closest?.('.roster-search-result.is-reserve-roster[data-pool-slug]');
+      if (!button) return;
+
+      const incoming = manager.candidateTeam(leagueId(), button.dataset.poolSlug);
+      const pair = incoming ? direct.directCandidate(leagueId(), incoming) : null;
+      if (!pair) return;
+
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      openDirectSwitch(pair.outgoing, pair, null);
+    }, true);
+
     const observer = new MutationObserver((records) => {
       records.forEach((record) => {
         record.addedNodes.forEach((node) => {
           if (!(node instanceof Element)) return;
           wireTeamActionModal(node);
+          wireReserveReplacementModal(node);
           node.querySelectorAll?.('.roster-team-action-backdrop').forEach(wireTeamActionModal);
+          node.querySelectorAll?.('.roster-replacement-backdrop').forEach(wireReserveReplacementModal);
         });
       });
     });

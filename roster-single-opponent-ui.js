@@ -1,173 +1,197 @@
 (() => {
   'use strict';
 
-  const data = window.UCLDRAW_DATA;
-  const manager = window.UCLDRAW_ROSTER_MANAGER;
-  const direct = window.UCLDRAW_DIRECT_PLAYOFF_REPLACEMENT;
-  if (!data?.competitions || !manager || !direct) return;
+  const REVISION = '20260815e';
 
-  function leagueId() {
-    return document.body.dataset.league || 'ucl';
+  function ensureStylesheet() {
+    if (document.querySelector('link[data-direct-playoff-style]')) return;
+    const link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = `roster-direct-playoff.css?v=${REVISION}`;
+    link.dataset.directPlayoffStyle = 'true';
+    document.head.appendChild(link);
   }
 
-  function initials(name) {
-    return String(name).split(/\s+/).filter(Boolean).slice(0, 2).map((part) => part[0]).join('').toUpperCase();
-  }
+  function boot() {
+    const data = window.UCLDRAW_DATA;
+    const manager = window.UCLDRAW_ROSTER_MANAGER;
+    const direct = window.UCLDRAW_DIRECT_PLAYOFF_REPLACEMENT;
+    if (!data?.competitions || !manager || !direct) return;
 
-  function createCrest(team) {
-    const shell = document.createElement('span');
-    shell.className = 'direct-playoff-crest';
-    const fallback = document.createElement('span');
-    fallback.textContent = initials(team.name);
-    shell.appendChild(fallback);
-
-    if (team.crest) {
-      const image = document.createElement('img');
-      image.src = `crests/${team.crest}.png`;
-      image.alt = '';
-      image.addEventListener('load', () => { fallback.hidden = true; });
-      image.addEventListener('error', () => { image.remove(); fallback.hidden = false; });
-      shell.appendChild(image);
+    function leagueId() {
+      return document.body.dataset.league || 'ucl';
     }
-    return shell;
-  }
 
-  function teamCard(team, label, active = false) {
-    const card = document.createElement('div');
-    card.className = `direct-playoff-team${active ? ' is-current' : ' is-alternative'}`;
-    card.appendChild(createCrest(team));
+    function initials(name) {
+      return String(name).split(/\s+/).filter(Boolean).slice(0, 2).map((part) => part[0]).join('').toUpperCase();
+    }
 
-    const copy = document.createElement('div');
-    const kicker = document.createElement('span');
-    kicker.className = 'direct-playoff-team-label';
-    kicker.textContent = label;
-    const name = document.createElement('strong');
-    name.textContent = team.name;
-    const meta = document.createElement('span');
-    meta.className = 'direct-playoff-team-meta';
-    meta.textContent = `${team.country}${team.pot ? ` · Pot ${team.pot}` : ''}`;
-    copy.append(kicker, name, meta);
-    card.appendChild(copy);
-    return card;
-  }
+    function createCrest(team) {
+      const shell = document.createElement('span');
+      shell.className = 'direct-playoff-crest';
+      const fallback = document.createElement('span');
+      fallback.textContent = initials(team.name);
+      shell.appendChild(fallback);
 
-  function currentTeamFromModal(modal) {
-    const name = modal?.querySelector('.roster-incoming-team h2')?.textContent?.trim();
-    if (!name) return null;
-    return data.competitions[leagueId()]?.teams.find((team) => team.name === name) || null;
-  }
-
-  function closeBackdrop(backdrop) {
-    backdrop?.remove();
-    document.body.style.overflow = '';
-  }
-
-  function openDirectSwitch(outgoing, pair, sourceBackdrop) {
-    closeBackdrop(sourceBackdrop);
-
-    const backdrop = document.createElement('div');
-    backdrop.className = 'modal-backdrop roster-replacement-backdrop direct-playoff-backdrop';
-    const modal = document.createElement('section');
-    modal.className = 'confirm-modal glass roster-replacement-modal direct-playoff-modal';
-    modal.setAttribute('role', 'dialog');
-    modal.setAttribute('aria-modal', 'true');
-    modal.setAttribute('aria-labelledby', 'directPlayoffTitle');
-
-    const header = document.createElement('header');
-    header.className = 'direct-playoff-header';
-    const kicker = document.createElement('span');
-    kicker.textContent = 'PLAY-OFF EŞLEŞMESİ';
-    const title = document.createElement('h2');
-    title.id = 'directPlayoffTitle';
-    title.textContent = 'Kadro takımını değiştir';
-    const description = document.createElement('p');
-    description.textContent = `${outgoing.name} için değişebilecek tek takım play-off rakibi ${pair.opponent.name}.`;
-    header.append(kicker, title, description);
-
-    const matchup = document.createElement('div');
-    matchup.className = 'direct-playoff-matchup';
-    matchup.appendChild(teamCard(outgoing, 'Şu an kadroda', true));
-    const swap = document.createElement('div');
-    swap.className = 'direct-playoff-swap';
-    swap.textContent = '↔';
-    matchup.appendChild(swap);
-    matchup.appendChild(teamCard(pair.opponent, 'Tek alternatif'));
-
-    const note = document.createElement('p');
-    note.className = 'direct-playoff-note';
-    note.textContent = 'Bu seçim aynı play-off kontenjanını tersine çevirir. Tekrar değiştirmek istersen yeni takımın kartından aynı işlemi geri alabilirsin.';
-
-    const status = document.createElement('p');
-    status.className = 'direct-playoff-status';
-    status.hidden = true;
-
-    const actions = document.createElement('div');
-    actions.className = 'modal-actions direct-playoff-actions';
-    const back = document.createElement('button');
-    back.type = 'button';
-    back.className = 'action-button';
-    back.textContent = 'Geri dön';
-    back.addEventListener('click', () => closeBackdrop(backdrop));
-
-    const confirm = document.createElement('button');
-    confirm.type = 'button';
-    confirm.className = 'action-button primary';
-    confirm.textContent = `${pair.opponent.name} kadroya gelsin`;
-    confirm.addEventListener('click', () => {
-      confirm.disabled = true;
-      back.disabled = true;
-      status.hidden = true;
-      try {
-        direct.replaceWithDirectOpponent(leagueId(), outgoing);
-        window.location.reload();
-      } catch (error) {
-        confirm.disabled = false;
-        back.disabled = false;
-        status.textContent = error?.message || 'Takım değiştirilemedi.';
-        status.hidden = false;
+      if (team.crest) {
+        const image = document.createElement('img');
+        image.src = `crests/${team.crest}.png`;
+        image.alt = '';
+        image.addEventListener('load', () => { fallback.hidden = true; });
+        image.addEventListener('error', () => { image.remove(); fallback.hidden = false; });
+        shell.appendChild(image);
       }
-    });
+      return shell;
+    }
 
-    actions.append(back, confirm);
-    modal.append(header, matchup, note, status, actions);
-    backdrop.appendChild(modal);
-    backdrop.addEventListener('click', (event) => {
-      if (event.target === backdrop) closeBackdrop(backdrop);
-    });
-    document.body.appendChild(backdrop);
-    document.body.style.overflow = 'hidden';
-    confirm.focus();
-  }
+    function teamCard(team, label, active = false) {
+      const card = document.createElement('div');
+      card.className = `direct-playoff-team${active ? ' is-current' : ' is-alternative'}`;
+      card.appendChild(createCrest(team));
 
-  function wireTeamActionModal(backdrop) {
-    if (!(backdrop instanceof Element) || !backdrop.classList.contains('roster-team-action-backdrop')) return;
-    const modal = backdrop.querySelector('.roster-replacement-modal');
-    if (!modal || modal.dataset.directPlayoffWired === 'true') return;
+      const copy = document.createElement('div');
+      const kicker = document.createElement('span');
+      kicker.className = 'direct-playoff-team-label';
+      kicker.textContent = label;
+      const name = document.createElement('strong');
+      name.textContent = team.name;
+      const meta = document.createElement('span');
+      meta.className = 'direct-playoff-team-meta';
+      meta.textContent = `${team.country}${team.pot ? ` · Pot ${team.pot}` : ''}`;
+      copy.append(kicker, name, meta);
+      card.appendChild(copy);
+      return card;
+    }
 
-    const outgoing = currentTeamFromModal(modal);
-    const pair = outgoing ? direct.directOpponent(leagueId(), outgoing) : null;
-    if (!pair) return;
+    function currentTeamFromModal(modal) {
+      const name = modal?.querySelector('.roster-incoming-team h2')?.textContent?.trim();
+      if (!name) return null;
+      return data.competitions[leagueId()]?.teams.find((team) => team.name === name) || null;
+    }
 
-    const replaceButton = [...modal.querySelectorAll('.roster-team-actions button')]
-      .find((button) => button.textContent.trim() === 'Kadrodan değiştir');
-    if (!replaceButton) return;
+    function closeBackdrop(backdrop) {
+      backdrop?.remove();
+      document.body.style.overflow = '';
+    }
 
-    const directButton = replaceButton.cloneNode(true);
-    directButton.textContent = `Kadrodan değiştir · ${pair.opponent.name}`;
-    directButton.addEventListener('click', () => openDirectSwitch(outgoing, pair, backdrop));
-    replaceButton.replaceWith(directButton);
-    modal.dataset.directPlayoffWired = 'true';
-  }
+    function openDirectSwitch(outgoing, pair, sourceBackdrop) {
+      closeBackdrop(sourceBackdrop);
 
-  const observer = new MutationObserver((records) => {
-    records.forEach((record) => {
-      record.addedNodes.forEach((node) => {
-        if (!(node instanceof Element)) return;
-        wireTeamActionModal(node);
-        node.querySelectorAll?.('.roster-team-action-backdrop').forEach(wireTeamActionModal);
+      const backdrop = document.createElement('div');
+      backdrop.className = 'modal-backdrop roster-replacement-backdrop direct-playoff-backdrop';
+      const modal = document.createElement('section');
+      modal.className = 'confirm-modal glass roster-replacement-modal direct-playoff-modal';
+      modal.setAttribute('role', 'dialog');
+      modal.setAttribute('aria-modal', 'true');
+      modal.setAttribute('aria-labelledby', 'directPlayoffTitle');
+
+      const header = document.createElement('header');
+      header.className = 'direct-playoff-header';
+      const kicker = document.createElement('span');
+      kicker.textContent = 'PLAY-OFF EŞLEŞMESİ';
+      const title = document.createElement('h2');
+      title.id = 'directPlayoffTitle';
+      title.textContent = 'Kadro takımını değiştir';
+      const description = document.createElement('p');
+      description.textContent = `${outgoing.name} için değişebilecek tek takım play-off rakibi ${pair.opponent.name}.`;
+      header.append(kicker, title, description);
+
+      const matchup = document.createElement('div');
+      matchup.className = 'direct-playoff-matchup';
+      matchup.appendChild(teamCard(outgoing, 'Şu an kadroda', true));
+      const swap = document.createElement('div');
+      swap.className = 'direct-playoff-swap';
+      swap.textContent = '↔';
+      matchup.appendChild(swap);
+      matchup.appendChild(teamCard(pair.opponent, 'Tek alternatif'));
+
+      const note = document.createElement('p');
+      note.className = 'direct-playoff-note';
+      note.textContent = 'Bu seçim aynı play-off kontenjanını tersine çevirir. Tekrar değiştirmek istersen yeni takımın kartından aynı işlemi geri alabilirsin.';
+
+      const status = document.createElement('p');
+      status.className = 'direct-playoff-status';
+      status.hidden = true;
+
+      const actions = document.createElement('div');
+      actions.className = 'modal-actions direct-playoff-actions';
+      const back = document.createElement('button');
+      back.type = 'button';
+      back.className = 'action-button';
+      back.textContent = 'Geri dön';
+      back.addEventListener('click', () => closeBackdrop(backdrop));
+
+      const confirm = document.createElement('button');
+      confirm.type = 'button';
+      confirm.className = 'action-button primary';
+      confirm.textContent = `${pair.opponent.name} kadroya gelsin`;
+      confirm.addEventListener('click', () => {
+        confirm.disabled = true;
+        back.disabled = true;
+        status.hidden = true;
+        try {
+          direct.replaceWithDirectOpponent(leagueId(), outgoing);
+          window.location.reload();
+        } catch (error) {
+          confirm.disabled = false;
+          back.disabled = false;
+          status.textContent = error?.message || 'Takım değiştirilemedi.';
+          status.hidden = false;
+        }
+      });
+
+      actions.append(back, confirm);
+      modal.append(header, matchup, note, status, actions);
+      backdrop.appendChild(modal);
+      backdrop.addEventListener('click', (event) => {
+        if (event.target === backdrop) closeBackdrop(backdrop);
+      });
+      document.body.appendChild(backdrop);
+      document.body.style.overflow = 'hidden';
+      confirm.focus();
+    }
+
+    function wireTeamActionModal(backdrop) {
+      if (!(backdrop instanceof Element) || !backdrop.classList.contains('roster-team-action-backdrop')) return;
+      const modal = backdrop.querySelector('.roster-replacement-modal');
+      if (!modal || modal.dataset.directPlayoffWired === 'true') return;
+
+      const outgoing = currentTeamFromModal(modal);
+      const pair = outgoing ? direct.directOpponent(leagueId(), outgoing) : null;
+      if (!pair) return;
+
+      const replaceButton = [...modal.querySelectorAll('.roster-team-actions button')]
+        .find((button) => button.textContent.trim() === 'Kadrodan değiştir');
+      if (!replaceButton) return;
+
+      const directButton = replaceButton.cloneNode(true);
+      directButton.textContent = `Kadrodan değiştir · ${pair.opponent.name}`;
+      directButton.addEventListener('click', () => openDirectSwitch(outgoing, pair, backdrop));
+      replaceButton.replaceWith(directButton);
+      modal.dataset.directPlayoffWired = 'true';
+    }
+
+    const observer = new MutationObserver((records) => {
+      records.forEach((record) => {
+        record.addedNodes.forEach((node) => {
+          if (!(node instanceof Element)) return;
+          wireTeamActionModal(node);
+          node.querySelectorAll?.('.roster-team-action-backdrop').forEach(wireTeamActionModal);
+        });
       });
     });
-  });
 
-  observer.observe(document.body, { childList: true, subtree: true });
+    observer.observe(document.body, { childList: true, subtree: true });
+  }
+
+  ensureStylesheet();
+  if (window.UCLDRAW_DIRECT_PLAYOFF_REPLACEMENT) {
+    boot();
+    return;
+  }
+
+  const script = document.createElement('script');
+  script.src = `direct-playoff-replacement.js?v=${REVISION}`;
+  script.addEventListener('load', boot, { once: true });
+  document.head.appendChild(script);
 })();

@@ -57,13 +57,19 @@ const state = context.window.UCLDRAW_QUALIFICATION_STATE;
 const competition = data.competitions.ucl;
 const all = manager.allTeams('ucl');
 
-assert.equal(manager.currentStateVersion, '2026-08-12');
+assert.equal(manager.currentStateVersion, '2026-08-15');
 assert.ok(all.length > competition.teams.length, 'UCL search must include unresolved playoff alternatives');
 assert.ok(all.some((team) => team.poolSlug === 'fenerbahce'), 'Fenerbahçe must stay searchable as a live UCL playoff participant');
 assert.ok(all.some((team) => team.poolSlug === 'lyon'), 'Lyon must stay searchable as a live UCL playoff participant');
 for (const eliminatedId of state.eliminatedFromUclIds) {
   assert.ok(!all.some((team) => team.poolSlug === eliminatedId), `${eliminatedId} must disappear from Champions League search`);
   assert.equal(manager.candidateTeam('ucl', eliminatedId), null, `${eliminatedId} must not be a UCL candidate anymore`);
+}
+for (const eliminatedId of state.eliminatedFromUelIds) {
+  assert.equal(manager.candidateTeam('uel', eliminatedId), null, `${eliminatedId} must not remain a UEL candidate after Q3 elimination`);
+}
+for (const eliminatedId of state.eliminatedFromEuropeIds) {
+  assert.equal(manager.candidateTeam('uecl', eliminatedId), null, `${eliminatedId} must not remain a Conference candidate after Q3 elimination`);
 }
 
 const livePlayoffIds = ['fenerbahce', 'lyon'];

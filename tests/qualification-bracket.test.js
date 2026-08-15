@@ -61,8 +61,8 @@ const context = createContext();
 const bracket = context.UCLDRAW_QUALIFICATION_BRACKET;
 const state = context.UCLDRAW_QUALIFICATION_STATE;
 assert.ok(bracket?.simulate, 'qualification bracket runtime must be exposed');
-assert.equal(bracket.currentStateVersion, '2026-08-12');
-assert.equal(state?.snapshotDate, '2026-08-12');
+assert.equal(bracket.currentStateVersion, '2026-08-15');
+assert.equal(state?.snapshotDate, '2026-08-15');
 assert.deepEqual(
   Array.from(bracket.rounds, (round) => round.ties.length),
   [10, 7, 13, 12, 30, 24],
@@ -78,7 +78,7 @@ assert.notEqual(bracket.teams.hapoelbeersheva.id, bracket.teams.hapoeltelaviv.id
 assert.equal(bracket.teams.iberia1999.name, 'Iberia 1999 Tbilisi');
 assert.equal(bracket.teams.cska1948.name, 'CSKA 1948');
 
-const expectedResolved = {
+const expectedUclQ3 = {
   'ucl-q3-dinamo-kauno': ['dinamo', 'kaunozalgiris'],
   'ucl-q3-mjallby-slovan': ['slovanbratislava', 'mjallby'],
   'ucl-q3-levski-kairat': ['levskisofia', 'kairat'],
@@ -91,11 +91,66 @@ const expectedResolved = {
   'ucl-q3-sparta-lyon': ['lyon', 'spartapraha']
 };
 
-assert.equal(Object.keys(state.resolvedUclQ3).length, 10, 'all ten completed UCL Q3 ties must resolve from the moved crest files');
-for (const [tieId, [winnerId, loserId]] of Object.entries(expectedResolved)) {
-  assert.equal(state.resolvedUclQ3[tieId]?.winnerId, winnerId, `${tieId} winner must be locked`);
-  assert.equal(state.resolvedUclQ3[tieId]?.loserId, loserId, `${tieId} loser must be locked`);
+const expectedUelQ3 = {
+  'uel-q3-larne-iberia': ['iberia1999', 'larne'],
+  'uel-q3-lincoln-omonia': ['omonia', 'lincoln'],
+  'uel-q3-kuopio-craiova': ['craiova', 'kuopio'],
+  'uel-q3-shamrock-egnatia': ['egnatia', 'shamrockrovers'],
+  'uel-q3-poznan-klaksvik': ['poznan', 'klaksvik'],
+  'uel-q3-thun-vikingur': ['thun', 'vikingurreykjavik'],
+  'uel-q3-hradec-besiktas': ['besiktas', 'hradeckralove'],
+  'uel-q3-jagiellonia-rangers': ['jagiellonia', 'rangers'],
+  'uel-q3-paok-anderlecht': ['anderlecht', 'paok'],
+  'uel-q3-pafos-salzburg': ['salzburg', 'pafos'],
+  'uel-q3-benfica-hearts': ['benfica', 'hearts'],
+  'uel-q3-maccabi-cska': ['cskasofia', 'maccabitelaviv'],
+  'uel-q3-ferencvaros-gornik': ['ferencvarosi', 'gornikzabrze']
+};
+
+const expectedUeclQ3 = {
+  'uecl-q3-fiori-drita': ['drita', 'fiori'],
+  'uecl-q3-borac-vitebsk': ['borac', 'vitebsk'],
+  'uecl-q3-tallinn-inter': ['interclubdescaldes', 'tallinn'],
+  'uecl-q3-riga-gyor': ['riga', 'gyor'],
+  'uecl-q3-helsinki-motherwell': ['motherwell', 'helsinki'],
+  'uecl-q3-interturku-vaduz': ['interturku', 'vaduz'],
+  'uecl-q3-debreceni-copenhagen': ['copenhagen', 'debreceni'],
+  'uecl-q3-paide-rapid': ['rapid', 'paide'],
+  'uecl-q3-cluj-tromso': ['tromso', 'cluj'],
+  'uecl-q3-zalgiris-hajduk': ['hajduksplit', 'zalgiris'],
+  'uecl-q3-rakow-hammarby': ['rakow', 'hammarby'],
+  'uecl-q3-panathinaikos-cska1948': ['panathinaikos', 'cska1948'],
+  'uecl-q3-goteborg-gent': ['gent', 'goteborg'],
+  'uecl-q3-hibernian-shkendija': ['hibernian', 'shkendija'],
+  'uecl-q3-brann-apollon': ['brann', 'apollon'],
+  'uecl-q3-hapoel-katowice': ['hapoeltelaviv', 'katowice'],
+  'uecl-q3-bohemian-midtjylland': ['midtjylland', 'bohemian'],
+  'uecl-q3-rijeka-tampere': ['rijeka', 'tampere'],
+  'uecl-q3-jablonec-rfs': ['jablonec', 'rfs'],
+  'uecl-q3-valur-nordsjaelland': ['nordsjaelland', 'valur'],
+  'uecl-q3-sheriff-gallen': ['gallen', 'sherifftiraspol'],
+  'uecl-q3-auda-dinamocity': ['dinamocity', 'auda'],
+  'uecl-q3-noah-sion': ['sion', 'noah'],
+  'uecl-q3-ajax-shelbourne': ['ajax', 'shelbourne'],
+  'uecl-q3-braga-dinamominsk': ['braga', 'dinamominsk'],
+  'uecl-q3-beitar-austria': ['austriawien', 'beitar'],
+  'uecl-q3-twente-dac': ['twente', 'dac'],
+  'uecl-q3-dynamo-qarabag': ['qarabag', 'dynamokyiv'],
+  'uecl-q3-partizan-tobol': ['partizan', 'tobol'],
+  'uecl-q3-lugano-runavik': ['lugano', 'runavik']
+};
+
+function assertResolved(actual, expected, label) {
+  assert.equal(Object.keys(actual).length, Object.keys(expected).length, `${label} completed ties must all resolve from moved crest files`);
+  for (const [tieId, [winnerId, loserId]] of Object.entries(expected)) {
+    assert.equal(actual[tieId]?.winnerId, winnerId, `${tieId} winner must be locked`);
+    assert.equal(actual[tieId]?.loserId, loserId, `${tieId} loser must be locked`);
+  }
 }
+
+assertResolved(state.resolvedUclQ3, expectedUclQ3, 'UCL Q3');
+assertResolved(state.resolvedUelQ3, expectedUelQ3, 'UEL Q3');
+assertResolved(state.resolvedUeclQ3, expectedUeclQ3, 'UECL Q3');
 
 assert.deepEqual(
   new Set(state.fixedUelLeaguePhaseIds),
@@ -103,6 +158,12 @@ assert.deepEqual(
   'league-path Q3 losers must have fixed Europa League league-phase places'
 );
 assert.equal(state.runtimeDirectEuropaCount, 13, 'runtime direct Europa entrants must remain the original 13 before four fixed Q3 transfers are added');
+assert.equal(bracket.teams.klaksvik.source.competitionKey, 'conference');
+assert.equal(bracket.teams.klaksvik.source.stage, 'playoffs');
+assert.equal(bracket.teams.klaksvik.source.fileSlug, 'klaksvik');
+assert.equal(bracket.teams.kuopio.source.fileSlug, 'kups');
+assert.equal(bracket.teams.rangers.source.competitionKey, 'conference');
+assert.equal(bracket.teams.jagiellonia.source.competitionKey, 'europa');
 
 const currentLeaguePlayoff = bracket.rounds.find((round) => round.id === 'ucl-playoffs').ties
   .find((tie) => tie.id === 'ucl-po-fener-sturm-sparta-lyon');
@@ -112,22 +173,47 @@ assert.deepEqual(
   'the live UCL playoff path must now be Fenerbahçe vs Lyon only'
 );
 
+const expectedPlayoffPairings = {
+  'uel-po-jagiellonia-rangers-larne-iberia': ['jagiellonia', 'iberia1999'],
+  'uel-po-poznan-klaksvik-thun-vikingur': ['poznan', 'thun'],
+  'uecl-po-jagiellonia-rangers-jablonec-rfs': ['rangers', 'jablonec'],
+  'uecl-po-poznan-klaksvik-riga-gyor': ['klaksvik', 'riga'],
+  'uecl-po-helsinki-motherwell-freiburg': ['motherwell', 'freiburg']
+};
+for (const [tieId, expectedIds] of Object.entries(expectedPlayoffPairings)) {
+  const entry = bracket.rounds.flatMap((round) => round.ties).find((tie) => tie.id === tieId);
+  assert.ok(entry, `${tieId} must exist`);
+  assert.deepEqual(
+    new Set([entry.first.id, entry.second.id]),
+    new Set(expectedIds),
+    `${tieId} must collapse to the actual playoff opponents`
+  );
+}
+
 for (let run = 1; run <= 50; run += 1) {
   const result = bracket.simulate(seededRandom(run));
   assert.equal(result.qualifiers.ucl.length, 7);
   assert.equal(result.qualifiers.uel.length, 23);
   assert.equal(result.qualifiers.uecl.length, 36);
-  assert.equal(result.diagnostics.bracketVersion, '2026-08-12');
+  assert.equal(result.diagnostics.bracketVersion, '2026-08-15');
   assert.equal(result.diagnostics.resolvedUclQ3Count, 10);
+  assert.equal(result.diagnostics.resolvedUelQ3Count, 13);
+  assert.equal(result.diagnostics.resolvedUeclQ3Count, 30);
 
   const all = Object.values(result.qualifiers).flat();
   const ids = all.map((team) => team.id);
   assert.equal(new Set(ids).size, 66, 'qualifier destinations must be mutually exclusive');
 
-  for (const [tieId, [winnerId, loserId]] of Object.entries(expectedResolved)) {
-    const outcome = result.rounds['ucl-q3'].find((tie) => tie.id === tieId);
-    assert.equal(outcome.winner.id, winnerId, `${tieId} must not be re-simulated after its result is known`);
-    assert.equal(outcome.loser.id, loserId, `${tieId} loser must stay fixed`);
+  for (const [roundId, expected] of [
+    ['ucl-q3', expectedUclQ3],
+    ['uel-q3', expectedUelQ3],
+    ['uecl-q3', expectedUeclQ3]
+  ]) {
+    for (const [tieId, [winnerId, loserId]] of Object.entries(expected)) {
+      const outcome = result.rounds[roundId].find((tie) => tie.id === tieId);
+      assert.equal(outcome.winner.id, winnerId, `${tieId} must not be re-simulated after its result is known`);
+      assert.equal(outcome.loser.id, loserId, `${tieId} loser must stay fixed`);
+    }
   }
 
   const leaguePlayoff = result.rounds['ucl-playoffs']
@@ -140,8 +226,11 @@ for (let run = 1; run <= 50; run += 1) {
 
   const uclIds = new Set(result.qualifiers.ucl.map((team) => team.id));
   const uelIds = new Set(result.qualifiers.uel.map((team) => team.id));
+  const ueclIds = new Set(result.qualifiers.uecl.map((team) => team.id));
   state.eliminatedFromUclIds.forEach((teamId) => assert.ok(!uclIds.has(teamId), `${teamId} is eliminated from UCL`));
   state.fixedUelLeaguePhaseIds.forEach((teamId) => assert.ok(uelIds.has(teamId), `${teamId} must stay in the Europa League league phase`));
+  state.eliminatedFromUelIds.forEach((teamId) => assert.ok(!uelIds.has(teamId), `${teamId} is eliminated from UEL`));
+  state.eliminatedFromEuropeIds.forEach((teamId) => assert.ok(!ueclIds.has(teamId), `${teamId} is eliminated from Europe`));
 
   assert.deepEqual(
     JSON.parse(JSON.stringify(result.diagnostics.transferCounts)),
@@ -156,4 +245,4 @@ for (let run = 1; run <= 50; run += 1) {
   );
 }
 
-console.log('Qualification bracket and resolved UCL Q3 checks passed.');
+console.log('Qualification bracket and resolved Q3 checks passed.');

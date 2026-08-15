@@ -90,10 +90,33 @@ for (const competitionId of ['ucl', 'uel', 'uecl']) {
       2,
       `${team.poolSlug} slot ${slot.id} must have exactly one direct playoff opponent`
     );
+
     const pair = runtime.direct.directOpponent(competitionId, team);
     assert.ok(pair, `${team.poolSlug} must expose its one direct playoff opponent`);
     assert.notEqual(pair.opponent.poolSlug, team.poolSlug);
+    assert.equal(
+      runtime.manager.selectedTeam(competitionId, pair.opponent.poolSlug),
+      null,
+      `${pair.opponent.poolSlug} must currently be outside the ${competitionId} roster`
+    );
+
+    const searchedPair = runtime.direct.directCandidate(competitionId, pair.opponent);
+    assert.ok(searchedPair, `${pair.opponent.poolSlug} must be addable directly from search`);
+    assert.equal(
+      searchedPair.outgoing.poolSlug,
+      team.poolSlug,
+      `searching ${pair.opponent.poolSlug} must target only ${team.poolSlug}`
+    );
+    assert.equal(searchedPair.slot.id, slot.id, 'selected-card and reserve-search routes must resolve the same playoff slot');
   }
+
+  const actionableReserves = runtime.manager.reserveTeams(competitionId)
+    .filter((team) => runtime.direct.directCandidate(competitionId, team));
+  assert.equal(
+    actionableReserves.length,
+    expectedRemovable[competitionId],
+    `${competitionId} must expose one actionable reserve search result for every removable playoff slot`
+  );
 }
 
 for (const competitionId of ['ucl', 'uel', 'uecl']) {
@@ -106,9 +129,13 @@ for (const competitionId of ['ucl', 'uel', 'uecl']) {
     assert.ok(firstPair, `${originalSlug} must expose its direct playoff opponent`);
     const opponentSlug = firstPair.opponent.poolSlug;
 
-    const firstSwap = runtime.direct.replaceWithDirectOpponent(competitionId, originalTeam);
-    assert.equal(firstSwap.incoming.poolSlug, opponentSlug, `${originalSlug} must persist a switch to ${opponentSlug}`);
-    assert.equal(firstSwap.requiresReload, true, 'direct slot swaps are applied on the next runtime reload');
+    const searchedPair = runtime.direct.directCandidate(competitionId, opponentSlug);
+    assert.ok(searchedPair, `${opponentSlug} must resolve from reserve search before the first swap`);
+    assert.equal(searchedPair.outgoing.poolSlug, originalSlug);
+
+    const firstSwap = runtime.direct.replaceWithCandidate(competitionId, opponentSlug);
+    assert.equal(firstSwap.incoming.poolSlug, opponentSlug, `searching ${opponentSlug} must persist a switch from ${originalSlug}`);
+    assert.equal(firstSwap.requiresReload, true, 'direct search swaps are applied on the next runtime reload');
 
     runtime = createRuntime();
     assert.equal(runtime.manager.selectedTeam(competitionId, originalSlug), null, `${originalSlug} must leave ${competitionId} after reload`);
@@ -123,8 +150,12 @@ for (const competitionId of ['ucl', 'uel', 'uecl']) {
       `${opponentSlug} must point directly back to ${originalSlug}`
     );
 
-    const reverseSwap = runtime.direct.replaceWithDirectOpponent(competitionId, switchedTeam);
-    assert.equal(reverseSwap.incoming.poolSlug, originalSlug, `${opponentSlug} must persist the reverse switch to ${originalSlug}`);
+    const reverseSearchPair = runtime.direct.directCandidate(competitionId, originalSlug);
+    assert.ok(reverseSearchPair, `${originalSlug} must become addable from search after the first swap`);
+    assert.equal(reverseSearchPair.outgoing.poolSlug, opponentSlug);
+
+    const reverseSwap = runtime.direct.replaceWithCandidate(competitionId, originalSlug);
+    assert.equal(reverseSwap.incoming.poolSlug, originalSlug, `searching ${originalSlug} must persist the reverse switch from ${opponentSlug}`);
 
     runtime = createRuntime();
     assert.ok(runtime.manager.selectedTeam(competitionId, originalSlug), `${originalSlug} must be restored after the second reload`);
@@ -142,4 +173,4 @@ const finalIds = Object.values(runtime.data.competitions)
   .map((team) => team.qualificationId || team.poolSlug);
 assert.equal(new Set(finalIds).size, 108, 'all round trips must preserve 108 globally unique league-phase clubs');
 
-console.log('All 62 removable playoff slots expose one opponent and survive repeated two-way reload-backed switching.');
+console.log('All 62 playoff slots support direct reserve-search insertion and repeated two-way reload-backed switching.');

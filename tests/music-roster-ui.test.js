@@ -31,7 +31,7 @@ assert.ok(html.indexOf('roster-manager.js') < html.indexOf('app-v3.js'), 'roster
 assert.ok(html.indexOf('app-v3.js') < html.indexOf('roster-search-ui.js'), 'search UI must load after the app');
 assert.ok(html.indexOf('roster-search-ui.js') < html.indexOf('roster-single-opponent-ui.js'), 'direct playoff UI must load after the base roster UI');
 assert.ok(html.indexOf('app-v3.js') < html.indexOf('league-music.js'), 'music observer must load after initial league rendering');
-assert.match(html, /roster-single-opponent-ui\.js\?v=20260815e/);
+assert.match(html, /roster-single-opponent-ui\.js\?v=20260815f/);
 
 assert.match(music, /ucl:\s*'music\/ucl_anthem\.mp3'/);
 assert.match(music, /uel:\s*'music\/uel_anthem\.mp3'/);
@@ -61,10 +61,14 @@ assert.match(rosterCss, /\.roster-modal-search/);
 assert.doesNotThrow(() => new Function(directHelper), 'direct playoff helper must parse');
 assert.doesNotThrow(() => new Function(directUi), 'direct playoff UI must parse');
 assert.match(directHelper, /slot\.candidateIds\.length !== 2/);
+assert.match(directHelper, /directCandidate/);
 assert.match(directHelper, /replaceWithDirectOpponent/);
+assert.match(directHelper, /replaceWithCandidate/);
 assert.match(directUi, /Kadrodan değiştir ·/);
 assert.match(directUi, /PLAY-OFF EŞLEŞMESİ/);
-assert.match(directUi, /replaceWithDirectOpponent/);
+assert.match(directUi, /direct\.directCandidate/);
+assert.match(directUi, /roster-search-result\.is-reserve-roster/);
+assert.match(directUi, /wireReserveReplacementModal/);
 assert.match(directUi, /window\.location\.reload\(\)/);
 assert.doesNotMatch(directUi, /roster-modal-search/);
 assert.match(directCss, /\.direct-playoff-matchup/);
@@ -76,5 +80,5 @@ for (const file of ['ucl_anthem.mp3', 'uel_anthem.mp3', 'con_anthem.mp3']) {
   assert.ok(fs.existsSync(path.join(musicDirectory, file)), `music/${file} must exist with exact casing`);
 }
 
-console.log('League music, guaranteed locks and direct playoff roster UI checks passed.');
+console.log('League music, guaranteed locks and reserve-search direct playoff UI checks passed.');
 require('./direct-playoff-toggle.test.js');

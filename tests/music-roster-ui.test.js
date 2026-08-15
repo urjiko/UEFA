@@ -9,11 +9,13 @@ const html = read('index.html');
 const music = read('league-music.js');
 const musicCss = read('league-music.css');
 const rosterUi = read('roster-search-ui.js');
+const singleOpponentUi = read('roster-single-opponent-ui.js');
 const rosterCss = read('roster-search.css');
 
 for (const file of [
   'roster-manager.js',
   'roster-search-ui.js',
+  'roster-single-opponent-ui.js',
   'league-music.js',
   'roster-search.css',
   'league-music.css'
@@ -23,6 +25,7 @@ for (const file of [
 
 assert.ok(html.indexOf('roster-manager.js') < html.indexOf('app-v3.js'), 'roster manager must load before the app');
 assert.ok(html.indexOf('app-v3.js') < html.indexOf('roster-search-ui.js'), 'search UI must load after the app');
+assert.ok(html.indexOf('roster-search-ui.js') < html.indexOf('roster-single-opponent-ui.js'), 'single-opponent simplifier must load after roster search UI');
 assert.ok(html.indexOf('app-v3.js') < html.indexOf('league-music.js'), 'music observer must load after initial league rendering');
 
 assert.match(music, /ucl:\s*'music\/ucl_anthem\.mp3'/);
@@ -44,6 +47,10 @@ assert.match(rosterUi, /selectionPots\.addEventListener\('click'/);
 assert.match(rosterUi, /garanti katılımcı olduğu için kadrodan çıkarılamaz/i);
 assert.match(rosterUi, /Kadrodan değiştir/);
 assert.match(rosterUi, /36 takımı yeniden sıralar/);
+assert.doesNotThrow(() => new Function(singleOpponentUi), 'single-opponent UI helper must parse');
+assert.match(singleOpponentUi, /options\.length !== 1/);
+assert.match(singleOpponentUi, /filter\.remove\(\)/);
+assert.match(singleOpponentUi, /play-off eşleşmesindeki tek alternatifi/i);
 assert.match(rosterCss, /\.roster-replacement-modal/);
 assert.match(rosterCss, /\.roster-search-result\.is-reserve-roster/);
 assert.match(rosterCss, /\.roster-team-actions/);

@@ -14,13 +14,13 @@ const manualCss = fs.readFileSync(path.join(root, 'manual-draw-v2.css'), 'utf8')
 const baseEngineIndex = html.indexOf('<script src="draw-engine-v2.js"></script>');
 const venueSequenceIndex = html.indexOf('<script src="venue-sequence-v4.js"></script>');
 const appIndex = html.indexOf('<script src="app-v3.js"></script>');
-const scheduleUiIndex = html.indexOf('<script src="schedule-ui.js"></script>');
+const scheduleUiIndex = html.indexOf('schedule-ui.js?v=20260821a');
 const fixtureDisplayIndex = html.indexOf('<script src="fixture-display.js"></script>');
 
 if (!(baseEngineIndex < venueSequenceIndex && venueSequenceIndex < appIndex)) {
   throw new Error('Venue sequence wrapper must load after the base engine and before the app.');
 }
-if (!(scheduleUiIndex < fixtureDisplayIndex)) {
+if (!(scheduleUiIndex >= 0 && scheduleUiIndex < fixtureDisplayIndex)) {
   throw new Error('Fixture display formatter must load after matchweek decoration.');
 }
 if (!html.includes('<link rel="stylesheet" href="fixture-display.css">')) {
@@ -46,11 +46,11 @@ if (!css.includes('.fixture-week { display: none !important; }')) {
   throw new Error('Legacy matchweek metadata must remain hidden.');
 }
 
-if (!schedule.includes("stylesheet.href = 'manual-draw-v2.css'")) {
-  throw new Error('Manual draw refinement stylesheet loader is missing.');
+if (!schedule.includes("stylesheet.href = 'manual-draw-v2.css?v=20260821a'")) {
+  throw new Error('Manual draw refinement stylesheet loader is missing or stale.');
 }
-if (!schedule.includes("script.src = 'manual-draw-v2.js'")) {
-  throw new Error('Manual draw refinement script loader is missing.');
+if (!schedule.includes("script.src = 'manual-draw-v2.js?v=20260821a'")) {
+  throw new Error('Manual draw refinement script loader is missing or stale.');
 }
 
 new Function(manualScript);

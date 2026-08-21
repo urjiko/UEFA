@@ -12,11 +12,11 @@ function requireText(source, text, message) {
   if (!source.includes(text)) throw new Error(message);
 }
 
-requireText(html, '<link rel="stylesheet" href="venue-icons.css">', 'Venue icon stylesheet is not loaded.');
-requireText(html, '<script src="venue-icons.js"></script>', 'Venue icon script is not loaded.');
+requireText(html, '<link rel="stylesheet" href="venue-icons.css?v=20260821a">', 'Venue icon stylesheet is not cache-busted.');
+requireText(html, '<script src="venue-icons.js?v=20260821a"></script>', 'Venue icon script is not cache-busted.');
 
 const fixtureDisplayIndex = html.indexOf('<script src="fixture-display.js"></script>');
-const venueIconsIndex = html.indexOf('<script src="venue-icons.js"></script>');
+const venueIconsIndex = html.indexOf('venue-icons.js?v=20260821a');
 if (!(fixtureDisplayIndex >= 0 && venueIconsIndex > fixtureDisplayIndex)) {
   throw new Error('Venue icons must load after fixture decoration.');
 }
@@ -27,9 +27,12 @@ requireText(javascript, "aria-label", 'Venue icons need accessible labels.');
 requireText(javascript, "İç saha", 'Home accessibility label is missing.');
 requireText(javascript, "Deplasman", 'Away accessibility label is missing.');
 requireText(javascript, '<svg viewBox="0 0 24 24"', 'Inline SVG icons are missing.');
+requireText(javascript, '6.8-1.2', 'Away icon must use the simplified airplane silhouette.');
 
 requireText(css, '.venue-icon', 'Venue icon styling is missing.');
 requireText(css, 'color: #fff', 'Venue icons must be white.');
-requireText(css, 'background: rgba(255, 255, 255, 0.055) !important', 'Legacy colored venue badge is not neutralized.');
+requireText(css, 'width: 21px', 'Primary venue icons are still too small.');
+requireText(css, 'background: rgba(0, 0, 0, 0.34) !important', 'Venue badge contrast is too weak.');
+requireText(css, '.venue-icon.away', 'Away icon-specific legibility styling is missing.');
 
-console.log('Venue icon checks passed.');
+console.log('High-contrast venue icon checks passed.');

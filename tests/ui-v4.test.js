@@ -9,9 +9,10 @@ const scheduleUi = fs.readFileSync(path.join(root, 'schedule-ui.js'), 'utf8');
 const css = fs.readFileSync(path.join(root, 'v4.css'), 'utf8');
 const portraitJs = fs.readFileSync(path.join(root, 'portrait-draw-fix.js'), 'utf8');
 const portraitCss = fs.readFileSync(path.join(root, 'portrait-draw-fix.css'), 'utf8');
+const manualCss = fs.readFileSync(path.join(root, 'manual-draw-v2.css'), 'utf8');
 
 if (!html.includes('<script src="draw-engine-v2.js"></script>')) throw new Error('Scheduled draw engine is not loaded.');
-if (!html.includes('<script src="schedule-ui.js"></script>')) throw new Error('Schedule UI layer is not loaded.');
+if (!html.includes('<script src="schedule-ui.js?v=20260821a"></script>')) throw new Error('Schedule UI layer is not cache-busted.');
 if (!html.includes('<link rel="stylesheet" href="v4.css">')) throw new Error('v4.css is not loaded.');
 if (!html.includes('<link rel="stylesheet" href="portrait-draw-fix.css?v=20260817a">')) throw new Error('Portrait draw fix CSS is not loaded.');
 if (!html.includes('<script src="portrait-draw-fix.js?v=20260817a"></script>')) throw new Error('Portrait draw fix JS is not loaded.');
@@ -26,6 +27,8 @@ if (!(selectedIndex < controlIndex && controlIndex < statusIndex)) {
 }
 
 if (!scheduleUi.includes('Hafta ${index + 1}')) throw new Error('Fixture rows are not decorated with matchweeks.');
+if (!scheduleUi.includes("manual-draw-v2.css?v=20260821a")) throw new Error('Manual roulette CSS cache revision is missing.');
+if (!scheduleUi.includes("manual-draw-v2.js?v=20260821a")) throw new Error('Manual roulette JS cache revision is missing.');
 if (!css.includes('body.draw-active .draw-side .team-button')) throw new Error('Compact side-pot layout is missing.');
 if (!css.includes('.draw-center .draw-control-panel-inline')) throw new Error('Inline center control styling is missing.');
 
@@ -37,4 +40,9 @@ if (!portraitCss.includes('.fixture-slot.is-flight-target .fixture-main')) throw
 if (!portraitCss.includes('fixturePortraitSettle')) throw new Error('Portrait settle animation is missing.');
 if (!portraitCss.includes('rgba(var(--accent-rgb), 0.98)')) throw new Error('Portrait flying card is not opaque enough to isolate the animation.');
 
-console.log('UI v4 and portrait draw flight checks passed.');
+if (!manualCss.includes('.fixture-slot.has-inline-roulette > .fixture-main')) throw new Error('Inline roulette does not suppress the waiting copy beneath it.');
+if (!manualCss.includes('.fixture-slot.has-inline-roulette > .fixture-index')) throw new Error('Inline roulette does not suppress the waiting match index beneath it.');
+if (!manualCss.includes('visibility: hidden !important')) throw new Error('Waiting slot content is not force-hidden while the inline roulette is active.');
+if (!manualCss.includes('rgb(3, 8, 20)')) throw new Error('Inline roulette background is not opaque enough to prevent copy bleed-through.');
+
+console.log('UI v4, portrait flight and inline roulette checks passed.');

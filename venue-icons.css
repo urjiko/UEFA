@@ -1,20 +1,20 @@
-/* Minimal white home/away icons replace the H/A text labels. */
+/* High-contrast home/away icons. */
 .venue-badge {
-  width: 30px;
-  min-width: 30px;
-  height: 30px;
+  width: 34px;
+  min-width: 34px;
+  height: 34px;
   display: inline-grid;
   place-items: center;
   padding: 0;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 9px;
-  background: rgba(255, 255, 255, 0.055) !important;
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  border-radius: 10px;
+  background: rgba(0, 0, 0, 0.34) !important;
   color: #fff;
-  box-shadow: none;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.04);
 }
 .venue-icon {
-  width: 17px;
-  height: 17px;
+  width: 21px;
+  height: 21px;
   display: inline-grid;
   place-items: center;
   flex: 0 0 auto;
@@ -23,8 +23,8 @@
   -webkit-text-fill-color: #fff;
 }
 .venue-icon.compact {
-  width: 13px;
-  height: 13px;
+  width: 15px;
+  height: 15px;
   vertical-align: -2px;
 }
 .venue-icon svg {
@@ -33,31 +33,31 @@
   overflow: visible;
 }
 .venue-icon path {
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 1.65;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-.venue-icon.away path {
   fill: currentColor;
   stroke: none;
+}
+.venue-icon.home {
+  filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.55));
+}
+.venue-icon.away {
+  transform: rotate(-7deg);
+  filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.55));
 }
 .overview-meta {
   display: inline-flex;
   align-items: center;
-  gap: 2px;
+  gap: 3px;
 }
-.overview-meta .venue-icon { opacity: 0.96; }
+.overview-meta .venue-icon { opacity: 1; }
 @media (min-width: 931px) {
   body.draw-active .venue-badge {
-    width: 28px;
-    min-width: 28px;
-    height: 28px;
+    width: 31px;
+    min-width: 31px;
+    height: 31px;
     padding: 0;
   }
   body.draw-active .venue-icon {
-    width: 15px;
-    height: 15px;
+    width: 19px;
+    height: 19px;
   }
 }

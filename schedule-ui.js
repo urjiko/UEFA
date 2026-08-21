@@ -58,13 +58,13 @@
     if (!document.querySelector('link[data-manual-draw-v2]')) {
       const stylesheet = document.createElement('link');
       stylesheet.rel = 'stylesheet';
-      stylesheet.href = 'manual-draw-v2.css';
+      stylesheet.href = 'manual-draw-v2.css?v=20260821a';
       stylesheet.dataset.manualDrawV2 = 'true';
       document.head.appendChild(stylesheet);
     }
     if (document.querySelector('script[data-manual-draw-v2]')) return;
     const script = document.createElement('script');
-    script.src = 'manual-draw-v2.js';
+    script.src = 'manual-draw-v2.js?v=20260821a';
     script.async = false;
     script.dataset.manualDrawV2 = 'true';
     document.body.appendChild(script);

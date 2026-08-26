@@ -5,7 +5,7 @@
   const manifest = window.UCLDRAW_POOL_MANIFEST;
   if (!bracket?.rounds || !bracket?.simulate || !bracket?.teams || !manifest?.europa || !manifest?.conference) return;
 
-  const SNAPSHOT_DATE = '2026-08-15';
+  const SNAPSHOT_DATE = '2026-08-26';
   const originalSimulate = bracket.simulate;
   const originalRounds = bracket.rounds;
   const competitionKeys = ['champions', 'europa', 'conference'];

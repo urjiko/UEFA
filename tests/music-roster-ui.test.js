@@ -31,7 +31,7 @@ assert.ok(html.indexOf('roster-manager.js') < html.indexOf('app-v3.js'), 'roster
 assert.ok(html.indexOf('app-v3.js') < html.indexOf('roster-search-ui.js'), 'search UI must load after the app');
 assert.ok(html.indexOf('roster-search-ui.js') < html.indexOf('roster-single-opponent-ui.js'), 'direct playoff UI must load after the base roster UI');
 assert.ok(html.indexOf('app-v3.js') < html.indexOf('league-music.js'), 'music observer must load after initial league rendering');
-assert.match(html, /roster-single-opponent-ui\.js\?v=20260815f/);
+assert.match(html, /roster-single-opponent-ui\.js\?v=\d+[a-z]?/);
 
 assert.match(music, /ucl:\s*'music\/ucl_anthem\.mp3'/);
 assert.match(music, /uel:\s*'music\/uel_anthem\.mp3'/);

@@ -403,6 +403,13 @@
       "country": "ISR",
       "associationFloor": false
     },
+    "hapoelbeersheva": {
+      "coefficient": 14,
+      "rank": 132,
+      "officialName": "Hapoel Beer-Sheva",
+      "country": "ISR",
+      "associationFloor": false
+    },
     "hearts": {
       "coefficient": 6.41,
       "rank": null,

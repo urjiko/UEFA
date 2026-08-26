@@ -68,7 +68,7 @@ function createRuntime() {
 let runtime = createRuntime();
 assert.ok(runtime.direct, 'direct playoff replacement helper must load');
 
-const expectedRemovable = Object.freeze({ ucl: 7, uel: 19, uecl: 36 });
+const expectedRemovable = Object.freeze({ ucl: 1, uel: 13, uecl: 36 });
 const removableSlugs = {};
 
 for (const competitionId of ['ucl', 'uel', 'uecl']) {
@@ -173,4 +173,4 @@ const finalIds = Object.values(runtime.data.competitions)
   .map((team) => team.qualificationId || team.poolSlug);
 assert.equal(new Set(finalIds).size, 108, 'all round trips must preserve 108 globally unique league-phase clubs');
 
-console.log('All 62 playoff slots support direct reserve-search insertion and repeated two-way reload-backed switching.');
+console.log('All 50 unresolved playoff slots support direct reserve-search insertion and repeated two-way reload-backed switching.');

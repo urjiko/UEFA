@@ -37,6 +37,7 @@
       "sabah.png",
       "shakhtar.png",
       "slavia.png",
+      "slovanbratislava.png",
       "sporting.png",
       "stuttgart.png",
       "viking.png",
@@ -44,16 +45,14 @@
     ],
     "playoffs": [],
     "q3": [],
-    "q2": [
-      "celje.png",
-      "slovanbratislava.png"
-    ]
+    "q2": []
   },
   "europa": {
     "guaranteed": [
       "azalkmaar.png",
       "bayerleverkusen.png",
       "bournemouth.png",
+      "celje.png",
       "celtavigo.png",
       "celtic.png",
       "crystalpalace.png",

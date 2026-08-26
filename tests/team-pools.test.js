@@ -120,11 +120,24 @@ for (let run = 0; run < 20; run += 1) {
   for (const teamId of qualificationState.fixedUelLeaguePhaseIds) {
     assert.ok(uelIds.has(teamId), `${teamId} must be fixed in the Europa League league phase`);
   }
+  for (const teamId of qualificationState.fixedUclLeaguePhaseIds) {
+    assert.ok(uclIds.has(teamId), `${teamId} must be fixed in the Champions League league phase`);
+  }
+  for (const teamId of qualificationState.fixedUclPlayoffLoserIds) {
+    assert.ok(uelIds.has(teamId), `${teamId} must be fixed in the Europa League league phase after losing the UCL playoff`);
+  }
 
   const sturm = competitions.uel.teams.find((team) => team.poolSlug === 'strumgraz');
   assert.ok(sturm, 'Sturm Graz must be in the Europa League league phase');
   assert.equal(sturm.crest, 'pools/europa/guaranteed/strumgraz', 'Sturm Graz must use its moved Europa League crest path');
   assert.ok(!competitions.ucl.teams.some((team) => team.poolSlug === 'strumgraz'), 'Sturm Graz must not be selected in Champions League');
+
+  const fenerbahce = competitions.ucl.teams.find((team) => team.poolSlug === 'fenerbahce');
+  const lyon = competitions.uel.teams.find((team) => team.poolSlug === 'lyon');
+  assert.ok(fenerbahce, 'Fenerbahçe must be fixed in the Champions League league phase');
+  assert.equal(fenerbahce.crest, 'pools/champions/guaranteed/fenerbahce');
+  assert.ok(lyon, 'Lyon must be fixed in the Europa League league phase');
+  assert.equal(lyon.crest, 'pools/europa/guaranteed/lyon');
 }
 
 console.log('Team pool generation and resolved qualification checks passed.');

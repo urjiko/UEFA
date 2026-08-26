@@ -83,8 +83,13 @@ const latest = context.window.UCLDRAW_LATEST_QUALIFICATION_STATE;
 const bracket = context.window.UCLDRAW_QUALIFICATION_BRACKET;
 const manager = context.window.UCLDRAW_ROSTER_MANAGER;
 const data = context.window.UCLDRAW_DATA;
+const uclState = context.window.UCLDRAW_QUALIFICATION_STATE;
 
-assert.equal(latest.snapshotDate, '2026-08-15');
+assert.equal(latest.snapshotDate, '2026-08-26');
+assert.equal(uclState.snapshotDate, '2026-08-26');
+assert.equal(Object.keys(uclState.resolvedUclPlayoffs).length, 6, 'six UCL playoff ties must already be settled');
+assert.equal(uclState.resolvedUclPlayoffs['ucl-po-fener-sturm-sparta-lyon'].winnerId, 'fenerbahce');
+assert.equal(uclState.resolvedUclPlayoffs['ucl-po-fener-sturm-sparta-lyon'].loserId, 'lyon');
 assert.equal(Object.keys(latest.resolvedUelQ3).length, 13, 'all 13 Europa League Q3 ties must be resolved');
 assert.equal(Object.keys(latest.resolvedUeclQ3).length, 30, 'all 30 Conference League Q3 ties must be resolved');
 assert.equal(latest.resolvedUelQ3['uel-q3-jagiellonia-rangers'].winnerId, 'jagiellonia');

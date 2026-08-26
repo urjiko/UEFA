@@ -29,8 +29,7 @@
   ],
   "unmatchedSlugs": [
     "dinamominsk",
-    "fiori",
-    "hapoel"
+    "fiori"
   ],
   "clubs": {
     "aarhus": {
@@ -395,6 +394,20 @@
       "rank": 245,
       "officialName": "Hammarby IF",
       "country": "SWE",
+      "associationFloor": false
+    },
+    "hapoel": {
+      "coefficient": 14,
+      "rank": 132,
+      "officialName": "Hapoel Beer-Sheva",
+      "country": "ISR",
+      "associationFloor": false
+    },
+    "hapoelbeersheva": {
+      "coefficient": 14,
+      "rank": 132,
+      "officialName": "Hapoel Beer-Sheva",
+      "country": "ISR",
       "associationFloor": false
     },
     "hearts": {

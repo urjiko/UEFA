@@ -334,7 +334,8 @@ getafe|Getafe|ESP
 gornikzabrze|Górnik Zabrze|POL
 hajduksplit|Hajduk Split|CRO
 hammarby|Hammarby|SWE
-hapoel|Hapoel Be'er Sheva|ISR\nhapoelbeersheva|Hapoel Be'er Sheva|ISR
+hapoel|Hapoel Be'er Sheva|ISR
+hapoelbeersheva|Hapoel Be'er Sheva|ISR
 hearts|Heart of Midlothian|SCO
 helsinki|HJK Helsinki|FIN
 hibernian|Hibernian|SCO

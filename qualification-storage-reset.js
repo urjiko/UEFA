@@ -2,7 +2,7 @@
   'use strict';
 
   const STORAGE_KEY = 'ucldraw:qualification-slot-assignments:v1';
-  const RESET_MARKER = 'ucldraw:qualification-slot-reset:20260826a';
+  const RESET_MARKER = 'ucldraw:qualification-slot-reset:20260826b';
   const currentVersion = window.UCLDRAW_QUALIFICATION_RESULT?.diagnostics?.bracketVersion
     || window.UCLDRAW_QUALIFICATION_BRACKET?.currentStateVersion
     || null;

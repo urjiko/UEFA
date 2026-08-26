@@ -138,6 +138,13 @@ for (let run = 0; run < 20; run += 1) {
   assert.equal(fenerbahce.crest, 'pools/champions/guaranteed/fenerbahce');
   assert.ok(lyon, 'Lyon must be fixed in the Europa League league phase');
   assert.equal(lyon.crest, 'pools/europa/guaranteed/lyon');
+
+  const slovan = competitions.ucl.teams.find((team) => team.poolSlug === 'slovanbratislava');
+  const celje = competitions.uel.teams.find((team) => team.poolSlug === 'celje');
+  assert.ok(slovan, 'Slovan Bratislava must be fixed in the Champions League league phase');
+  assert.equal(slovan.crest, 'pools/champions/guaranteed/slovanbratislava');
+  assert.ok(celje, 'Celje must be fixed in the Europa League league phase');
+  assert.equal(celje.crest, 'pools/europa/guaranteed/celje');
 }
 
 console.log('Team pool generation and resolved qualification checks passed.');

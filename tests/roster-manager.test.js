@@ -42,15 +42,17 @@ context.window.sessionStorage = {
   removeItem(key) { stored.delete(key); }
 };
 
-load('teams.js', context);
-load('generated-team-pools.js', context);
-load('generated-club-coefficients.js', context);
-load('qualification-bracket.js', context);
-load('qualification-current-state.js', context);
-load('qualification-identity-fixes.js', context);
-load('team-pool-loader.js', context);
-load('coefficient-pots.js', context);
-load('roster-manager.js', context);
+for (const file of [
+  'teams.js',
+  'generated-team-pools.js',
+  'generated-club-coefficients.js',
+  'qualification-bracket.js',
+  'qualification-current-state.js',
+  'qualification-identity-fixes.js',
+  'team-pool-loader.js',
+  'coefficient-pots.js',
+  'roster-manager.js'
+]) load(file, context);
 
 const data = context.window.UCLDRAW_DATA;
 const manager = context.window.UCLDRAW_ROSTER_MANAGER;
@@ -58,56 +60,66 @@ const state = context.window.UCLDRAW_QUALIFICATION_STATE;
 const competition = data.competitions.ucl;
 const all = manager.allTeams('ucl');
 
-assert.equal(manager.currentStateVersion, '2026-08-12');
-assert.ok(all.length > competition.teams.length, 'UCL search must include unresolved playoff alternatives');
-assert.ok(all.some((team) => team.poolSlug === 'fenerbahce'), 'Fenerbahçe must stay searchable as a live UCL playoff participant');
-assert.ok(all.some((team) => team.poolSlug === 'lyon'), 'Lyon must stay searchable as a live UCL playoff participant');
+assert.equal(manager.currentStateVersion, '2026-08-26');
+assert.equal(state.snapshotDate, '2026-08-26');
+
+const fixedUclIds = ['aek', 'lask', 'viking', 'sabah', 'fenerbahce', 'bodo'];
+const fixedPlayoffUelIds = ['levskisofia', 'celtic', 'dinamo', 'hapoelbeersheva', 'lyon', 'nec'];
+const fixedQ3UelIds = ['olympiacos', 'union', 'strumgraz', 'spartapraha'];
+
+for (const teamId of fixedUclIds) {
+  const team = data.competitions.ucl.teams.find((candidate) => candidate.poolSlug === teamId);
+  assert.ok(team, `${teamId} must be present in Champions League`);
+  assert.ok(manager.isGuaranteed(team), `${teamId} must be locked after its playoff win`);
+  assert.ok(!manager.isRemovable('ucl', team), `${teamId} must not be manually removable`);
+  assert.equal(manager.incomingScenarios('ucl', team).length, 0, `${teamId} must expose no replacement choices`);
+}
+
+for (const teamId of [...fixedQ3UelIds, ...fixedPlayoffUelIds]) {
+  const team = data.competitions.uel.teams.find((candidate) => candidate.poolSlug === teamId);
+  assert.ok(team, `${teamId} must be present in Europa League`);
+  assert.ok(manager.isGuaranteed(team), `${teamId} must be treated as a locked league-phase participant`);
+  assert.ok(!manager.isRemovable('uel', team), `${teamId} must not be manually removable after its result`);
+  assert.equal(manager.incomingScenarios('uel', team).length, 0, `${teamId} must expose no replacement choices`);
+}
+
+assert.ok(manager.selectedTeam('ucl', 'fenerbahce'), 'Fenerbahçe must be fixed in Champions League');
+assert.ok(manager.selectedTeam('uel', 'lyon'), 'Lyon must be fixed in Europa League');
+assert.equal(manager.candidateTeam('ucl', 'lyon'), null, 'Lyon must disappear from Champions League search');
+assert.equal(manager.candidateTeam('uel', 'fenerbahce'), null, 'Fenerbahçe must disappear from Europa League search');
+assert.throws(
+  () => manager.simulateReplacement('ucl', 'celje', manager.selectedTeam('ucl', 'fenerbahce')),
+  /kesinleşti|Garanti katılımcılar/,
+  'confirmed Fenerbahçe berth must reject replacement attempts'
+);
+
 for (const eliminatedId of state.eliminatedFromUclIds) {
   assert.ok(!all.some((team) => team.poolSlug === eliminatedId), `${eliminatedId} must disappear from Champions League search`);
   assert.equal(manager.candidateTeam('ucl', eliminatedId), null, `${eliminatedId} must not be a UCL candidate anymore`);
 }
 
-const livePlayoffIds = ['fenerbahce', 'lyon'];
+const livePlayoffIds = ['slovanbratislava', 'celje'];
+assert.ok(all.some((team) => team.poolSlug === 'slovanbratislava'), 'Slovan must stay searchable while its playoff is live');
+assert.ok(all.some((team) => team.poolSlug === 'celje'), 'Celje must stay searchable while its playoff is live');
+
 const selectedPlayoffTeams = competition.teams.filter((team) => livePlayoffIds.includes(team.poolSlug));
-assert.equal(selectedPlayoffTeams.length, 1, 'Fenerbahçe vs Lyon must produce exactly one UCL league-phase club');
+assert.equal(selectedPlayoffTeams.length, 1, 'Slovan vs Celje must produce exactly one provisional UCL league-phase club');
 const playoffWinner = selectedPlayoffTeams[0];
 
 const pathScenarios = manager.incomingScenarios('ucl', playoffWinner);
-assert.equal(pathScenarios.length, 1, 'the live UCL playoff berth must have only the other playoff club as an alternative');
+assert.equal(pathScenarios.length, 1, 'the final unresolved UCL playoff berth must have one alternative');
 assert.equal(
   pathScenarios[0].incoming.poolSlug,
   livePlayoffIds.find((id) => id !== playoffWinner.poolSlug),
-  'Sturm Graz and Sparta Praha must no longer be selectable for the Fenerbahçe/Lyon UCL berth'
+  'the only UCL alternative must be the other Slovan/Celje participant'
 );
 assert.equal(pathScenarios[0].outgoing.poolSlug, playoffWinner.poolSlug);
 
 const incomingSlug = pathScenarios[0].incoming.poolSlug;
 const incoming = manager.candidateTeam('ucl', incomingSlug);
 const reverseScenarios = manager.replacementScenarios('ucl', incoming);
-assert.equal(reverseScenarios.length, 1, 'the remaining playoff club may replace only the active holder of that UCL berth');
+assert.equal(reverseScenarios.length, 1, 'the live playoff reserve may replace only the active holder');
 assert.equal(reverseScenarios[0].outgoing.poolSlug, playoffWinner.poolSlug);
-
-const fixedEuropaIds = ['olympiacos', 'union', 'strumgraz', 'spartapraha'];
-for (const teamId of fixedEuropaIds) {
-  const team = data.competitions.uel.teams.find((candidate) => candidate.poolSlug === teamId);
-  assert.ok(team, `${teamId} must be present in Europa League`);
-  assert.ok(manager.isGuaranteed(team), `${teamId} must be treated as a locked league-phase participant`);
-  assert.ok(!manager.isRemovable('uel', team), `${teamId} must not be manually removable after the UCL Q3 result`);
-  assert.equal(manager.incomingScenarios('uel', team).length, 0, `${teamId} must not expose replacement choices`);
-  assert.throws(
-    () => manager.simulateReplacement('uel', 'fenerbahce', team),
-    /kesinleşti/,
-    `${teamId} fixed Europa League place must reject replacement attempts`
-  );
-}
-
-const guaranteed = competition.teams.filter((team) => manager.isGuaranteed(team));
-assert.ok(guaranteed.length > 0, 'the active roster needs guaranteed participants');
-assert.throws(
-  () => manager.simulateReplacement('ucl', incoming, guaranteed[0]),
-  /Garanti katılımcılar/,
-  'guaranteed participants must be impossible to remove'
-);
 
 const preview = reverseScenarios[0];
 for (const id of ['ucl', 'uel', 'uecl']) {
@@ -123,16 +135,14 @@ assert.equal(inserted.poolSlug, incomingSlug);
 assert.equal(data.competitions.ucl.teams.filter((team) => livePlayoffIds.includes(team.poolSlug)).length, 1);
 assert.equal(data.competitions.ucl.teams.find((team) => livePlayoffIds.includes(team.poolSlug)).poolSlug, incomingSlug);
 
-const fourTeamPathIds = ['fenerbahce', 'strumgraz', 'spartapraha', 'lyon'];
-const europaPathIds = data.competitions.uel.teams
-  .filter((team) => fourTeamPathIds.includes(team.poolSlug))
+const uelLivePathIds = data.competitions.uel.teams
+  .filter((team) => livePlayoffIds.includes(team.poolSlug))
   .map((team) => team.poolSlug);
 assert.deepEqual(
-  new Set(europaPathIds),
-  new Set(fourTeamPathIds.filter((id) => id !== incomingSlug)),
-  'Sturm and Sparta stay fixed in UEL while the Fenerbahçe/Lyon playoff loser also lands there'
+  new Set(uelLivePathIds),
+  new Set(livePlayoffIds.filter((id) => id !== incomingSlug)),
+  'the loser of the only unresolved UCL playoff must occupy its Europa League berth'
 );
-assert.equal(data.competitions.uecl.teams.filter((team) => fourTeamPathIds.includes(team.poolSlug)).length, 0);
 
 const finalIds = Object.values(data.competitions)
   .flatMap((entry) => entry.teams)
@@ -153,5 +163,5 @@ assert.ok(dispatched.at(-1)?.detail?.affectedCompetitionIds.includes('uel'));
 assert.ok(Array.isArray(dispatched.at(-1)?.detail?.slotChanges));
 assert.ok(stored.has('ucldraw:qualification-slot-assignments:v1'), 'coherent slot assignments must persist across league route reloads');
 
-console.log('Resolved qualification-slot roster checks passed.');
+console.log('Confirmed UCL playoff roster locks and the final unresolved berth check passed.');
 require('./latest-qualification-state.test.js');

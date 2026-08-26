@@ -61,8 +61,8 @@ const context = createContext();
 const bracket = context.UCLDRAW_QUALIFICATION_BRACKET;
 const state = context.UCLDRAW_QUALIFICATION_STATE;
 assert.ok(bracket?.simulate, 'qualification bracket runtime must be exposed');
-assert.equal(bracket.currentStateVersion, '2026-08-12');
-assert.equal(state?.snapshotDate, '2026-08-12');
+assert.equal(bracket.currentStateVersion, '2026-08-26');
+assert.equal(state?.snapshotDate, '2026-08-26');
 assert.deepEqual(
   Array.from(bracket.rounds, (round) => round.ties.length),
   [10, 7, 13, 12, 30, 24],
@@ -91,7 +91,7 @@ const expectedResolved = {
   'ucl-q3-sparta-lyon': ['lyon', 'spartapraha']
 };
 
-assert.equal(Object.keys(state.resolvedUclQ3).length, 10, 'all ten completed UCL Q3 ties must resolve from the moved crest files');
+assert.equal(Object.keys(state.resolvedUclQ3).length, 10, 'all ten completed UCL Q3 ties must stay locked');
 for (const [tieId, [winnerId, loserId]] of Object.entries(expectedResolved)) {
   assert.equal(state.resolvedUclQ3[tieId]?.winnerId, winnerId, `${tieId} winner must be locked`);
   assert.equal(state.resolvedUclQ3[tieId]?.loserId, loserId, `${tieId} loser must be locked`);
@@ -104,12 +104,38 @@ assert.deepEqual(
 );
 assert.equal(state.runtimeDirectEuropaCount, 13, 'runtime direct Europa entrants must remain the original 13 before four fixed Q3 transfers are added');
 
+assert.equal(state.runtimeDirectChampionsCount, 29, 'runtime direct Champions entrants must remain the original 29 before confirmed playoff winners are added');
+assert.equal(Object.keys(state.resolvedUclPlayoffs).length, 6, 'six completed UCL playoff ties must be locked');
+
+const expectedPlayoffs = {
+  'ucl-po-levski-kairat-aek': ['aek', 'levskisofia'],
+  'ucl-po-celtic-lask': ['lask', 'celtic'],
+  'ucl-po-dinamo-kauno-viking': ['viking', 'dinamo'],
+  'ucl-po-hapoel-crvena-aarhus-sabah': ['sabah', 'hapoelbeersheva'],
+  'ucl-po-fener-sturm-sparta-lyon': ['fenerbahce', 'lyon'],
+  'ucl-po-olympiacos-nec-union-bodo': ['bodo', 'nec']
+};
+for (const [tieId, [winnerId, loserId]] of Object.entries(expectedPlayoffs)) {
+  assert.equal(state.resolvedUclPlayoffs[tieId]?.winnerId, winnerId, `${tieId} playoff winner must be locked`);
+  assert.equal(state.resolvedUclPlayoffs[tieId]?.loserId, loserId, `${tieId} playoff loser must be locked`);
+}
+assert.deepEqual(
+  new Set(state.fixedUclLeaguePhaseIds),
+  new Set(['aek', 'lask', 'viking', 'sabah', 'fenerbahce', 'bodo']),
+  'confirmed playoff winners must be fixed in the Champions League league phase'
+);
+assert.deepEqual(
+  new Set(state.fixedUclPlayoffLoserIds),
+  new Set(['levskisofia', 'celtic', 'dinamo', 'hapoelbeersheva', 'lyon', 'nec']),
+  'confirmed playoff losers must be fixed in the Europa League league phase'
+);
+
 const currentLeaguePlayoff = bracket.rounds.find((round) => round.id === 'ucl-playoffs').ties
-  .find((tie) => tie.id === 'ucl-po-fener-sturm-sparta-lyon');
+  .find((tie) => tie.id === 'ucl-po-mjallby-slovan-ararat-celje');
 assert.deepEqual(
   new Set([currentLeaguePlayoff.first.id, currentLeaguePlayoff.second.id]),
-  new Set(['fenerbahce', 'lyon']),
-  'the live UCL playoff path must now be Fenerbahçe vs Lyon only'
+  new Set(['slovanbratislava', 'celje']),
+  'the only unresolved UCL playoff must remain Slovan Bratislava vs Celje'
 );
 
 for (let run = 1; run <= 50; run += 1) {
@@ -117,8 +143,9 @@ for (let run = 1; run <= 50; run += 1) {
   assert.equal(result.qualifiers.ucl.length, 7);
   assert.equal(result.qualifiers.uel.length, 23);
   assert.equal(result.qualifiers.uecl.length, 36);
-  assert.equal(result.diagnostics.bracketVersion, '2026-08-12');
+  assert.equal(result.diagnostics.bracketVersion, '2026-08-26');
   assert.equal(result.diagnostics.resolvedUclQ3Count, 10);
+  assert.equal(result.diagnostics.resolvedUclPlayoffCount, 6);
 
   const all = Object.values(result.qualifiers).flat();
   const ids = all.map((team) => team.id);
@@ -131,17 +158,25 @@ for (let run = 1; run <= 50; run += 1) {
   }
 
   const leaguePlayoff = result.rounds['ucl-playoffs']
-    .find((tie) => tie.id === 'ucl-po-fener-sturm-sparta-lyon');
+    .find((tie) => tie.id === 'ucl-po-mjallby-slovan-ararat-celje');
   assert.deepEqual(
     new Set([leaguePlayoff.first.id, leaguePlayoff.second.id]),
-    new Set(['fenerbahce', 'lyon']),
-    'completed Q3 losers must not leak back into the Champions playoff'
+    new Set(['slovanbratislava', 'celje']),
+    'only the unresolved Slovan/Celje playoff may still vary'
   );
+
+  for (const [tieId, [winnerId, loserId]] of Object.entries(expectedPlayoffs)) {
+    const outcome = result.rounds['ucl-playoffs'].find((tie) => tie.id === tieId);
+    assert.equal(outcome.winner.id, winnerId, `${tieId} must not be re-simulated after its result is known`);
+    assert.equal(outcome.loser.id, loserId, `${tieId} loser must stay fixed in Europa League`);
+  }
 
   const uclIds = new Set(result.qualifiers.ucl.map((team) => team.id));
   const uelIds = new Set(result.qualifiers.uel.map((team) => team.id));
   state.eliminatedFromUclIds.forEach((teamId) => assert.ok(!uclIds.has(teamId), `${teamId} is eliminated from UCL`));
   state.fixedUelLeaguePhaseIds.forEach((teamId) => assert.ok(uelIds.has(teamId), `${teamId} must stay in the Europa League league phase`));
+  state.fixedUclLeaguePhaseIds.forEach((teamId) => assert.ok(uclIds.has(teamId), `${teamId} must stay in the Champions League league phase`));
+  state.fixedUclPlayoffLoserIds.forEach((teamId) => assert.ok(uelIds.has(teamId), `${teamId} must stay in the Europa League league phase`));
 
   assert.deepEqual(
     JSON.parse(JSON.stringify(result.diagnostics.transferCounts)),
@@ -156,4 +191,4 @@ for (let run = 1; run <= 50; run += 1) {
   );
 }
 
-console.log('Qualification bracket and resolved UCL Q3 checks passed.');
+console.log('Qualification bracket and confirmed UCL playoff checks passed.');

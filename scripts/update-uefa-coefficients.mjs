@@ -31,7 +31,7 @@ const aliases = {
   viktoriaplzen: ['Viktoria Plzen', 'Viktoria Plzeň'], pafos: ['Pafos FC'], celtavigo: ['Celta de Vigo'],
   lens: ['RC Lens'], rennais: ['Stade Rennais'], basel: ['FC Basel'], malmo: ['Malmö FF'],
   sherifftiraspol: ['Sheriff Tiraspol'], cluj: ['CFR Cluj'], celje: ['NK Celje'],
-  rapid: ['Rapid Wien'], hapoelbeersheva: ['Hapoel Beer-Sheva'], hapoeltelaviv: ['Hapoel Tel-Aviv', 'Hapoel Tel Aviv'], lincoln: ['Lincoln Red Imps'],
+  rapid: ['Rapid Wien'], hapoel: ['Hapoel Beer-Sheva'], hapoelbeersheva: ['Hapoel Beer-Sheva'], lincoln: ['Lincoln Red Imps'],
   shamrockrovers: ['Shamrock Rovers'], stuttgart: ['VfB Stuttgart'],
   brann: ['SK Brann', 'Brann Bergen'], dinamominsk: ['Dinamo Minsk'], egnatia: ['KF Egnatia'],
   fiori: ['Tre Fiori'], gallen: ['FC St. Gallen', 'St. Gallen'], hammarby: ['Hammarby IF'],

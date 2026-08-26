@@ -89,7 +89,7 @@ hibernian|Hibernian|SCO|conference|q2|hibernian|hibernian
 shkendija|Shkëndija|MKD|conference|q3|shkendija|shkendija
 brann|Brann|NOR|conference|q2|brann|brann
 apollon|Apollon Limassol|CYP|conference|q3|apollon|apollon
-hapoeltelaviv|Hapoel Tel Aviv|ISR|conference|q3|hapoel|hapoeltelaviv
+hapoeltelaviv|Hapoel Tel Aviv|ISR|conference|q3|hapoel|hapoel
 katowice|GKS Katowice|POL|conference|q3|katowice|katowice
 bohemian|Bohemian|IRL|conference|q3|bohemian|bohemian
 midtjylland|Midtjylland|DEN|conference|q3|midtjylland|midtjylland

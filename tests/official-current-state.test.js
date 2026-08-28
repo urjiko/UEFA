@@ -132,7 +132,7 @@ for (const team of ucl.teams) {
   assert.equal(fixtures.filter((fixture) => fixture.home).length, 4, `${team.name} must have four home fixtures`);
   assert.equal(fixtures.filter((fixture) => !fixture.home).length, 4, `${team.name} must have four away fixtures`);
   assert.deepEqual(
-    fixtures.map((fixture) => fixture.matchday).sort((a, b) => a - b),
+    JSON.parse(JSON.stringify(fixtures.map((fixture) => fixture.matchday).sort((a, b) => a - b))),
     [1,2,3,4,5,6,7,8],
     `${team.name} internal prediction schedule must use each round once`
   );

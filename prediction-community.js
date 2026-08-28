@@ -364,6 +364,15 @@
     return { completed, total: matches.length, done: Boolean(matches.length && completed === matches.length) };
   }
 
+  function setText(element, value) {
+    if (element && element.textContent !== value) element.textContent = value;
+  }
+
+  function setDisabled(element, value) {
+    const next = Boolean(value);
+    if (element && element.disabled !== next) element.disabled = next;
+  }
+
   function ensureFinishControl() {
     if (document.body.classList.contains('community-average-active')) return;
     const section = document.getElementById('predictionSection');
@@ -388,8 +397,8 @@
         const progress = finishProgress();
         if (!progress.done) return;
         button.dataset.busy = 'true';
-        button.disabled = true;
-        button.textContent = 'Bitiriliyor...';
+        setDisabled(button, true);
+        setText(button, 'Bitiriliyor...');
         try {
           const payload = buildSubmission();
           const result = await submitPrediction(payload);
@@ -398,9 +407,9 @@
             submissionResult: result
           });
         } catch (error) {
-          note.textContent = error.message;
-          button.disabled = false;
-          button.textContent = 'Bitir';
+          setText(note, error.message);
+          setDisabled(button, false);
+          setText(button, 'Bitir');
           delete button.dataset.busy;
         }
       });
@@ -410,15 +419,16 @@
     const note = control.querySelector('.prediction-community-finish-note');
     const button = control.querySelector('.prediction-community-finish-button');
     const current = window.UCLDRAW_LAST_DRAW?.source === 'uefa-current';
-    note.textContent = current
+    const noteText = current
       ? `Bitirdiğinde yalnızca bu takım için anonim maç tahminlerin topluluk ortalamasına eklenir. İsim, e-posta veya hesap bilgisi gönderilmez. · ${progress.completed}/${progress.total || 0}`
       : `Bu simülasyon resmi güncel fikstür değil; Bitir yalnızca sonuç ekranını ve görsel indirmeyi açar. · ${progress.completed}/${progress.total || 0}`;
-    button.disabled = !progress.done;
-    button.textContent = progress.done ? 'Bitir' : `Bitir · ${progress.completed}/${progress.total || 0}`;
+    setText(note, noteText);
+    setDisabled(button, !progress.done);
+    setText(button, progress.done ? 'Bitir' : `Bitir · ${progress.completed}/${progress.total || 0}`);
   }
 
-  const observer = new MutationObserver(() => window.requestAnimationFrame(ensureFinishControl));
-  observer.observe(document.body, { childList: true, subtree: true, attributes: true, attributeFilter: ['hidden', 'class'] });
+  window.addEventListener('ucldraw:prediction-rendered', ensureFinishControl);
+  window.addEventListener('ucldraw:draw-generated', () => window.requestAnimationFrame(ensureFinishControl));
   window.addEventListener('popstate', () => {
     if (!/\/ortalama\/?$/.test(window.location.pathname)) clearAverageMode();
   });

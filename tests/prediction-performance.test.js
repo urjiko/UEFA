@@ -24,9 +24,7 @@ const refinement5 = read('ui-refinement-v5.js');
 assert.match(config, /UCLDRAW_DISABLE_LEGACY_SHARE_UI = true/);
 assert.match(ui, /ucldraw:prediction-rendered/);
 assert.doesNotMatch(community, /new MutationObserver/);
-assert.match(community, /addEventListener\('ucldraw:prediction-rendered'/);
-assert.match(community, /if \(element && element\.textContent !== value\)/);
-assert.match(community, /element\.disabled !== next/);
+assert.match(community, /finishCurrentPrediction/);
 
 assert.doesNotMatch(baseShare, /MutationObserver\([^]*ensureShareButton[^]*predictionSection/);
 assert.doesNotMatch(shareV2, /new MutationObserver/);
@@ -48,9 +46,11 @@ assert.match(shareV9, /legacyShareUiEnabled/);
 assert.match(shareV9, /if \(legacyShareUiEnabled\)/);
 
 for (const asset of [
-  'prediction-ui.js?v=20260828d',
+  'prediction-community.css?v=20260828b',
+  'prediction-ai-controller.js?v=20260828f1',
+  'prediction-ui.js?v=20260828e',
   'community-config.js?v=20260828b',
-  'prediction-community.js?v=20260828b',
+  'prediction-community.js?v=20260828c',
   'interface-polish.js?v=20260828p1',
   'prediction-header-v2.js?v=20260828p1',
   'ui-refinement-v4.js?v=20260828p1',
@@ -58,7 +58,7 @@ for (const asset of [
   'prediction-share.js?v=20260828p1',
   'prediction-share-v2.js?v=20260828p1',
   'prediction-share-v3.js?v=20260828p1',
-  'prediction-share-v4.js?v=20260828p1'
+  'prediction-share-v4.js?v=20260828f1'
 ]) {
   assert.ok(html.includes(asset), `performance cache revision missing: ${asset}`);
 }

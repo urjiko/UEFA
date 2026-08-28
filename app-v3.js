@@ -330,17 +330,33 @@
   }
 
   function updateInitialModeUI() {
-    els.initialModeChoice.querySelectorAll('[data-initial-mode]').forEach((button) => button.classList.toggle('is-selected', button.dataset.initialMode === state.pendingControlMode));
+    const currentFixtures = window.UCLDRAW_CURRENT_FIXTURES;
+    const currentAvailable = Boolean(currentFixtures?.available?.(state.leagueId));
+    els.initialModeChoice.querySelectorAll('[data-initial-mode]').forEach((button) => {
+      const mode = button.dataset.initialMode;
+      if (mode === 'current') {
+        button.disabled = !currentAvailable;
+        button.title = currentAvailable
+          ? 'UEFA tarafından açıklanan güncel rakipleri ve ev/deplasman yönlerini yükle.'
+          : (currentFixtures?.metadata?.[state.leagueId]?.note || 'Güncel fikstür henüz yayınlanmadı.');
+      }
+      button.classList.toggle('is-selected', mode === state.pendingControlMode);
+    });
+    if (state.pendingControlMode === 'current' && !currentAvailable) state.pendingControlMode = 'auto';
     els.initialSpeedControl.classList.toggle('is-disabled', state.pendingControlMode !== 'auto');
     els.initialSpeedControl.querySelectorAll('[data-initial-speed]').forEach((button) => button.classList.toggle('is-active', Number(button.dataset.initialSpeed) === state.pendingSpeed));
+    els.confirmDrawButton.textContent = state.pendingControlMode === 'current' ? 'Tahminlere Geç' : 'Başlat';
   }
   function openConfirmation(team) {
     state.pendingTeam = team;
-    state.pendingControlMode = state.controlMode || 'auto';
+    state.pendingControlMode = ['auto', 'manual'].includes(state.controlMode) ? state.controlMode : 'auto';
     state.pendingSpeed = state.autoSpeed || 1;
     els.confirmCrest.replaceChildren(createCrest(team, 'large'));
     els.confirmTitle.textContent = `${team.name} hazır`;
-    els.confirmText.textContent = `${team.name} ile kura çekimi başlayacak. Otomatik akışı veya her rakipte Seç tuşuna basacağın kontrollü akışı seç.`;
+    const currentInfo = window.UCLDRAW_CURRENT_FIXTURES?.metadata?.[state.leagueId];
+    els.confirmText.textContent = currentInfo?.available
+      ? `${team.name} için simülasyon modunu seç veya Güncel ile UEFA'nın gerçek eşleşmelerini yükleyip doğrudan tahmine geç.`
+      : `${team.name} için otomatik veya manuel kura çekebilirsin. Güncel mod, UEFA bu ligin eşleşmelerini yayınladığında aktif olacak.`;
     updateInitialModeUI();
     els.confirmBackdrop.hidden = false;
     document.body.style.overflow = 'hidden';
@@ -633,6 +649,77 @@
     els.drawTitle.textContent = state.selectedTeam.name; els.drawKicker.textContent = competition().name; renderSelectedClub();
     window.scrollTo({ top: 0, behavior: prefersReducedMotion ? 'auto' : 'smooth' });
   }
+  function startCurrentPrediction() {
+    if (!state.selectedTeam) return;
+    const currentFixtures = window.UCLDRAW_CURRENT_FIXTURES;
+    const info = currentFixtures?.metadata?.[state.leagueId];
+    if (!info?.available) {
+      showToast(info?.note || 'Güncel fikstür henüz yayınlanmadı.');
+      showSelectionScreen();
+      return;
+    }
+
+    let table;
+    try {
+      table = currentFixtures.buildTable(competition());
+    } catch (error) {
+      showToast(error.message);
+      showSelectionScreen();
+      return;
+    }
+    if (!table) {
+      showToast(info.note || 'Güncel fikstür yüklenemedi.');
+      showSelectionScreen();
+      return;
+    }
+
+    stopDrawActivity();
+    state.drawToken += 1;
+    state.running = false;
+    state.processing = false;
+    state.screenMode = 'complete';
+    state.drawTable = table;
+    state.overrides.clear();
+    state.fixtures = fixturesForTeam(state.selectedTeam);
+    state.revealedCount = state.fixtures.length;
+    state.currentIndex = state.fixtures.length;
+    state.activeCustomSlot = null;
+    state.customBackup = null;
+
+    showDrawScreen();
+    els.drawActions.hidden = false;
+    els.customActions.hidden = true;
+    els.customNote.hidden = true;
+    els.pairControls.hidden = true;
+    els.allFixturesSection.hidden = true;
+    renderDrawPots();
+    renderFixtureList();
+    updateProgress();
+    updateControlPanel();
+    setStatus(info.note || 'UEFA güncel fikstürü yüklendi.');
+
+    window.UCLDRAW_LAST_DRAW = {
+      competition: competition(),
+      table,
+      leagueId: competition().id,
+      generatedAt: Date.now(),
+      source: 'uefa-current',
+      schedulePublished: Boolean(info.schedulePublished),
+      sourceDate: info.sourceDate || null
+    };
+    window.dispatchEvent(new CustomEvent('ucldraw:draw-generated', {
+      detail: window.UCLDRAW_LAST_DRAW
+    }));
+
+    window.setTimeout(() => {
+      if (typeof window.UCLDRAW_OPEN_PREDICTION === 'function') {
+        window.UCLDRAW_OPEN_PREDICTION(state.selectedTeam.name);
+      } else {
+        document.querySelector('.prediction-entry-button')?.click();
+      }
+    }, 0);
+  }
+
   function startDraw() {
     if (!state.selectedTeam) return;
     stopDrawActivity(); state.drawToken += 1; state.running = true; state.processing = false; state.screenMode = 'draw'; state.revealedCount = 0; state.currentIndex = 0; state.activeCustomSlot = null; state.customBackup = null; state.overrides.clear();
@@ -737,8 +824,14 @@
   els.confirmBackdrop.addEventListener('click', (event) => { if (event.target === els.confirmBackdrop) closeConfirmation(); });
   els.confirmDrawButton.addEventListener('click', () => {
     if (!state.pendingTeam) return;
-    const team = state.pendingTeam; state.controlMode = state.pendingControlMode; state.autoSpeed = state.pendingSpeed; state.selectedTeam = team;
-    closeConfirmation(); startDraw();
+    const team = state.pendingTeam;
+    const requestedMode = state.pendingControlMode;
+    state.controlMode = requestedMode === 'current' ? 'auto' : requestedMode;
+    state.autoSpeed = state.pendingSpeed;
+    state.selectedTeam = team;
+    closeConfirmation();
+    if (requestedMode === 'current') startCurrentPrediction();
+    else startDraw();
   });
   els.modeControl.addEventListener('click', (event) => { const button = event.target.closest('[data-control-mode]'); if (button) setControlMode(button.dataset.controlMode); });
   els.speedControl.addEventListener('click', (event) => { const button = event.target.closest('[data-speed]'); if (button) setAutoSpeed(Number(button.dataset.speed)); });

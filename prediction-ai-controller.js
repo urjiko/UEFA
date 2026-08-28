@@ -241,6 +241,42 @@
         state,
         matchdays: lastMatchday,
         predictionRun,
+        mode: 'all',
+        homeAdvantageProfileVersion: profileData().version || 0
+      }
+    }));
+    return state;
+  }
+
+  function predictMissing(state = latestState) {
+    if (!state?.matches?.length) throw new Error('Yapay zeka tahmini için aktif bir turnuva bulunamadı.');
+
+    state.aiPredictionVersion = Number(state.aiPredictionVersion || 0) + 1;
+    const predictionRun = state.aiPredictionVersion;
+    const matchdays = [...new Set(state.matches.map((match) => Number(match.matchday) || 0))]
+      .filter((matchday) => matchday > 0)
+      .sort((first, second) => first - second);
+
+    for (const matchday of matchdays) {
+      state.activeMatchdays[matchday] = true;
+      const version = Number(state.rerollVersion[matchday] || 0) + 1;
+      state.rerollVersion[matchday] = version;
+      const predictionSeed = `${state.seed}:ai-run-${predictionRun}:missing`;
+      for (const match of state.matches.filter((candidate) => candidate.matchday === matchday)) {
+        if (state.scores[match.id]) continue;
+        const score = simulateAdjustedScore(match, state.comp, predictionSeed, version);
+        score.model.predictionRun = predictionRun;
+        score.model.fillMode = 'missing';
+        state.scores[match.id] = score;
+      }
+    }
+
+    window.dispatchEvent(new CustomEvent('ucldraw:ai-predictions-applied', {
+      detail: {
+        state,
+        matchdays: matchdays.length,
+        predictionRun,
+        mode: 'missing',
         homeAdvantageProfileVersion: profileData().version || 0
       }
     }));
@@ -278,7 +314,8 @@
 
   window.UCLDRAW_PREDICTION_AI = Object.freeze({
     getState: () => latestState,
-    predictAll
+    predictAll,
+    predictMissing
   });
 
   installProfileData();

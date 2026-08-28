@@ -2,27 +2,13 @@
 .prediction-share-button,
 .prediction-share-v2-button,
 .prediction-share-v3-button,
-.prediction-share-v4-button,
 .prediction-export-v9-button,
 .prediction-share-floating { display: none !important; }
 
-.prediction-community-finish {
-  margin-top: 18px;
-  padding: 16px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
+.prediction-share-actions-v4 .prediction-community-finish-button {
+  display: inline-flex !important;
+  min-width: 0;
 }
-.prediction-community-finish-note {
-  margin: 0;
-  max-width: 760px;
-  color: var(--muted);
-  font-size: .76rem;
-  line-height: 1.55;
-}
-.prediction-community-finish-button { min-width: 132px; }
-.prediction-community-finish-button:disabled { opacity: .45; cursor: not-allowed; }
 
 body.community-average-active .app-shell,
 body.community-average-active .site-footer { display: none !important; }
@@ -69,8 +55,6 @@ body.community-average-active .site-footer { display: none !important; }
 .community-average-actions a { text-decoration: none; }
 
 @media (max-width: 760px) {
-  .prediction-community-finish { align-items: stretch; flex-direction: column; }
-  .prediction-community-finish-button { width: 100%; }
   .community-average-grid { grid-template-columns: 1fr; }
   .community-average-header { grid-template-columns: 64px minmax(0,1fr); }
   .community-team-crest { width: 56px; height: 56px; }

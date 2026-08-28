@@ -280,30 +280,30 @@
           window.requestAnimationFrame(ensureActions);
         }
       });
-      const shareButton = createActionButton('Paylaş', 'primary prediction-share-v4-button');
+      const shareButton = createActionButton('Bitir', 'primary prediction-share-v4-button prediction-community-finish-button');
       shareButton.addEventListener('click', async () => {
-        if (shareButton.dataset.busy === 'true' || !predictionsComplete()) return;
+        if (shareButton.dataset.busy === 'true') return;
         shareButton.dataset.busy = 'true';
         shareButton.disabled = true;
-        shareButton.textContent = 'Hazırlanıyor...';
-        try { await shareCurrent(); }
-        catch (error) {
-          if (error?.name !== 'AbortError') {
-            console.error(error);
-            showToast(error?.message || 'Paylaşım görseli oluşturulamadı.');
-          }
-        } finally {
-          delete shareButton.dataset.busy;
+        shareButton.textContent = 'Bitiriliyor...';
+        try {
+          const community = window.UCLDRAW_COMMUNITY;
+          if (!community?.finishCurrentPrediction) throw new Error('Bitir akışı hazır değil.');
+          await community.finishCurrentPrediction();
+        } catch (error) {
+          console.error(error);
+          showToast(error?.message || 'Tahmin tamamlanamadı.');
           shareButton.disabled = false;
-          shareButton.textContent = 'Paylaş';
+          shareButton.textContent = 'Bitir';
+          delete shareButton.dataset.busy;
         }
       });
       row.append(aiButton, shareButton);
       panel.appendChild(row);
     }
-    const complete = predictionsComplete();
-    row.querySelector('.prediction-share-v4-button').hidden = !complete;
-    row.classList.toggle('has-share', complete);
+    const finishButton = row.querySelector('.prediction-community-finish-button');
+    if (finishButton) finishButton.hidden = false;
+    row.classList.add('has-share');
   }
 
   const predictionSection = document.getElementById('predictionSection');

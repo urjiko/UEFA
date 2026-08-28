@@ -1,7 +1,7 @@
 (() => {
   'use strict';
 
-  // Public browser credentials only. Never put a service_role key here.
+  // Public browser credentials only. Never put a privileged secret key here.
   window.UCLDRAW_COMMUNITY_CONFIG = Object.freeze({
     supabaseUrl: '',
     supabaseAnonKey: '',

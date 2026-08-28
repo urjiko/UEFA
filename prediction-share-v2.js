@@ -602,19 +602,12 @@
   }
 
   const predictionSection = document.getElementById('predictionSection');
-  if (predictionSection) {
-    let refreshQueued = false;
-    new MutationObserver(() => {
-      if (refreshQueued) return;
-      refreshQueued = true;
-      window.requestAnimationFrame(() => {
-        refreshQueued = false;
-        ensureActions();
-      });
-    }).observe(predictionSection, { childList: true, subtree: true });
+  const legacyShareUiEnabled = !window.UCLDRAW_DISABLE_LEGACY_SHARE_UI;
+  if (predictionSection && legacyShareUiEnabled) {
+    window.addEventListener('ucldraw:prediction-rendered', () => window.requestAnimationFrame(ensureActions));
+    window.addEventListener('ucldraw:ai-predictions-applied', () => window.requestAnimationFrame(ensureActions));
   }
 
-  window.addEventListener('ucldraw:ai-predictions-applied', () => window.requestAnimationFrame(ensureActions));
   window.UCLDRAW_PREDICTION_SHARE_V2 = Object.freeze({ renderShareCard, shareCurrent, ensureActions });
-  ensureActions();
+  if (legacyShareUiEnabled) ensureActions();
 })();

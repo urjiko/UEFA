@@ -11,7 +11,7 @@ const portraitJs = fs.readFileSync(path.join(root, 'portrait-draw-fix.js'), 'utf
 const portraitCss = fs.readFileSync(path.join(root, 'portrait-draw-fix.css'), 'utf8');
 const manualCss = fs.readFileSync(path.join(root, 'manual-draw-v2.css'), 'utf8');
 
-if (!html.includes('<script src="draw-engine-v2.js"></script>')) throw new Error('Scheduled draw engine is not loaded.');
+if (!html.includes('<script src="draw-engine-v2.js?v=20260828b"></script>')) throw new Error('Scheduled draw engine is not loaded or cache-busted.');
 if (!html.includes('<script src="schedule-ui.js?v=20260821a"></script>')) throw new Error('Schedule UI layer is not cache-busted.');
 if (!html.includes('<link rel="stylesheet" href="v4.css">')) throw new Error('v4.css is not loaded.');
 if (!html.includes('<link rel="stylesheet" href="portrait-draw-fix.css?v=20260817a">')) throw new Error('Portrait draw fix CSS is not loaded.');

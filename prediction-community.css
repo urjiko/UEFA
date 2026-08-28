@@ -1,0 +1,77 @@
+/* Community finish + average prediction pages */
+.prediction-share-button,
+.prediction-share-v2-button,
+.prediction-share-v3-button,
+.prediction-share-v4-button,
+.prediction-export-v9-button,
+.prediction-share-floating { display: none !important; }
+
+.prediction-community-finish {
+  margin-top: 18px;
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+.prediction-community-finish-note {
+  margin: 0;
+  max-width: 760px;
+  color: var(--muted);
+  font-size: .76rem;
+  line-height: 1.55;
+}
+.prediction-community-finish-button { min-width: 132px; }
+.prediction-community-finish-button:disabled { opacity: .45; cursor: not-allowed; }
+
+body.community-average-active .app-shell,
+body.community-average-active .site-footer { display: none !important; }
+.prediction-community-average {
+  width: min(1080px, calc(100% - 28px));
+  margin: 24px auto 56px;
+  display: grid;
+  gap: 16px;
+}
+.community-average-header {
+  display: grid;
+  grid-template-columns: 86px minmax(0,1fr);
+  gap: 18px;
+  align-items: center;
+  padding: 22px;
+}
+.community-team-crest {
+  width: 68px;
+  height: 68px;
+  display: grid;
+  place-items: center;
+}
+.community-team-crest img { max-width: 100%; max-height: 100%; object-fit: contain; }
+.community-average-header span { color: var(--accent); font-size: .72rem; font-weight: 900; letter-spacing: .09em; text-transform: uppercase; }
+.community-average-header h1 { margin: 3px 0 6px; font-family: "Barlow Condensed", Inter, sans-serif; font-size: clamp(2rem,5vw,3.3rem); }
+.community-average-header p,
+.community-average-status { color: var(--muted); }
+.community-average-status { padding: 13px 16px; font-size: .8rem; }
+.community-average-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 12px; }
+.community-average-match { padding: 16px; display: grid; gap: 14px; }
+.community-average-opponent { display: grid; grid-template-columns: 44px minmax(0,1fr); column-gap: 10px; align-items: center; }
+.community-average-opponent .community-team-crest { width: 42px; height: 42px; grid-row: 1 / span 2; }
+.community-average-opponent strong { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.community-average-opponent > span { color: var(--muted); font-size: .68rem; }
+.community-average-bars { display: grid; gap: 9px; }
+.community-average-bar > div:first-child { display: flex; justify-content: space-between; gap: 12px; font-size: .7rem; }
+.community-average-track { height: 7px; overflow: hidden; border-radius: 999px; background: rgba(255,255,255,.08); }
+.community-average-track i { display: block; height: 100%; border-radius: inherit; background: currentColor; }
+.community-average-bar.win { color: #62d89b; }
+.community-average-bar.draw { color: #d7c272; }
+.community-average-bar.loss { color: #e67d88; }
+.community-average-match > small { color: var(--muted); }
+.community-average-actions { padding: 16px; display: flex; flex-wrap: wrap; gap: 10px; }
+.community-average-actions a { text-decoration: none; }
+
+@media (max-width: 760px) {
+  .prediction-community-finish { align-items: stretch; flex-direction: column; }
+  .prediction-community-finish-button { width: 100%; }
+  .community-average-grid { grid-template-columns: 1fr; }
+  .community-average-header { grid-template-columns: 64px minmax(0,1fr); }
+  .community-team-crest { width: 56px; height: 56px; }
+}

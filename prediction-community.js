@@ -326,11 +326,31 @@
       actions.appendChild(download);
     }
 
+    const copyLink = document.createElement('button');
+    copyLink.type = 'button';
+    copyLink.className = 'action-button';
+    copyLink.textContent = 'Tahmin Linkini Kopyala';
+    copyLink.addEventListener('click', async () => {
+      const url = routeUrl(leagueId, slug, false);
+      try {
+        await navigator.clipboard.writeText(url);
+        status.textContent = 'Takım tahmin linki panoya kopyalandı.';
+      } catch {
+        const input = document.createElement('input');
+        input.value = url;
+        document.body.appendChild(input);
+        input.select();
+        document.execCommand('copy');
+        input.remove();
+        status.textContent = 'Takım tahmin linki panoya kopyalandı.';
+      }
+    });
+
     const retry = document.createElement('a');
     retry.className = 'action-button';
     retry.href = routeUrl(leagueId, slug, false);
     retry.textContent = 'Takımı Yeniden Tahmin Et';
-    actions.appendChild(retry);
+    actions.append(copyLink, retry);
     section.appendChild(actions);
     window.scrollTo({ top: 0, behavior: 'smooth' });
     return { rows, team, competition };

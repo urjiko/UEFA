@@ -184,10 +184,7 @@
   }
 
   if (predictionSection) {
-    new MutationObserver(() => decoratePredictionHeaders(predictionSection)).observe(predictionSection, {
-      childList: true,
-      subtree: true
-    });
+    window.addEventListener('ucldraw:prediction-rendered', () => decoratePredictionHeaders(predictionSection));
   }
 
   if (drawActions) {

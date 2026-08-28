@@ -365,17 +365,12 @@
   }
 
   const predictionSection = document.getElementById('predictionSection');
+  const legacyShareUiEnabled = !window.UCLDRAW_DISABLE_LEGACY_SHARE_UI;
   if (predictionSection) {
-    let refreshQueued = false;
-    new MutationObserver(() => {
-      if (refreshQueued) return;
-      refreshQueued = true;
-      window.requestAnimationFrame(() => {
-        refreshQueued = false;
-        fixPredictionKicker(predictionSection);
-        ensureActions();
-      });
-    }).observe(predictionSection, { childList: true, subtree: true });
+    window.addEventListener('ucldraw:prediction-rendered', () => {
+      fixPredictionKicker(predictionSection);
+      if (legacyShareUiEnabled) window.requestAnimationFrame(ensureActions);
+    });
   }
 
   new MutationObserver(() => fixPredictionKicker(predictionSection || document)).observe(document.body, {
@@ -383,8 +378,10 @@
     attributeFilter: ['data-league']
   });
 
-  window.addEventListener('ucldraw:ai-predictions-applied', () => window.requestAnimationFrame(ensureActions));
+  if (legacyShareUiEnabled) {
+    window.addEventListener('ucldraw:ai-predictions-applied', () => window.requestAnimationFrame(ensureActions));
+  }
   window.UCLDRAW_PREDICTION_SHARE_V3 = Object.freeze({ renderShareCard, shareCurrent, ensureActions, fixPredictionKicker });
   fixPredictionKicker(predictionSection || document);
-  ensureActions();
+  if (legacyShareUiEnabled) ensureActions();
 })();

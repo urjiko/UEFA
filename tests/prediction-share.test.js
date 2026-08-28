@@ -11,7 +11,7 @@ const script = read('prediction-share.js');
 const css = read('prediction-share.css');
 
 assert.ok(html.includes('<link rel="stylesheet" href="prediction-share.css">'), 'prediction share CSS must be loaded');
-assert.ok(html.includes('<script src="prediction-share.js"></script>'), 'prediction share script must be loaded');
+assert.match(html, /<script src="prediction-share\.js(?:\?v=[^"]+)?"><\/script>/, 'prediction share script must be loaded');
 assert.ok(html.indexOf('prediction-ui.js') < html.indexOf('prediction-share.js'), 'share controls must load after prediction UI');
 
 assert.match(script, /CARD_WIDTH\s*=\s*1200/);
@@ -30,6 +30,8 @@ assert.match(script, /new File/);
 assert.match(script, /competition\.background/);
 assert.match(script, /2026-27/);
 assert.match(script, /progressTrack\.classList\.toggle\('is-complete'/);
+assert.match(script, /legacyShareUiEnabled/);
+assert.match(script, /ucldraw:prediction-rendered/);
 
 assert.match(css, /\.prediction-share-button/);
 assert.match(css, /line-height:\s*1\.08/);

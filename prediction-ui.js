@@ -341,6 +341,14 @@
     layout.className = 'prediction-layout';
     layout.append(buildFixturesPanel(), buildStandingsPanel(rows));
     section.appendChild(layout);
+    window.dispatchEvent(new CustomEvent('ucldraw:prediction-rendered', {
+      detail: {
+        state: predictionState,
+        activeTeamName,
+        selectedTeamName: predictionState.selectedTeamName,
+        rows
+      }
+    }));
   }
 
   function enterPrediction() {

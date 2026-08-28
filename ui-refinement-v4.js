@@ -7,6 +7,7 @@
   const progressTrack = drawTopbar?.querySelector('.progress-track');
   const progressBar = document.getElementById('progressBar');
   const drawActions = document.getElementById('drawActions');
+  const predictionSection = document.getElementById('predictionSection');
 
   function setText(element, value) {
     if (element && element.textContent !== value) element.textContent = value;
@@ -126,11 +127,17 @@
   }
 
   refresh();
-  new MutationObserver(queueRefresh).observe(body, {
+  new MutationObserver((mutations) => {
+    const onlyPredictionMutations = predictionSection && mutations.every((mutation) => (
+      mutation.target === predictionSection || predictionSection.contains(mutation.target)
+    ));
+    if (!onlyPredictionMutations) queueRefresh();
+  }).observe(body, {
     childList: true,
     subtree: true,
     characterData: true,
     attributes: true,
     attributeFilter: ['hidden', 'class', 'style']
   });
+  window.addEventListener('ucldraw:prediction-rendered', queueRefresh);
 })();

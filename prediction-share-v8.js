@@ -222,7 +222,7 @@
     }
     if (window.UCLDRAW_PREDICTION_SHARE_V9 || document.querySelector('script[data-prediction-share-v9]')) return;
     const script = document.createElement('script');
-    script.src = 'prediction-share-v9.js';
+    script.src = 'prediction-share-v9.js?v=20260828p1';
     script.async = false;
     script.dataset.predictionShareV9 = 'true';
     document.body.appendChild(script);

@@ -21,7 +21,7 @@ for (const required of ['manualSelectButton','finishAllButton','allFixturesSecti
 if (!/src="app-v3\.js(?:\?v=[^"]+)?"/.test(html)) throw new Error('app-v3.js is not loaded.');
 if (!html.includes('<link rel="stylesheet" href="v3.css">')) throw new Error('v3.css is not loaded.');
 if (!html.includes('<link rel="stylesheet" href="interface-polish.css">')) throw new Error('interface-polish.css is not loaded.');
-if (!html.includes('<script src="interface-polish.js"></script>')) throw new Error('interface-polish.js is not loaded.');
+if (!/src="interface-polish\.js(?:\?v=[^"]+)?"/.test(html)) throw new Error('interface-polish.js is not loaded.');
 if (!(html.indexOf('prediction-ui.js') < html.indexOf('interface-polish.js'))) throw new Error('Interface polish must load after prediction UI.');
 if (!css.includes('body.draw-active #appHeader')) throw new Error('Draw mode does not hide the header.');
 if (!app.includes('manualWindow: 10000')) throw new Error('Manual draw timeout must be 10 seconds.');

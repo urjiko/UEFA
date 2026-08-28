@@ -604,11 +604,9 @@
   }
 
   const predictionSection = document.getElementById('predictionSection');
-  if (predictionSection) {
-    new MutationObserver(() => window.requestAnimationFrame(ensureShareButton)).observe(predictionSection, {
-      childList: true,
-      subtree: true
-    });
+  const legacyShareUiEnabled = !window.UCLDRAW_DISABLE_LEGACY_SHARE_UI;
+  if (predictionSection && legacyShareUiEnabled) {
+    window.addEventListener('ucldraw:prediction-rendered', () => window.requestAnimationFrame(ensureShareButton));
   }
 
   const drawActions = document.getElementById('drawActions');
@@ -625,6 +623,6 @@
     shareCurrent
   });
 
-  ensureShareButton();
+  if (legacyShareUiEnabled) ensureShareButton();
   syncCompletedProgress();
 })();

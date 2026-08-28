@@ -14,7 +14,7 @@ const refinementCss = read('ui-refinement-v8.css');
 const branding = read('branding-fixes.js');
 
 assert.ok(html.includes('<link rel="stylesheet" href="prediction-header-v2.css">'));
-assert.ok(html.includes('<script src="prediction-header-v2.js"></script>'));
+assert.match(html, /<script src="prediction-header-v2\.js(?:\?v=[^"]+)?"><\/script>/);
 assert.ok(html.includes('<script src="prediction-share-v6.js"></script>'));
 assert.ok(html.indexOf('prediction-share-v5.js') < html.indexOf('prediction-share-v6.js'));
 
@@ -59,13 +59,15 @@ assert.match(branding, /ui-refinement-v8\.css/);
 assert.match(branding, /data-ui-refinement-v8/);
 
 assert.match(headerJs, /function fallbackProgress\(summary\)/);
-assert.match(headerJs, /engine\.standings\(state\)/);
+assert.match(headerJs, /latestRows\?\.find/);
 assert.match(headerJs, /engine\.progress\(state, activeName\)/);
 assert.match(headerJs, /setText\(rank, `\$\{row\.rank\}\. sıra`\)/);
 assert.match(headerJs, /setText\(status, zoneText\(row\.zone\)\)/);
 assert.match(headerJs, /prediction-header-progress-track/);
-assert.match(headerJs, /new ClipboardItem|prediction-header-progress-value/);
+assert.match(headerJs, /prediction-header-progress-value/);
 assert.doesNotMatch(headerJs, /prediction-header-progress-label/);
+assert.doesNotMatch(headerJs, /new MutationObserver/);
+assert.match(headerJs, /ucldraw:prediction-rendered/);
 assert.match(headerJs, /header\.dataset\.progress = String\(progress\.percentage\)/);
 assert.match(headerCss, /width:\s*min\(920px, 100%\)/);
 assert.match(headerCss, /\.prediction-back-button::before[\s\S]*content:\s*'←'/);

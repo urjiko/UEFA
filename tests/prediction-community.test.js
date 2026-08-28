@@ -16,8 +16,8 @@ const config = read('community-config.js');
 const sql = read('supabase/community-predictions.sql');
 
 assert.ok(html.includes('prediction-community.css?v=20260828a'));
-assert.ok(html.includes('community-config.js?v=20260828a'));
-assert.ok(html.includes('prediction-community.js?v=20260828a'));
+assert.ok(html.includes('community-config.js?v=20260828b'));
+assert.ok(html.includes('prediction-community.js?v=20260828b'));
 assert.ok(html.indexOf('prediction-ui.js') < html.indexOf('prediction-community.js'));
 
 assert.match(app, /openCurrentPredictionForSlug/);
@@ -26,7 +26,7 @@ assert.match(predictionUi, /UCLDRAW_PREDICTION_SESSION/);
 assert.match(predictionUi, /matchesForSelectedTeam/);
 assert.match(predictionUi, /completeForSelectedTeam/);
 
-assert.match(community, /button\.textContent = 'Bitir'/);
+assert.match(community, /setText\(button, 'Bitir'\)/);
 assert.match(community, /submitPrediction\(payload\)/);
 assert.match(community, /openAveragePage\(payload\.leagueId, payload\.teamSlug/);
 assert.match(community, /Tahmin Görselini İndir/);
@@ -54,6 +54,7 @@ assert.match(css, /community-average-active/);
 
 assert.match(config, /supabaseUrl:\s*''/);
 assert.match(config, /supabaseAnonKey:\s*''/);
+assert.match(config, /UCLDRAW_DISABLE_LEGACY_SHARE_UI = true/);
 assert.doesNotMatch(config, /service_role/i);
 
 assert.match(sql, /create table if not exists public\.prediction_submissions/);

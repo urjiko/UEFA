@@ -6,7 +6,7 @@ const v9 = fs.readFileSync('prediction-share-v9.js', 'utf8');
 const css = fs.readFileSync('prediction-share-v9.css', 'utf8');
 
 assert.match(v8, /stylesheet\.href\s*=\s*'prediction-share-v9\.css'/);
-assert.match(v8, /script\.src\s*=\s*'prediction-share-v9\.js'/);
+assert.match(v8, /script\.src\s*=\s*'prediction-share-v9\.js\?v=20260828p1'/);
 assert.match(v8, /installHighResolutionExport\(\)/);
 
 assert.match(v9, /const EXPORT_SCALE = 2/);
@@ -29,6 +29,7 @@ assert.match(v9, /group\.replaceChildren\(createShareButton\('primary'\)\)/);
 assert.doesNotMatch(v9, /navigator\.share/);
 assert.doesNotMatch(v9, /navigator\.canShare/);
 assert.match(v9, /window\.UCLDRAW_PREDICTION_SHARE_V9 = Object\.freeze/);
+assert.match(v9, /legacyShareUiEnabled/);
 
 assert.match(css, /\.prediction-share-v4-button\.prediction-share-v9-legacy/);
 assert.match(css, /\.prediction-export-group-v9[\s\S]*grid-template-columns:\s*minmax\(0, 1fr\)/);

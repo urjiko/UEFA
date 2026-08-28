@@ -407,39 +407,46 @@
     });
   }
 
-  const observationRoot = document.getElementById('predictionSection') || document.body;
-  new MutationObserver((mutations) => {
-    if (mutations.some((mutation) => mutation.type === 'childList' || mutation.attributeName === 'class')) {
+  const legacyShareUiEnabled = !window.UCLDRAW_DISABLE_LEGACY_SHARE_UI;
+  if (legacyShareUiEnabled) {
+    const observationRoot = document.getElementById('predictionSection') || document.body;
+    new MutationObserver((mutations) => {
+      if (mutations.some((mutation) => mutation.type === 'childList' || mutation.attributeName === 'class')) {
+        invalidateExportCache();
+      }
+      queueRefresh();
+    }).observe(observationRoot, {
+      childList: true,
+      subtree: true,
+      attributes: true,
+      attributeFilter: ['hidden', 'class', 'value']
+    });
+
+    document.addEventListener('input', (event) => {
+      if (!event.target.closest?.('#predictionSection')) return;
       invalidateExportCache();
-    }
-    queueRefresh();
-  }).observe(observationRoot, {
-    childList: true,
-    subtree: true,
-    attributes: true,
-    attributeFilter: ['hidden', 'class', 'value']
-  });
+      closeShareMenu();
+      queueRefresh();
+    }, true);
+    document.addEventListener('change', (event) => {
+      if (!event.target.closest?.('#predictionSection')) return;
+      invalidateExportCache();
+      closeShareMenu();
+      queueRefresh();
+    }, true);
 
-  document.addEventListener('input', (event) => {
-    if (!event.target.closest?.('#predictionSection')) return;
-    invalidateExportCache();
-    closeShareMenu();
-    queueRefresh();
-  }, true);
-  document.addEventListener('change', (event) => {
-    if (!event.target.closest?.('#predictionSection')) return;
-    invalidateExportCache();
-    closeShareMenu();
-    queueRefresh();
-  }, true);
-
-  window.addEventListener('ucldraw:ai-predictions-applied', () => {
-    invalidateExportCache();
-    closeShareMenu();
-    queueRefresh();
-  });
-  window.addEventListener('resize', queueRefresh, { passive: true });
-  window.addEventListener('scroll', syncFloatingActions, { passive: true });
+    window.addEventListener('ucldraw:ai-predictions-applied', () => {
+      invalidateExportCache();
+      closeShareMenu();
+      queueRefresh();
+    });
+    window.addEventListener('resize', queueRefresh, { passive: true });
+    window.addEventListener('scroll', syncFloatingActions, { passive: true });
+    window.addEventListener('ucldraw:prediction-rendered', () => {
+      invalidateExportCache();
+      queueRefresh();
+    });
+  }
 
   window.UCLDRAW_PREDICTION_SHARE_V9 = Object.freeze({
     renderExportCard,
@@ -451,6 +458,8 @@
     outputHeight: OUTPUT_HEIGHT
   });
 
-  ensureExportActions();
-  syncFloatingActions();
+  if (legacyShareUiEnabled) {
+    ensureExportActions();
+    syncFloatingActions();
+  }
 })();

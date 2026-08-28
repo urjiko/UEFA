@@ -41,6 +41,31 @@ assert.match(shell, /copy\.href = appUrl\(link\.getAttribute\('href'\)\)/);
 assert.match(shell, /script\.src = appUrl\(source\)/);
 assert.match(shell, /DOMParser/);
 assert.match(shell, /ucldraw:league-routes-ready/);
+const predictionShell = read('prediction-route-shell.js');
+assert.match(predictionShell, /parts\[1\] !== 'tahmin'/);
+assert.match(predictionShell, /parts\[3\] === 'ortalama'/);
+assert.match(predictionShell, /openCurrentPredictionForSlug/);
+assert.match(predictionShell, /openAveragePage/);
+
+for (const [leagueId, route] of Object.entries(routes)) {
+  const predictionRoot = path.join(root, route.directory, 'tahmin');
+  const teamDirectories = fs.readdirSync(predictionRoot, { withFileTypes: true }).filter((entry) => entry.isDirectory());
+  assert.equal(teamDirectories.length, 36, `${leagueId} must expose 36 team prediction routes`);
+  for (const entry of teamDirectories) {
+    const predictionPage = read(`${route.directory}/tahmin/${entry.name}/index.html`);
+    const averagePage = read(`${route.directory}/tahmin/${entry.name}/ortalama/index.html`);
+    assert.match(predictionPage, /<base href="\.\.\/\.\.\/\.\.\/">/);
+    assert.match(averagePage, /<base href="\.\.\/\.\.\/\.\.\/\.\.\/">/);
+    assert.match(predictionPage, /prediction-route-shell\.js/);
+    assert.match(averagePage, /prediction-route-shell\.js/);
+  }
+}
+assert.ok(fs.existsSync(path.join(root, 'champions-league/tahmin/fenerbahce/index.html')));
+assert.ok(fs.existsSync(path.join(root, 'champions-league/tahmin/fenerbahce/ortalama/index.html')));
+assert.ok(fs.existsSync(path.join(root, 'europa-league/tahmin/besiktas/index.html')));
+assert.ok(fs.existsSync(path.join(root, 'conference-league/tahmin/trabzonspor/index.html')));
+assert.match(read('sitemap.xml'), /champions-league\/tahmin\/fenerbahce\/ortalama\//);
+
 assert.match(branding, /new URL\(window\.UCLDRAW_APP_ROOT \|\| '\.', document\.baseURI\)/);
 assert.match(branding, /competitions\[leagueId\]\.logo = assetUrl\(source\)/);
 assert.match(branding, /image\.src !== expected/);

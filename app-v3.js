@@ -885,5 +885,23 @@
   els.hideOverviewButton.addEventListener('click', () => { els.allFixturesSection.hidden = true; });
   document.addEventListener('keydown', (event) => { if (event.key === 'Escape' && !els.confirmBackdrop.hidden) closeConfirmation(); });
 
+  window.UCLDRAW_APP = Object.freeze({
+    openCurrentPredictionForSlug(leagueId, teamSlug) {
+      if (!DATA.competitions[leagueId]) return { ok: false, reason: 'Lig bulunamadı.' };
+      setLeague(leagueId);
+      const team = competition().teams.find((candidate) => candidate.poolSlug === teamSlug || candidate.qualificationId === teamSlug);
+      if (!team) return { ok: false, reason: 'Takım bulunamadı.' };
+      const info = window.UCLDRAW_CURRENT_FIXTURES?.metadata?.[leagueId];
+      if (!info?.available) return { ok: false, reason: info?.note || 'Güncel fikstür henüz yayınlanmadı.' };
+      state.selectedTeam = team;
+      state.pendingTeam = null;
+      startCurrentPrediction();
+      return { ok: true, team };
+    },
+    teamBySlug(leagueId, teamSlug) {
+      return DATA.competitions[leagueId]?.teams.find((candidate) => candidate.poolSlug === teamSlug || candidate.qualificationId === teamSlug) || null;
+    }
+  });
+
   setLeague('ucl');
 })();

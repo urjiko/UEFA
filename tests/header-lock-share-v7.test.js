@@ -14,7 +14,7 @@ const ui = read('ui-refinement-v5.js');
 const share = read('prediction-share-v7.js');
 const share8 = read('prediction-share-v8.js');
 
-assert.ok(html.includes('<script src="ui-refinement-v5.js"></script>'));
+assert.match(html, /<script src="ui-refinement-v5\.js(?:\?v=[^"]+)?"><\/script>/);
 assert.ok(html.includes('<script src="prediction-share-v7.js" data-prediction-share-v7="true"></script>'));
 assert.ok(html.indexOf('ui-refinement-v5.js') < html.indexOf('prediction-share-v4.js'), 'share interception must register before legacy share listeners');
 assert.ok(html.indexOf('prediction-share-v6.js') < html.indexOf('prediction-share-v7.js'), 'v7 must render after v6');
@@ -70,6 +70,8 @@ assert.match(ui, /prediction-share-floating-button/);
 assert.match(ui, /event\.stopImmediatePropagation\(\)/);
 assert.match(ui, /UCLDRAW_PREDICTION_SHARE_V8 \|\| window\.UCLDRAW_PREDICTION_SHARE_V7/);
 assert.match(ui, /function installShareRendererV8\(\)/);
+assert.match(ui, /legacyShareUiEnabled/);
+assert.match(ui, /ucldraw:prediction-rendered/);
 
 assert.match(share, /const V6 = window\.UCLDRAW_PREDICTION_SHARE_V6/);
 assert.match(share, /async function redrawAlignedHeader/);

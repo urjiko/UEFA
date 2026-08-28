@@ -308,15 +308,7 @@
 
   const predictionSection = document.getElementById('predictionSection');
   if (predictionSection) {
-    let queued = false;
-    new MutationObserver(() => {
-      if (queued) return;
-      queued = true;
-      window.requestAnimationFrame(() => {
-        queued = false;
-        ensureActions();
-      });
-    }).observe(predictionSection, { childList: true, subtree: true });
+    window.addEventListener('ucldraw:prediction-rendered', () => window.requestAnimationFrame(ensureActions));
   }
 
   window.addEventListener('ucldraw:ai-predictions-applied', () => window.requestAnimationFrame(ensureActions));

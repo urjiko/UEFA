@@ -4,6 +4,8 @@
   const section = document.getElementById('predictionSection');
   const engine = window.UCLDRAW_PREDICTION_ENGINE;
   if (!section) return;
+  let latestRows = null;
+  let latestState = null;
 
   function setText(element, value) {
     if (element && element.textContent !== value) element.textContent = value;
@@ -28,13 +30,13 @@
   }
 
   function headerSnapshot(header, summary) {
-    const state = window.UCLDRAW_PREDICTION_AI?.getState?.();
+    const state = latestState || window.UCLDRAW_PREDICTION_SESSION?.state?.() || window.UCLDRAW_PREDICTION_AI?.getState?.();
     const activeName = header.querySelector('h2')?.textContent?.trim();
-    if (!state || !activeName || !engine?.standings || !engine?.progress) {
+    if (!state || !activeName || !engine?.progress) {
       return { row: null, progress: fallbackProgress(summary) };
     }
 
-    const row = engine.standings(state).find((candidate) => candidate.team.name === activeName) || null;
+    const row = latestRows?.find((candidate) => candidate.team.name === activeName) || null;
     const teamProgress = engine.progress(state, activeName);
     const percentage = teamProgress.total > 0
       ? Math.round((teamProgress.completed / teamProgress.total) * 100)
@@ -105,10 +107,10 @@
   };
 
   refresh();
-  new MutationObserver(queueRefresh).observe(section, {
-    childList: true,
-    subtree: true,
-    characterData: true
+  window.addEventListener('ucldraw:prediction-rendered', (event) => {
+    latestRows = event.detail?.rows || null;
+    latestState = event.detail?.state || null;
+    queueRefresh();
   });
   window.addEventListener('ucldraw:ai-predictions-applied', queueRefresh);
 })();

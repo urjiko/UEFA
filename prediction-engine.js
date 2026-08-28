@@ -107,7 +107,11 @@
         const away = fixture.home ? opponent : team;
         const matchday = Number(fixture.matchday);
         const id = `${matchday}:${slug(home.name)}:${slug(away.name)}`;
-        matches.push({ id, matchday, home, away, date: matchDate(leagueId, matchday, id, seed) });
+        const hasExplicitDate = Object.prototype.hasOwnProperty.call(fixture, 'date');
+        const date = fixture.officialFixture && hasExplicitDate && fixture.date === null
+          ? null
+          : (fixture.date || matchDate(leagueId, matchday, id, seed));
+        matches.push({ id, matchday, home, away, date });
       }
     }
     return matches.sort((first, second) => first.matchday - second.matchday

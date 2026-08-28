@@ -13,7 +13,7 @@ const manualCss = fs.readFileSync(path.join(root, 'manual-draw-v2.css'), 'utf8')
 
 const baseEngineIndex = html.indexOf('<script src="draw-engine-v2.js"></script>');
 const venueSequenceIndex = html.indexOf('<script src="venue-sequence-v4.js"></script>');
-const appIndex = html.indexOf('<script src="app-v3.js"></script>');
+const appIndex = html.indexOf('app-v3.js?v=20260828a');
 const scheduleUiIndex = html.indexOf('schedule-ui.js?v=20260821a');
 const fixtureDisplayIndex = html.indexOf('<script src="fixture-display.js"></script>');
 

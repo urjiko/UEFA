@@ -18,7 +18,7 @@ if (missing.length) throw new Error(`Missing HTML IDs: ${missing.join(', ')}`);
 for (const required of ['manualSelectButton','finishAllButton','allFixturesSection','initialModeChoice','speedControl','appHeader']) {
   if (!ids.has(required)) throw new Error(`Required control missing: ${required}`);
 }
-if (!html.includes('<script src="app-v3.js"></script>')) throw new Error('app-v3.js is not loaded.');
+if (!/src="app-v3\.js(?:\?v=[^"]+)?"/.test(html)) throw new Error('app-v3.js is not loaded.');
 if (!html.includes('<link rel="stylesheet" href="v3.css">')) throw new Error('v3.css is not loaded.');
 if (!html.includes('<link rel="stylesheet" href="interface-polish.css">')) throw new Error('interface-polish.css is not loaded.');
 if (!html.includes('<script src="interface-polish.js"></script>')) throw new Error('interface-polish.js is not loaded.');
@@ -27,6 +27,8 @@ if (!css.includes('body.draw-active #appHeader')) throw new Error('Draw mode doe
 if (!app.includes('manualWindow: 10000')) throw new Error('Manual draw timeout must be 10 seconds.');
 if (!app.includes('[1, 1.5, 2]')) throw new Error('Automatic speed options are missing.');
 if (!html.includes('placeholder="Takım Ara..."')) throw new Error('Search placeholder is not concise.');
+if (!html.includes('data-initial-mode="current"')) throw new Error('Current UEFA fixture mode is missing.');
+if (!app.includes('startCurrentPrediction')) throw new Error('Current fixture mode does not jump directly into predictions.');
 if (html.includes('Arama yap veya aşağıdaki torbalardan')) throw new Error('Verbose selection instructions are still visible.');
 if (!polish.includes('decorateDrawHeader') || !polish.includes('decoratePredictionHeader')) throw new Error('Team hero headers are not decorated.');
 if (!polish.includes('Kurayı çek, sonuçları tahmin et.')) throw new Error('Concise brand copy is missing.');

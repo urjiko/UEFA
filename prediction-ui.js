@@ -99,7 +99,12 @@
     const title = document.createElement('h2');
     title.textContent = activeTeamName;
     const description = document.createElement('p');
-    description.textContent = 'Kazanan takımın logosuna bas. Beraberlik için ortadaki X’i seç.';
+    const currentDraw = window.UCLDRAW_LAST_DRAW?.source === 'uefa-current';
+    description.textContent = currentDraw
+      ? (window.UCLDRAW_LAST_DRAW?.schedulePublished
+        ? 'UEFA güncel fikstürü yüklendi. Sadece maç sonuçlarını tahmin et.'
+        : 'UEFA güncel rakipleri ve ev/deplasman yönleri yüklendi. Kesin maç tarihleri henüz yayınlanmadı.')
+      : 'Kazanan takımın logosuna bas. Beraberlik için ortadaki X’i seç.';
     copy.append(kicker, title, description);
 
     const controls = document.createElement('div');
@@ -222,7 +227,10 @@
     const top = document.createElement('div');
     top.className = 'prediction-fixture-top';
     const week = document.createElement('span');
-    week.textContent = `H${match.matchday}`;
+    const currentUnscheduled = window.UCLDRAW_LAST_DRAW?.source === 'uefa-current'
+      && !window.UCLDRAW_LAST_DRAW?.schedulePublished;
+    week.textContent = currentUnscheduled ? `E${match.matchday}` : `H${match.matchday}`;
+    week.title = currentUnscheduled ? 'Eşleşme sırası; resmi maç günü henüz yayınlanmadı.' : '';
     const date = document.createElement('time');
     date.dateTime = match.date || '';
     date.textContent = formatDate(match.date);
@@ -351,6 +359,13 @@
     render();
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
+
+  window.UCLDRAW_OPEN_PREDICTION = (teamName = null) => {
+    if (teamName && window.UCLDRAW_LAST_DRAW?.competition?.teams?.some((team) => team.name === teamName)) {
+      drawTitle.textContent = teamName;
+    }
+    enterPrediction();
+  };
 
   function leavePrediction() {
     document.body.classList.remove('prediction-active');

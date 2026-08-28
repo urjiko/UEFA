@@ -38,6 +38,8 @@ jobs:
           node --check fixture-display.js
           node --check venue-icons.js
           node --check roster-manager.js
+          node --check official-league-phase-state.js
+          node --check current-fixtures.js
           node --check roster-search-ui.js
           node --check league-music.js
           node --check league-routes.js
@@ -85,6 +87,7 @@ jobs:
           node tests/uefa-coefficients.test.mjs
           node tests/generated-coefficients.test.js
           node tests/roster-manager.test.js
+          node tests/official-current-state.test.js
       - name: Check generated home advantage profiles
         run: |
           node scripts/check-home-advantage-profiles.mjs

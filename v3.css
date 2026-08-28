@@ -32,14 +32,16 @@ body.draw-active .draw-screen { min-height: calc(100vh - 28px); }
 .team-button.is-manual-pulse { opacity: 1 !important; transform: translateX(4px) scale(1.025); border-color: rgba(255,255,255,.9); background: rgba(var(--accent-rgb),.38); box-shadow: 0 0 0 2px rgba(var(--accent-rgb),.18),0 0 30px rgba(var(--accent-rgb),.58); }
 .fixture-slot.is-current-manual { border-color: rgba(var(--accent-rgb),.9); box-shadow: inset 0 0 0 1px rgba(var(--accent-rgb),.3),0 0 24px rgba(var(--accent-rgb),.2); }
 
-.mode-modal { width: min(620px,100%); }
+.mode-modal { width: min(760px,100%); }
 .mode-choice-fieldset { margin: 18px 0 13px; padding: 0; border: 0; text-align: left; }
 .mode-choice-fieldset legend { margin-bottom: 9px; color: var(--muted); font-size: .72rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
-.mode-choice-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 10px; }
+.mode-choice-grid { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 10px; }
 .mode-choice-card { min-height: 104px; display: grid; align-content: center; gap: 5px; padding: 15px; border: 1px solid var(--border); border-radius: 16px; background: rgba(255,255,255,.055); color: #fff; cursor: pointer; text-align: left; }
 .mode-choice-card strong { font-family: "Barlow Condensed",Inter,sans-serif; font-size: 1.35rem; }
 .mode-choice-card span { color: var(--muted); font-size: .76rem; line-height: 1.45; }
 .mode-choice-card.is-selected { border-color: rgba(var(--accent-rgb),.82); background: rgba(var(--accent-rgb),.18); box-shadow: 0 0 0 2px rgba(var(--accent-rgb),.14),0 18px 40px rgba(var(--accent-rgb),.18); }
+.mode-choice-card:disabled { opacity: .42; cursor: not-allowed; }
+.mode-choice-current strong::after { content: "LIVE"; display: inline-block; margin-left: 7px; padding: 2px 5px; border-radius: 999px; background: rgba(var(--accent-rgb),.22); color: #fff; font-family: Inter,sans-serif; font-size: .48rem; letter-spacing: .08em; vertical-align: middle; }
 .initial-speed { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 18px; padding: 11px 12px; border: 1px solid var(--border); border-radius: 14px; background: rgba(0,0,0,.17); }
 .initial-speed > span { color: var(--muted); font-size: .76rem; font-weight: 800; }
 .initial-speed.is-disabled { opacity: .38; pointer-events: none; }

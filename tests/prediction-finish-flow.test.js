@@ -22,7 +22,7 @@ const base = {
       seed: 'finish-missing-test',
       matches: [
         { id: 'm1', matchday: 1, home, away },
-        { id: 'm2', matchday: 2, home: third }
+        { id: 'm2', matchday: 2, home, away: third }
       ],
       scores: {},
       matchLocks: {},

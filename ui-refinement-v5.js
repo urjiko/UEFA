@@ -4,6 +4,7 @@
   const body = document.body;
   const drawKicker = document.getElementById('drawKicker');
   const predictionSection = document.getElementById('predictionSection');
+  const legacyShareUiEnabled = !window.UCLDRAW_DISABLE_LEGACY_SHARE_UI;
   let floatingShare = null;
   let floatingObserver = null;
   let observedShareRow = null;
@@ -101,6 +102,7 @@
   }
 
   function createFloatingShare() {
+    if (!legacyShareUiEnabled) return null;
     const wrapper = document.createElement('div');
     wrapper.className = 'prediction-share-floating';
     wrapper.hidden = true;
@@ -136,6 +138,10 @@
   }
 
   function syncFloatingShare() {
+    if (!legacyShareUiEnabled) {
+      if (floatingShare) floatingShare.hidden = true;
+      return;
+    }
     const original = document.querySelector('#predictionSection .prediction-share-v4-button');
     const row = original?.closest('.prediction-share-actions-v4') || null;
     const active = body.classList.contains('prediction-active') && original && !original.hidden;
@@ -211,9 +217,7 @@
     refineTeamActionButtons();
     refineStandingsPanel();
     refinePredictionLocks();
-    syncFloatingShare();
-    installShareRendererV7();
-    installShareRendererV8();
+    if (legacyShareUiEnabled) syncFloatingShare();
   }
 
   let queued = false;
@@ -230,16 +234,25 @@
   const rendererTimer = window.setInterval(() => {
     installShareRendererV7();
     if (installShareRendererV8()) window.clearInterval(rendererTimer);
-  }, 60);
-  window.setTimeout(() => window.clearInterval(rendererTimer), 12000);
+  }, 120);
+  window.setTimeout(() => window.clearInterval(rendererTimer), 4000);
 
-  new MutationObserver(queueRefresh).observe(body, {
+  new MutationObserver((mutations) => {
+    const onlyPredictionMutations = predictionSection && mutations.every((mutation) => (
+      mutation.target === predictionSection || predictionSection.contains(mutation.target)
+    ));
+    if (!onlyPredictionMutations) queueRefresh();
+  }).observe(body, {
     childList: true,
     subtree: true,
     characterData: true,
     attributes: true,
     attributeFilter: ['hidden', 'class', 'style']
   });
-  window.addEventListener('resize', queueRefresh, { passive: true });
-  window.addEventListener('scroll', queueRefresh, { passive: true });
+
+  window.addEventListener('ucldraw:prediction-rendered', queueRefresh);
+  if (legacyShareUiEnabled) {
+    window.addEventListener('resize', queueRefresh, { passive: true });
+    window.addEventListener('scroll', syncFloatingShare, { passive: true });
+  }
 })();

@@ -395,5 +395,15 @@
     if (document.body.dataset.league !== window.UCLDRAW_LAST_DRAW?.leagueId) leavePrediction();
   }).observe(document.body, { attributes: true, attributeFilter: ['data-league'] });
 
+  window.UCLDRAW_PREDICTION_SESSION = Object.freeze({
+    state() { return predictionState; },
+    activeTeamName() { return activeTeamName; },
+    matchesForActiveTeam() { return matchesForTeam(activeTeamName); },
+    completeForActiveTeam() {
+      const matches = matchesForTeam(activeTeamName);
+      return Boolean(matches.length && matches.every((match) => predictionState?.matchLocks?.[match.id]));
+    }
+  });
+
   updateEntryVisibility();
 })();

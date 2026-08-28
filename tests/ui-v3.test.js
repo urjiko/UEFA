@@ -29,6 +29,9 @@ if (!app.includes('[1, 1.5, 2]')) throw new Error('Automatic speed options are m
 if (!html.includes('placeholder="Takım Ara..."')) throw new Error('Search placeholder is not concise.');
 if (!html.includes('data-initial-mode="current"')) throw new Error('Current UEFA fixture mode is missing.');
 if (!app.includes('startCurrentPrediction')) throw new Error('Current fixture mode does not jump directly into predictions.');
+if (!app.includes('fixedFixtures = state.fixtures.map')) throw new Error('Custom fixtures are not converted into fixed global draw constraints.');
+if (!app.includes("publishPredictionDraw(state.drawTable, { source: 'custom-draw' })")) throw new Error('Customized draw is not republished to the prediction layer.');
+if (!app.includes("source: 'simulated-draw'")) throw new Error('Final optimized automatic draw is not republished to prediction.');
 if (html.includes('Arama yap veya aşağıdaki torbalardan')) throw new Error('Verbose selection instructions are still visible.');
 if (!polish.includes('decorateDrawHeader') || !polish.includes('decoratePredictionHeader')) throw new Error('Team hero headers are not decorated.');
 if (!polish.includes('Kurayı çek, sonuçları tahmin et.')) throw new Error('Concise brand copy is missing.');

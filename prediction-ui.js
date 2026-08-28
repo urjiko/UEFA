@@ -398,9 +398,11 @@
   window.UCLDRAW_PREDICTION_SESSION = Object.freeze({
     state() { return predictionState; },
     activeTeamName() { return activeTeamName; },
+    selectedTeamName() { return predictionState?.selectedTeamName || null; },
     matchesForActiveTeam() { return matchesForTeam(activeTeamName); },
-    completeForActiveTeam() {
-      const matches = matchesForTeam(activeTeamName);
+    matchesForSelectedTeam() { return matchesForTeam(predictionState?.selectedTeamName); },
+    completeForSelectedTeam() {
+      const matches = matchesForTeam(predictionState?.selectedTeamName);
       return Boolean(matches.length && matches.every((match) => predictionState?.matchLocks?.[match.id]));
     }
   });

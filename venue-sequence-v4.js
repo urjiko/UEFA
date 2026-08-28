@@ -27,7 +27,7 @@
     return [];
   }
 
-  function createState(comp, table) {
+  function createState(comp, table, lockedPairs = new Set()) {
     const seen = new Set();
     const edges = [];
     for (const team of comp.teams) {
@@ -43,7 +43,8 @@
           aHome: Boolean(fixture.home),
           day: fixture.matchday,
           aFixture: fixture,
-          bFixture: reciprocal
+          bFixture: reciprocal,
+          lockedHome: lockedPairs.has(key)
         });
       }
     }
@@ -173,8 +174,14 @@
   }
 
   function optimizeVenueSequence(comp, table, options = {}) {
-    const state = createState(comp, table);
+    const lockedPairs = new Set((options.fixedFixtures || []).map((fixture) => {
+      const first = typeof fixture?.team === 'string' ? fixture.team : fixture?.team?.name;
+      const second = typeof fixture?.opponent === 'string' ? fixture.opponent : fixture?.opponent?.name;
+      return [first, second].filter(Boolean).sort().join('::');
+    }).filter(Boolean));
+    const state = createState(comp, table, lockedPairs);
     if (!state) return null;
+    const componentLocked = (component) => component.some((edgeIndex) => state.edges[edgeIndex].lockedHome);
     const matchdayCount = comp.potCount * comp.opponentsPerPot;
     const maxIterations = Number.isInteger(options.venueIterations)
       ? options.venueIterations
@@ -186,7 +193,7 @@
     for (let restart = 0; restart < restarts; restart += 1) {
       if (globalBest) restoreState(state, globalBest);
       for (const component of state.components) {
-        if (Math.random() < 0.5) {
+        if (!componentLocked(component) && Math.random() < 0.5) {
           for (const edgeIndex of component) state.edges[edgeIndex].aHome = !state.edges[edgeIndex].aHome;
         }
       }
@@ -198,7 +205,9 @@
       for (let iteration = 0; iteration < maxIterations; iteration += 1) {
         let undo;
         if (Math.random() < 0.34) {
-          const component = state.components[Math.floor(Math.random() * state.components.length)];
+          const availableComponents = state.components.filter((component) => !componentLocked(component));
+          if (!availableComponents.length) continue;
+          const component = availableComponents[Math.floor(Math.random() * availableComponents.length)];
           for (const edgeIndex of component) state.edges[edgeIndex].aHome = !state.edges[edgeIndex].aHome;
           undo = () => {
             for (const edgeIndex of component) state.edges[edgeIndex].aHome = !state.edges[edgeIndex].aHome;
@@ -277,7 +286,7 @@
       generateCompetitionDraw(comp, options = {}) {
         const attempts = Number.isInteger(options.venueSequenceAttempts)
           ? options.venueSequenceAttempts
-          : 4;
+          : ((options.fixedFixtures || []).length ? 10 : 4);
         for (let attempt = 0; attempt < attempts; attempt += 1) {
           const table = cloneTable(comp, baseEngine.generateCompetitionDraw(comp, options));
           const optimized = optimizeVenueSequence(comp, table, options);

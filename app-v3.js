@@ -151,6 +151,19 @@
     state.toastTimer = setTimeout(() => els.toast.classList.remove('is-visible'), 3200);
   }
   function setStatus(message) { els.drawStatus.textContent = message; }
+  function publishPredictionDraw(table, metadata = {}) {
+    if (!table) return;
+    window.UCLDRAW_LAST_DRAW = {
+      competition: competition(),
+      table,
+      leagueId: competition().id,
+      generatedAt: Date.now(),
+      ...metadata
+    };
+    window.dispatchEvent(new CustomEvent('ucldraw:draw-generated', {
+      detail: window.UCLDRAW_LAST_DRAW
+    }));
+  }
 
   function applyTheme() {
     const comp = competition();
@@ -698,18 +711,11 @@
     updateControlPanel();
     setStatus(info.note || 'UEFA güncel fikstürü yüklendi.');
 
-    window.UCLDRAW_LAST_DRAW = {
-      competition: competition(),
-      table,
-      leagueId: competition().id,
-      generatedAt: Date.now(),
+    publishPredictionDraw(table, {
       source: 'uefa-current',
       schedulePublished: Boolean(info.schedulePublished),
       sourceDate: info.sourceDate || null
-    };
-    window.dispatchEvent(new CustomEvent('ucldraw:draw-generated', {
-      detail: window.UCLDRAW_LAST_DRAW
-    }));
+    });
 
     window.setTimeout(() => {
       if (typeof window.UCLDRAW_OPEN_PREDICTION === 'function') {
@@ -723,7 +729,11 @@
   function startDraw() {
     if (!state.selectedTeam) return;
     stopDrawActivity(); state.drawToken += 1; state.running = true; state.processing = false; state.screenMode = 'draw'; state.revealedCount = 0; state.currentIndex = 0; state.activeCustomSlot = null; state.customBackup = null; state.overrides.clear();
-    try { state.drawTable = ENGINE.generateCompetitionDraw(competition()); state.fixtures = fixturesForTeam(state.selectedTeam); }
+    try {
+      state.drawTable = ENGINE.generateCompetitionDraw(competition());
+      state.fixtures = fixturesForTeam(state.selectedTeam);
+      publishPredictionDraw(state.drawTable, { source: 'simulated-draw' });
+    }
     catch (error) { state.running = false; state.screenMode = 'selection'; showToast(error.message); return; }
     showDrawScreen(); els.drawActions.hidden = true; els.customActions.hidden = true; els.customNote.hidden = true; els.pairControls.hidden = true; els.allFixturesSection.hidden = true; els.progressBar.style.width = '0%';
     renderDrawPots(); renderFixtureList(); updateControlPanel();
@@ -800,10 +810,38 @@
     setStatus(`Pot ${state.fixtures[0].pot} için bir rakip seç.`); renderFixtureList(); renderDrawPots(); renderPairControls(); updateProgress();
   }
   function finishCustomMode() {
-    const validation = validateFixtureSet(); if (!validation.valid) { showToast(validation.reason); return; }
-    state.overrides.set(state.selectedTeam.name, cloneFixtures(state.fixtures)); state.screenMode = 'complete'; state.revealedCount = state.fixtures.length; state.currentIndex = state.fixtures.length; state.activeCustomSlot = null; state.customBackup = null;
-    els.customActions.hidden = true; els.customNote.hidden = true; els.drawActions.hidden = false;
-    setStatus('Kişisel kura tamamlandı ve bütün kurallar doğrulandı.');
+    const validation = validateFixtureSet();
+    if (!validation.valid) { showToast(validation.reason); return; }
+
+    const fixedFixtures = state.fixtures.map((fixture) => ({
+      team: state.selectedTeam,
+      opponent: fixture.team,
+      home: Boolean(fixture.home)
+    }));
+    let rebuiltTable;
+    try {
+      setStatus('Kişisel eşleşmeler sabitleniyor; kalan fikstür dengeleniyor...');
+      rebuiltTable = ENGINE.generateCompetitionDraw(competition(), { fixedFixtures });
+    } catch (error) {
+      showToast(error.message);
+      setStatus('Bu kişisel eşleşmeler tüm lig fikstürüne yerleştirilemedi. Bir rakibi değiştirip tekrar dene.');
+      return;
+    }
+
+    state.drawTable = rebuiltTable;
+    state.overrides.clear();
+    state.fixtures = fixturesForTeam(state.selectedTeam);
+    state.screenMode = 'complete';
+    state.revealedCount = state.fixtures.length;
+    state.currentIndex = state.fixtures.length;
+    state.activeCustomSlot = null;
+    state.customBackup = null;
+    publishPredictionDraw(state.drawTable, { source: 'custom-draw' });
+
+    els.customActions.hidden = true;
+    els.customNote.hidden = true;
+    els.drawActions.hidden = false;
+    setStatus('Kişisel kura tamamlandı. Tahmin ekranı artık düzenlediğin rakipleri kullanacak.');
     renderPairControls(); renderFixtureList(); renderDrawPots(); updateProgress(); updateControlPanel(); showAllFixtures();
   }
   function setLeague(leagueId) {

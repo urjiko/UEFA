@@ -11,9 +11,9 @@ const schedule = fs.readFileSync(path.join(root, 'schedule-ui.js'), 'utf8');
 const manualScript = fs.readFileSync(path.join(root, 'manual-draw-v2.js'), 'utf8');
 const manualCss = fs.readFileSync(path.join(root, 'manual-draw-v2.css'), 'utf8');
 
-const baseEngineIndex = html.indexOf('<script src="draw-engine-v2.js"></script>');
-const venueSequenceIndex = html.indexOf('<script src="venue-sequence-v4.js"></script>');
-const appIndex = html.indexOf('app-v3.js?v=20260828a');
+const baseEngineIndex = html.indexOf('draw-engine-v2.js?v=20260828b');
+const venueSequenceIndex = html.indexOf('venue-sequence-v4.js?v=20260828b');
+const appIndex = html.indexOf('app-v3.js?v=20260828b');
 const scheduleUiIndex = html.indexOf('schedule-ui.js?v=20260821a');
 const fixtureDisplayIndex = html.indexOf('<script src="fixture-display.js"></script>');
 

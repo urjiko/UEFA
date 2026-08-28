@@ -112,6 +112,7 @@ jobs:
           node tests/league-routes.test.js
           node tests/prediction-community.test.js
           node tests/prediction-performance.test.js
+          node tests/prediction-finish-flow.test.js
       - name: Check existing music roster and prediction controls
         run: |
           node tests/music-roster-ui.test.js

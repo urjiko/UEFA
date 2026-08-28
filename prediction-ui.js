@@ -411,7 +411,10 @@
     matchesForSelectedTeam() { return matchesForTeam(predictionState?.selectedTeamName); },
     completeForSelectedTeam() {
       const matches = matchesForTeam(predictionState?.selectedTeamName);
-      return Boolean(matches.length && matches.every((match) => predictionState?.matchLocks?.[match.id]));
+      return Boolean(matches.length && matches.every((match) => predictionState?.scores?.[match.id]));
+    },
+    refresh() {
+      render();
     }
   });
 

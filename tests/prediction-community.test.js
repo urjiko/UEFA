@@ -14,10 +14,12 @@ const community = read('prediction-community.js');
 const css = read('prediction-community.css');
 const config = read('community-config.js');
 const sql = read('supabase/community-predictions.sql');
+const shareV4 = read('prediction-share-v4.js');
+const ai = read('prediction-ai-controller.js');
 
-assert.ok(html.includes('prediction-community.css?v=20260828a'));
+assert.ok(html.includes('prediction-community.css?v=20260828b'));
 assert.ok(html.includes('community-config.js?v=20260828b'));
-assert.ok(html.includes('prediction-community.js?v=20260828b'));
+assert.ok(html.includes('prediction-community.js?v=20260828c'));
 assert.ok(html.indexOf('prediction-ui.js') < html.indexOf('prediction-community.js'));
 
 assert.match(app, /openCurrentPredictionForSlug/);
@@ -26,14 +28,12 @@ assert.match(predictionUi, /UCLDRAW_PREDICTION_SESSION/);
 assert.match(predictionUi, /matchesForSelectedTeam/);
 assert.match(predictionUi, /completeForSelectedTeam/);
 
-assert.match(community, /setText\(button, 'Bitir'\)/);
+assert.match(community, /finishCurrentPrediction/);
 assert.match(community, /submitPrediction\(payload\)/);
 assert.match(community, /openAveragePage\(payload\.leagueId, payload\.teamSlug/);
 assert.match(community, /Tahmin Görselini İndir/);
-assert.match(community, /anonim maç tahminlerin topluluk ortalamasına eklenir/);
-assert.match(community, /İsim, e-posta veya hesap bilgisi gönderilmez/);
 assert.match(community, /draw\.source === 'uefa-current'/);
-assert.match(community, /state\.matchLocks/);
+assert.doesNotMatch(community, /state\.matchLocks/);
 assert.match(community, /score\.source === 'user-score'/);
 assert.match(community, /backendConfigured/);
 assert.match(community, /get_prediction_averages/);
@@ -42,19 +42,28 @@ assert.match(community, /history\.pushState/);
 
 for (const legacy of [
   '.prediction-share-button',
-  '.prediction-share-v4-button',
   '.prediction-export-v9-button',
   '.prediction-share-floating'
 ]) {
   assert.ok(css.includes(legacy), `legacy share control must be hidden: ${legacy}`);
 }
-assert.match(css, /prediction-community-finish/);
+assert.match(css, /prediction-community-finish-button/);
+assert.doesNotMatch(css, /prediction-community-finish-note/);
 assert.match(css, /community-average-grid/);
 assert.match(css, /community-average-active/);
 
 assert.match(config, /supabaseUrl:\s*''/);
 assert.match(config, /supabaseAnonKey:\s*''/);
 assert.match(config, /UCLDRAW_DISABLE_LEGACY_SHARE_UI = true/);
+
+assert.match(shareV4, /createActionButton\('Bitir'/);
+assert.match(shareV4, /prediction-community-finish-button/);
+assert.match(shareV4, /finishCurrentPrediction/);
+assert.doesNotMatch(shareV4, /shareButton\.hidden = !complete/);
+assert.match(ai, /function predictMissing/);
+assert.match(ai, /if \(state\.scores\[match\.id\]\) continue/);
+assert.match(community, /ai\.predictMissing\(state\)/);
+assert.match(community, /session\.refresh\?\.\(\)/);
 assert.doesNotMatch(config, /service_role/i);
 
 assert.match(sql, /create table if not exists public\.prediction_submissions/);

@@ -102,7 +102,7 @@ for (const [competitionId, pots] of Object.entries(expectedPots)) {
     const actual = competition.teams
       .filter((team) => team.pot === index + 1)
       .map((team) => team.poolSlug);
-    assert.deepEqual(actual, expectedSlugs, `${competitionId} Pot ${index + 1} must match UEFA's confirmed pots`);
+    assert.deepEqual(JSON.parse(JSON.stringify(actual)), expectedSlugs, `${competitionId} Pot ${index + 1} must match UEFA's confirmed pots`);
   });
 
   for (const team of competition.teams) {

@@ -45,18 +45,57 @@
     return associations.get(teamName).get(country) || 0;
   }
 
-  function candidateList(comp, maps, team, targetPot) {
+  function canPlaceEdge(maps, team, candidate) {
     const { needs, opponents, associations } = maps;
-    return comp.teams.filter((candidate) => {
-      if (candidate.pot !== targetPot) return false;
-      if (candidate === team || candidate.country === team.country) return false;
-      if (opponents.get(team.name).has(candidate.name)) return false;
-      if (needs.get(team.name)[targetPot] <= 0) return false;
-      if (needs.get(candidate.name)[team.pot] <= 0) return false;
-      if (associationCount(associations, team.name, candidate.country) >= 2) return false;
-      if (associationCount(associations, candidate.name, team.country) >= 2) return false;
-      return true;
-    });
+    if (!team || !candidate || candidate === team || candidate.country === team.country) return false;
+    if (opponents.get(team.name).has(candidate.name)) return false;
+    if (needs.get(team.name)[candidate.pot] <= 0) return false;
+    if (needs.get(candidate.name)[team.pot] <= 0) return false;
+    if (associationCount(associations, team.name, candidate.country) >= 2) return false;
+    if (associationCount(associations, candidate.name, team.country) >= 2) return false;
+    return true;
+  }
+
+  function candidateList(comp, maps, team, targetPot) {
+    return comp.teams.filter((candidate) => candidate.pot === targetPot && canPlaceEdge(maps, team, candidate));
+  }
+
+  function resolveFixedTeam(comp, value) {
+    if (!value) return null;
+    if (typeof value === 'string') return comp.teams.find((team) => team.name === value) || null;
+    if (comp.teams.includes(value)) return value;
+    return comp.teams.find((team) => team.name === value.name) || null;
+  }
+
+  function normalizeFixedFixtures(comp, fixedFixtures = []) {
+    if (!Array.isArray(fixedFixtures) || !fixedFixtures.length) return [];
+    const normalized = [];
+    const seenPairs = new Set();
+
+    for (const fixture of fixedFixtures) {
+      const team = resolveFixedTeam(comp, fixture?.team);
+      const opponent = resolveFixedTeam(comp, fixture?.opponent);
+      if (!team || !opponent) throw new Error('Sabitlenecek kişisel kura takımı bulunamadı.');
+      const pairKey = [team.name, opponent.name].sort().join('::');
+      if (seenPairs.has(pairKey)) throw new Error('Kişisel kurada aynı eşleşme iki kez sabitlenemez.');
+      seenPairs.add(pairKey);
+      normalized.push(Object.freeze({
+        team,
+        opponent,
+        home: Boolean(fixture.home),
+        pairKey
+      }));
+    }
+
+    const maps = createMaps(comp);
+    const edges = [];
+    for (const fixture of normalized) {
+      if (!canPlaceEdge(maps, fixture.team, fixture.opponent)) {
+        throw new Error(`Kişisel kura sabitlenemedi: ${fixture.team.name} - ${fixture.opponent.name}.`);
+      }
+      placeEdge(maps, fixture.team, fixture.opponent, edges);
+    }
+    return normalized;
   }
 
   function placeEdge(maps, team, candidate, edges) {
@@ -99,12 +138,24 @@
     return reverseCandidates * 100 + reverseNeed * 8 + associationPressure * 5 + Math.random() * 3;
   }
 
-  function buildEdges(comp, maxAttempts) {
+  function buildEdges(comp, maxAttempts, fixedFixtures = []) {
     const targetEdges = remainingEdgeCount(comp);
     for (let attempt = 0; attempt < maxAttempts; attempt += 1) {
       const maps = createMaps(comp);
       const edges = [];
       let failed = false;
+
+      for (const fixture of fixedFixtures) {
+        if (!canPlaceEdge(maps, fixture.team, fixture.opponent)) {
+          failed = true;
+          break;
+        }
+        placeEdge(maps, fixture.team, fixture.opponent, edges);
+        edges.at(-1).fixedHome = fixture.home;
+        edges.at(-1).fixedPairKey = fixture.pairKey;
+      }
+      if (failed) continue;
+
       while (edges.length < targetEdges) {
         const slot = chooseNextSlot(comp, maps);
         if (!slot || slot.deadEnd) { failed = true; break; }
@@ -154,21 +205,37 @@
       }
     }
 
-    const values = Array(edges.length).fill(null);
-    for (let start = 0; start < edges.length; start += 1) {
-      if (values[start] !== null) continue;
-      values[start] = Math.random() < 0.5 ? 0 : 1;
+    const values = edges.map((edge) => typeof edge.fixedHome === 'boolean'
+      ? (edge.fixedHome ? 1 : 0)
+      : null);
+    const visited = Array(edges.length).fill(false);
+
+    function propagate(start) {
       const queue = [start];
+      visited[start] = true;
       while (queue.length) {
         const current = queue.shift();
         for (const [next, parity] of graph[current]) {
           const expected = values[current] ^ parity;
-          if (values[next] === null) {
-            values[next] = expected;
+          if (values[next] === null) values[next] = expected;
+          else if (values[next] !== expected) return false;
+          if (!visited[next]) {
+            visited[next] = true;
             queue.push(next);
-          } else if (values[next] !== expected) return null;
+          }
         }
       }
+      return true;
+    }
+
+    for (let start = 0; start < edges.length; start += 1) {
+      if (values[start] === null || visited[start]) continue;
+      if (!propagate(start)) return null;
+    }
+    for (let start = 0; start < edges.length; start += 1) {
+      if (visited[start]) continue;
+      values[start] = Math.random() < 0.5 ? 0 : 1;
+      if (!propagate(start)) return null;
     }
     return values;
   }
@@ -326,10 +393,11 @@
 
   function generateCompetitionDraw(comp, options = {}) {
     assertCompetitionShape(comp);
-    const maxAttempts = Number.isInteger(options.maxAttempts) ? options.maxAttempts : 900;
-    const scheduleAttempts = Number.isInteger(options.scheduleAttempts) ? options.scheduleAttempts : 60;
+    const fixedFixtures = normalizeFixedFixtures(comp, options.fixedFixtures || []);
+    const maxAttempts = Number.isInteger(options.maxAttempts) ? options.maxAttempts : (fixedFixtures.length ? 1800 : 900);
+    const scheduleAttempts = Number.isInteger(options.scheduleAttempts) ? options.scheduleAttempts : (fixedFixtures.length ? 120 : 60);
     for (let attempt = 0; attempt < scheduleAttempts; attempt += 1) {
-      const edges = buildEdges(comp, maxAttempts);
+      const edges = buildEdges(comp, maxAttempts, fixedFixtures);
       const matchdays = assignMatchdays(comp, edges);
       if (!matchdays) continue;
       const orientation = orientEdges(comp, edges);

@@ -79,8 +79,8 @@
     const team = state.comp.teams.find((candidate) => candidate.name === selectedName);
     const matches = session.matchesForSelectedTeam?.() || [];
     if (!team || !matches.length) throw new Error('Takım tahminleri bulunamadı.');
-    if (!matches.every((match) => state.matchLocks?.[match.id] && state.scores?.[match.id])) {
-      throw new Error('Bitirmeden önce takımın bütün maçlarını kendin tahmin et.');
+    if (!matches.every((match) => state.scores?.[match.id])) {
+      throw new Error('Eksik tahminler tamamlanamadı.');
     }
 
     const predictions = matches.map((match) => {
@@ -98,7 +98,8 @@
         outcome,
         manual_score: manualScore,
         selected_goals: manualScore ? selectedGoals : null,
-        opponent_goals: manualScore ? opponentGoals : null
+        opponent_goals: manualScore ? opponentGoals : null,
+        prediction_source: String(score.source || '').startsWith('user') ? 'user' : 'ai'
       };
     });
 
@@ -360,75 +361,33 @@
     const session = window.UCLDRAW_PREDICTION_SESSION;
     const state = session?.state?.();
     const matches = session?.matchesForSelectedTeam?.() || [];
-    const completed = matches.filter((match) => state?.matchLocks?.[match.id]).length;
+    const completed = matches.filter((match) => state?.scores?.[match.id]).length;
     return { completed, total: matches.length, done: Boolean(matches.length && completed === matches.length) };
   }
 
-  function setText(element, value) {
-    if (element && element.textContent !== value) element.textContent = value;
-  }
-
-  function setDisabled(element, value) {
-    const next = Boolean(value);
-    if (element && element.disabled !== next) element.disabled = next;
-  }
-
-  function ensureFinishControl() {
-    if (document.body.classList.contains('community-average-active')) return;
-    const section = document.getElementById('predictionSection');
-    if (!section || section.hidden) return;
-    const layout = section.querySelector('.prediction-layout');
-    if (!layout) return;
-
-    let control = section.querySelector('.prediction-community-finish');
-    if (!control) {
-      control = document.createElement('div');
-      control.className = 'prediction-community-finish glass';
-      const note = document.createElement('p');
-      note.className = 'prediction-community-finish-note';
-      const button = document.createElement('button');
-      button.type = 'button';
-      button.className = 'action-button primary prediction-community-finish-button';
-      control.append(note, button);
-      section.appendChild(control);
-
-      button.addEventListener('click', async () => {
-        if (button.dataset.busy === 'true') return;
-        const progress = finishProgress();
-        if (!progress.done) return;
-        button.dataset.busy = 'true';
-        setDisabled(button, true);
-        setText(button, 'Bitiriliyor...');
-        try {
-          const payload = buildSubmission();
-          const result = await submitPrediction(payload);
-          await openAveragePage(payload.leagueId, payload.teamSlug, {
-            personal: true,
-            submissionResult: result
-          });
-        } catch (error) {
-          setText(note, error.message);
-          setDisabled(button, false);
-          setText(button, 'Bitir');
-          delete button.dataset.busy;
-        }
-      });
-    }
+  async function finishCurrentPrediction() {
+    const session = window.UCLDRAW_PREDICTION_SESSION;
+    const state = session?.state?.();
+    const selectedName = session?.selectedTeamName?.();
+    if (!state || !selectedName) throw new Error('Tahmin oturumu bulunamadı.');
 
     const progress = finishProgress();
-    const note = control.querySelector('.prediction-community-finish-note');
-    const button = control.querySelector('.prediction-community-finish-button');
-    const current = window.UCLDRAW_LAST_DRAW?.source === 'uefa-current';
-    const noteText = current
-      ? `Bitirdiğinde yalnızca bu takım için anonim maç tahminlerin topluluk ortalamasına eklenir. İsim, e-posta veya hesap bilgisi gönderilmez. · ${progress.completed}/${progress.total || 0}`
-      : `Bu simülasyon resmi güncel fikstür değil; Bitir yalnızca sonuç ekranını ve görsel indirmeyi açar. · ${progress.completed}/${progress.total || 0}`;
-    setText(note, noteText);
-    setDisabled(button, !progress.done);
-    setText(button, progress.done ? 'Bitir' : `Bitir · ${progress.completed}/${progress.total || 0}`);
+    if (!progress.done) {
+      const ai = window.UCLDRAW_PREDICTION_AI;
+      if (!ai?.predictMissing) throw new Error('Eksik maçlar için yapay zeka tahmini hazır değil.');
+      ai.predictMissing(state);
+      session.refresh?.();
+    }
+
+    const payload = buildSubmission();
+    const result = await submitPrediction(payload);
+    await openAveragePage(payload.leagueId, payload.teamSlug, {
+      personal: true,
+      submissionResult: result
+    });
+    return { payload, result };
   }
 
-  window.addEventListener('ucldraw:prediction-rendered', ensureFinishControl);
-  window.addEventListener('ucldraw:draw-generated', () => window.requestAnimationFrame(ensureFinishControl));
   window.addEventListener('popstate', () => {
     if (!/\/ortalama\/?$/.test(window.location.pathname)) clearAverageMode();
   });
@@ -442,8 +401,7 @@
     fetchAverages,
     openAveragePage,
     downloadPredictionImage,
-    ensureFinishControl
+    finishProgress,
+    finishCurrentPrediction
   });
-
-  ensureFinishControl();
 })();

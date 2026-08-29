@@ -66,7 +66,7 @@ const manager = context.window.UCLDRAW_ROSTER_MANAGER;
 const prediction = context.window.UCLDRAW_PREDICTION_ENGINE;
 
 assert.equal(official.snapshotDate, '2026-08-28');
-assert.equal(current.snapshotDate, '2026-08-28');
+assert.equal(current.snapshotDate, '2026-08-29');
 assert.equal(manager.officialLeaguePhaseVersion, '2026-08-28');
 
 const expectedPots = {
@@ -117,39 +117,61 @@ assert.equal(allSlugs.length, 108);
 assert.equal(new Set(allSlugs).size, 108, 'all three league phases must contain 108 unique clubs');
 
 assert.equal(current.available('ucl'), true);
-assert.equal(current.available('uel'), false);
-assert.equal(current.available('uecl'), false);
+assert.equal(current.available('uel'), true);
+assert.equal(current.available('uecl'), true);
 assert.equal(current.metadata.ucl.schedulePublished, false);
+assert.equal(current.metadata.uel.schedulePublished, false);
+assert.equal(current.metadata.uecl.schedulePublished, false);
+assert.deepEqual(
+  JSON.parse(JSON.stringify(current.metadata.uel.matchdayDates)),
+  ['16/17 Eylül 2026','15 Ekim 2026','22 Ekim 2026','5 Kasım 2026','26 Kasım 2026','10 Aralık 2026','21 Ocak 2027','28 Ocak 2027']
+);
+assert.deepEqual(
+  JSON.parse(JSON.stringify(current.metadata.uecl.matchdayDates)),
+  ['15 Ekim 2026','22 Ekim 2026','5 Kasım 2026','26 Kasım 2026','10 Aralık 2026','17 Aralık 2026']
+);
+
+for (const [competitionId, expectedFixtures, expectedPairs] of [
+  ['ucl', 8, 144],
+  ['uel', 8, 144],
+  ['uecl', 6, 108]
+]) {
+  const competition = data.competitions[competitionId];
+  const table = current.buildTable(competition);
+  assert.ok(table, `${competitionId} current table must be available`);
+
+  const pairs = new Set();
+  for (const team of competition.teams) {
+    const fixtures = table[team.name];
+    assert.equal(fixtures.length, expectedFixtures, `${team.name} must have ${expectedFixtures} current opponents`);
+    assert.equal(fixtures.filter((fixture) => fixture.home).length, expectedFixtures / 2, `${team.name} must have the correct number of home fixtures`);
+    assert.equal(fixtures.filter((fixture) => !fixture.home).length, expectedFixtures / 2, `${team.name} must have the correct number of away fixtures`);
+    assert.deepEqual(
+      JSON.parse(JSON.stringify(fixtures.map((fixture) => fixture.matchday).sort((a, b) => a - b))),
+      Array.from({ length: expectedFixtures }, (_, index) => index + 1),
+      `${team.name} internal prediction schedule must use each round once`
+    );
+
+    fixtures.forEach((fixture) => {
+      const reciprocal = table[fixture.opponent.name].find((candidate) => candidate.opponent.name === team.name);
+      assert.ok(reciprocal, `${team.name} vs ${fixture.opponent.name} must be reciprocal`);
+      assert.equal(reciprocal.home, !fixture.home);
+      assert.equal(reciprocal.matchday, fixture.matchday);
+      assert.equal(fixture.date, null);
+      pairs.add([team.name, fixture.opponent.name].sort().join('::'));
+    });
+  }
+  assert.equal(pairs.size, expectedPairs, `${competitionId} current draw must contain ${expectedPairs} unique matches`);
+
+  const state = prediction.createState(competition, table, competitionId, competition.teams[0].name, `${competitionId}-current-fixture-test`);
+  assert.equal(state.matches.length, expectedPairs);
+  assert.ok(state.matches.every((match) => match.date === null), `${competitionId} exact pairing dates must stay blank until UEFA publishes the calendar`);
+}
 
 const ucl = data.competitions.ucl;
-const table = current.buildTable(ucl);
-assert.ok(table);
-
-const pairs = new Set();
-for (const team of ucl.teams) {
-  const fixtures = table[team.name];
-  assert.equal(fixtures.length, 8, `${team.name} must have eight current opponents`);
-  assert.equal(fixtures.filter((fixture) => fixture.home).length, 4, `${team.name} must have four home fixtures`);
-  assert.equal(fixtures.filter((fixture) => !fixture.home).length, 4, `${team.name} must have four away fixtures`);
-  assert.deepEqual(
-    JSON.parse(JSON.stringify(fixtures.map((fixture) => fixture.matchday).sort((a, b) => a - b))),
-    [1,2,3,4,5,6,7,8],
-    `${team.name} internal prediction schedule must use each round once`
-  );
-
-  fixtures.forEach((fixture) => {
-    const reciprocal = table[fixture.opponent.name].find((candidate) => candidate.opponent.name === team.name);
-    assert.ok(reciprocal, `${team.name} vs ${fixture.opponent.name} must be reciprocal`);
-    assert.equal(reciprocal.home, !fixture.home);
-    assert.equal(reciprocal.matchday, fixture.matchday);
-    assert.equal(fixture.date, null);
-    pairs.add([team.name, fixture.opponent.name].sort().join('::'));
-  });
-}
-assert.equal(pairs.size, 144, 'the current UCL draw must contain 144 unique matches');
-
+const uclTable = current.buildTable(ucl);
 const fenerbahce = ucl.teams.find((team) => team.poolSlug === 'fenerbahce');
-const fenerFixtures = table[fenerbahce.name];
+const fenerFixtures = uclTable[fenerbahce.name];
 assert.deepEqual(
   new Set(fenerFixtures.filter((fixture) => fixture.home).map((fixture) => fixture.opponent.poolSlug)),
   new Set(['liverpool','roma','villareal','slavia'])
@@ -159,8 +181,30 @@ assert.deepEqual(
   new Set(['atleti','astonvilla','shakhtar','lask'])
 );
 
-const state = prediction.createState(ucl, table, 'ucl', fenerbahce.name, 'current-fixture-test');
-assert.equal(state.matches.length, 144);
-assert.ok(state.matches.every((match) => match.date === null), 'unpublished UEFA match dates must stay blank');
+const uel = data.competitions.uel;
+const uelTable = current.buildTable(uel);
+const besiktas = uel.teams.find((team) => team.poolSlug === 'besiktas');
+const besiktasFixtures = uelTable[besiktas.name];
+assert.deepEqual(
+  new Set(besiktasFixtures.filter((fixture) => fixture.home).map((fixture) => fixture.opponent.poolSlug)),
+  new Set(['marseille','union','crystalpalace','hapoelbeersheva'])
+);
+assert.deepEqual(
+  new Set(besiktasFixtures.filter((fixture) => !fixture.home).map((fixture) => fixture.opponent.poolSlug)),
+  new Set(['bayerleverkusen','celtic','omonia','hoffenheim'])
+);
 
-console.log('Official 2026/27 rosters and current Champions League fixture mode checks passed.');
+const uecl = data.competitions.uecl;
+const ueclTable = current.buildTable(uecl);
+const trabzonspor = uecl.teams.find((team) => team.poolSlug === 'trabzonspor');
+const trabzonFixtures = ueclTable[trabzonspor.name];
+assert.deepEqual(
+  new Set(trabzonFixtures.filter((fixture) => fixture.home).map((fixture) => fixture.opponent.poolSlug)),
+  new Set(['freiburg','hearts','jablonec'])
+);
+assert.deepEqual(
+  new Set(trabzonFixtures.filter((fixture) => !fixture.home).map((fixture) => fixture.opponent.poolSlug)),
+  new Set(['crvenazvezda','kuopio','cskasofia'])
+);
+
+console.log('Official 2026/27 rosters and all current UEFA draw fixture checks passed.');

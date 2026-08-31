@@ -66,7 +66,7 @@ const manager = context.window.UCLDRAW_ROSTER_MANAGER;
 const prediction = context.window.UCLDRAW_PREDICTION_ENGINE;
 
 assert.equal(official.snapshotDate, '2026-08-28');
-assert.equal(current.snapshotDate, '2026-08-29');
+assert.equal(current.snapshotDate, '2026-08-31');
 assert.equal(manager.officialLeaguePhaseVersion, '2026-08-28');
 
 const expectedPots = {
@@ -119,9 +119,9 @@ assert.equal(new Set(allSlugs).size, 108, 'all three league phases must contain 
 assert.equal(current.available('ucl'), true);
 assert.equal(current.available('uel'), true);
 assert.equal(current.available('uecl'), true);
-assert.equal(current.metadata.ucl.schedulePublished, false);
-assert.equal(current.metadata.uel.schedulePublished, false);
-assert.equal(current.metadata.uecl.schedulePublished, false);
+assert.equal(current.metadata.ucl.schedulePublished, true);
+assert.equal(current.metadata.uel.schedulePublished, true);
+assert.equal(current.metadata.uecl.schedulePublished, true);
 assert.deepEqual(
   JSON.parse(JSON.stringify(current.metadata.uel.matchdayDates)),
   ['16/17 Eylül 2026','15 Ekim 2026','22 Ekim 2026','5 Kasım 2026','26 Kasım 2026','10 Aralık 2026','21 Ocak 2027','28 Ocak 2027']
@@ -157,7 +157,8 @@ for (const [competitionId, expectedFixtures, expectedPairs] of [
       assert.ok(reciprocal, `${team.name} vs ${fixture.opponent.name} must be reciprocal`);
       assert.equal(reciprocal.home, !fixture.home);
       assert.equal(reciprocal.matchday, fixture.matchday);
-      assert.equal(fixture.date, null);
+      assert.match(fixture.date, /^202[67]-\d{2}-\d{2}$/);
+      assert.match(fixture.kickoffCET, /^\d{2}:\d{2}$/);
       pairs.add([team.name, fixture.opponent.name].sort().join('::'));
     });
   }
@@ -165,13 +166,18 @@ for (const [competitionId, expectedFixtures, expectedPairs] of [
 
   const state = prediction.createState(competition, table, competitionId, competition.teams[0].name, `${competitionId}-current-fixture-test`);
   assert.equal(state.matches.length, expectedPairs);
-  assert.ok(state.matches.every((match) => match.date === null), `${competitionId} exact pairing dates must stay blank until UEFA publishes the calendar`);
+  assert.ok(state.matches.every((match) => /^202[67]-\d{2}-\d{2}$/.test(match.date)), `${competitionId} must expose official exact pairing dates`);
+  assert.ok(state.matches.every((match) => /^\d{2}:\d{2}$/.test(match.kickoffCET)), `${competitionId} must preserve official UEFA kick-off times`);
 }
 
 const ucl = data.competitions.ucl;
 const uclTable = current.buildTable(ucl);
 const fenerbahce = ucl.teams.find((team) => team.poolSlug === 'fenerbahce');
 const fenerFixtures = uclTable[fenerbahce.name];
+const fenerRoma = fenerFixtures.find((fixture) => fixture.opponent.poolSlug === 'roma');
+assert.equal(fenerRoma.matchday, 1);
+assert.equal(fenerRoma.date, '2026-09-10');
+assert.equal(fenerRoma.kickoffCET, '18:45');
 assert.deepEqual(
   new Set(fenerFixtures.filter((fixture) => fixture.home).map((fixture) => fixture.opponent.poolSlug)),
   new Set(['liverpool','roma','villareal','slavia'])
@@ -185,6 +191,10 @@ const uel = data.competitions.uel;
 const uelTable = current.buildTable(uel);
 const besiktas = uel.teams.find((team) => team.poolSlug === 'besiktas');
 const besiktasFixtures = uelTable[besiktas.name];
+const besiktasMarseille = besiktasFixtures.find((fixture) => fixture.opponent.poolSlug === 'marseille');
+assert.equal(besiktasMarseille.matchday, 1);
+assert.equal(besiktasMarseille.date, '2026-09-17');
+assert.equal(besiktasMarseille.kickoffCET, '21:00');
 assert.deepEqual(
   new Set(besiktasFixtures.filter((fixture) => fixture.home).map((fixture) => fixture.opponent.poolSlug)),
   new Set(['marseille','union','crystalpalace','hapoelbeersheva'])
@@ -198,6 +208,10 @@ const uecl = data.competitions.uecl;
 const ueclTable = current.buildTable(uecl);
 const trabzonspor = uecl.teams.find((team) => team.poolSlug === 'trabzonspor');
 const trabzonFixtures = ueclTable[trabzonspor.name];
+const trabzonKuopio = trabzonFixtures.find((fixture) => fixture.opponent.poolSlug === 'kuopio');
+assert.equal(trabzonKuopio.matchday, 1);
+assert.equal(trabzonKuopio.date, '2026-10-15');
+assert.equal(trabzonKuopio.kickoffCET, '18:45');
 assert.deepEqual(
   new Set(trabzonFixtures.filter((fixture) => fixture.home).map((fixture) => fixture.opponent.poolSlug)),
   new Set(['freiburg','hearts','jablonec'])

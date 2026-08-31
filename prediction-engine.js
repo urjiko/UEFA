@@ -111,11 +111,19 @@
         const date = fixture.officialFixture && hasExplicitDate && fixture.date === null
           ? null
           : (fixture.date || matchDate(leagueId, matchday, id, seed));
-        matches.push({ id, matchday, home, away, date });
+        matches.push({
+          id,
+          matchday,
+          home,
+          away,
+          date,
+          kickoffCET: fixture.kickoffCET || null
+        });
       }
     }
     return matches.sort((first, second) => first.matchday - second.matchday
       || String(first.date).localeCompare(String(second.date))
+      || String(first.kickoffCET).localeCompare(String(second.kickoffCET))
       || first.home.name.localeCompare(second.home.name, 'tr'));
   }
 

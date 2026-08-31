@@ -233,7 +233,9 @@
     week.title = currentUnscheduled ? 'Eşleşme sırası; resmi maç günü henüz yayınlanmadı.' : '';
     const date = document.createElement('time');
     date.dateTime = match.date || '';
-    date.textContent = formatDate(match.date);
+    date.textContent = match.kickoffCET
+      ? `${formatDate(match.date)} · ${match.kickoffCET} CET`
+      : formatDate(match.date);
     const stateLabel = document.createElement('small');
     stateLabel.textContent = matchLocked ? 'Kilitli' : teamLocked && score ? 'Takım kilidi' : score ? 'Tahmin edildi' : 'Bekliyor';
     top.append(week, date, stateLabel);

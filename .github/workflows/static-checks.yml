@@ -50,6 +50,7 @@ jobs:
           node --check qualification-bracket.js
           node --check qualification-current-state.js
           node --check prediction-engine.js
+          node --check current-team-strength-profiles.js
           node --check prediction-ai-controller.js
           node --check prediction-bridge.js
           node --check prediction-ui.js

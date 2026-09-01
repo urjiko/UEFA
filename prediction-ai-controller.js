@@ -70,6 +70,39 @@
     };
   }
 
+  function currentStrengthData() {
+    return window.UCLDRAW_CURRENT_TEAM_STRENGTH || {
+      version: 0,
+      methodology: {
+        impactPointPercent: 0.01,
+        maximumAbsoluteImpactPoints: 6,
+        factorBounds: [0.94, 1.06]
+      },
+      profiles: {}
+    };
+  }
+
+  function currentStrengthFor(team) {
+    const slug = String(team?.poolSlug || '').trim();
+    return slug ? currentStrengthData().profiles?.[slug] || null : null;
+  }
+
+  function currentStrengthFactor(team, metric) {
+    const profile = currentStrengthFor(team);
+    if (!profile) return 1;
+    const methodology = currentStrengthData().methodology || {};
+    const pointPercent = finiteOr(methodology.impactPointPercent, 0.01);
+    const maximumPoints = Math.max(0, finiteOr(methodology.maximumAbsoluteImpactPoints, 6));
+    const bounds = methodology.factorBounds || [0.94, 1.06];
+    const impactField = metric === 'defense' ? 'defenseImpact' : 'attackImpact';
+    const confidenceField = metric === 'defense' ? 'defenseConfidence' : 'attackConfidence';
+    const impact = clamp(finiteOr(profile[impactField], 0), -maximumPoints, maximumPoints);
+    const confidence = clamp(finiteOr(profile[confidenceField], 0), 0, 1);
+    const signed = impact * pointPercent * confidence;
+    const raw = metric === 'defense' ? 1 - signed : 1 + signed;
+    return clamp(raw, finiteOr(bounds[0], 0.94), finiteOr(bounds[1], 1.06));
+  }
+
   function profileFor(team) {
     const slug = String(team?.poolSlug || '').trim();
     return slug ? profileData().profiles?.[slug] || null : null;
@@ -92,7 +125,7 @@
     return current + (safeTarget - current) * safeConfidence;
   }
 
-  function metricMultiplier(profile, metric, context, leagueId, opponentCountry) {
+  function metricMultiplier(profile, metric, context, leagueId, opponentCountry, opponentSlug) {
     if (!profile) return 1;
     const values = profile[metric] || {};
     const confidence = metric === 'defense'
@@ -114,6 +147,13 @@
       multiplier = blend(multiplier, association[metric], association.confidence, 0.45);
     }
 
+    const direct = opponentSlug ? profile.directMatchups?.[opponentSlug] : null;
+    if (direct && Number.isFinite(Number(direct[metric]))) {
+      // Exact-opponent history is useful, but many H2Hs are sparse or old.
+      // It is intentionally weaker than the broader European/home-country signal.
+      multiplier = blend(multiplier, direct[metric], direct.confidence, 0.25);
+    }
+
     const methodology = profileData().methodology || DEFAULT_METHODOLOGY;
     const bounds = metric === 'attack'
       ? methodology.attackBounds || DEFAULT_METHODOLOGY.attackBounds
@@ -124,13 +164,24 @@
   function adjustExpectedGoals(match, comp, homeExpected, awayExpected) {
     const profile = profileFor(match.home);
     const context = opponentBand(match.home, match.away, comp.potCount);
-    const attackMultiplier = metricMultiplier(profile, 'attack', context, comp.id, match.away.country);
-    const defenseMultiplier = metricMultiplier(profile, 'defense', context, comp.id, match.away.country);
+    const opponentSlug = String(match.away?.poolSlug || '').trim();
+    const attackMultiplier = metricMultiplier(profile, 'attack', context, comp.id, match.away.country, opponentSlug);
+    const defenseMultiplier = metricMultiplier(profile, 'defense', context, comp.id, match.away.country, opponentSlug);
+
+    const homeSquadAttack = currentStrengthFactor(match.home, 'attack');
+    const homeSquadDefense = currentStrengthFactor(match.home, 'defense');
+    const awaySquadAttack = currentStrengthFactor(match.away, 'attack');
+    const awaySquadDefense = currentStrengthFactor(match.away, 'defense');
+
     return {
-      homeExpected: clamp(homeExpected * attackMultiplier, 0.2, 3.8),
-      awayExpected: clamp(awayExpected * defenseMultiplier, 0.15, 3.4),
+      homeExpected: clamp(homeExpected * attackMultiplier * homeSquadAttack * awaySquadDefense, 0.2, 3.8),
+      awayExpected: clamp(awayExpected * defenseMultiplier * awaySquadAttack * homeSquadDefense, 0.15, 3.4),
       attackMultiplier,
       defenseMultiplier,
+      homeSquadAttack,
+      homeSquadDefense,
+      awaySquadAttack,
+      awaySquadDefense,
       context,
       profileSlug: profile ? match.home.poolSlug : null
     };
@@ -153,6 +204,11 @@
         awayExpected: adjusted.awayExpected,
         homeAttackMultiplier: adjusted.attackMultiplier,
         homeDefenseMultiplier: adjusted.defenseMultiplier,
+        homeSquadAttackMultiplier: adjusted.homeSquadAttack,
+        homeSquadDefenseMultiplier: adjusted.homeSquadDefense,
+        awaySquadAttackMultiplier: adjusted.awaySquadAttack,
+        awaySquadDefenseMultiplier: adjusted.awaySquadDefense,
+        currentStrengthVersion: currentStrengthData().version || 0,
         homeContext: adjusted.context,
         homeProfile: adjusted.profileSlug
       }
@@ -309,7 +365,9 @@
     adjustExpectedGoals,
     simulateAdjustedScore,
     simulateMatchday,
-    methodology: () => profileData().methodology || DEFAULT_METHODOLOGY
+    methodology: () => profileData().methodology || DEFAULT_METHODOLOGY,
+    currentStrengthFor,
+    currentStrengthFactor
   });
 
   window.UCLDRAW_PREDICTION_AI = Object.freeze({

@@ -11,8 +11,21 @@
   const CLUB = Object.freeze({ x: 76, y: 65, size: 178, repaintRight: 278 });
   const FOOTER = Object.freeze({ y: 1536, height: 64, leftX: 48, rightX: 1152, textY: 1568 });
   const SITE_LINK = 'urjiko.github.io/UEFA';
+  const ROUTE_DIRS = Object.freeze({
+    ucl: 'champions-league',
+    uel: 'europa-league',
+    uecl: 'conference-league'
+  });
   const FOOTER_LABEL = 'Unofficial Simulation';
   const imageCache = new Map();
+
+  function predictionLink(snapshot) {
+    const leagueId = snapshot.competition?.id || document.body.dataset.league || 'ucl';
+    const team = snapshot.competition?.teams?.find((candidate) => candidate.name === snapshot.activeName) || null;
+    const teamSlug = team?.poolSlug || team?.qualificationId || slug(snapshot.activeName);
+    const directory = ROUTE_DIRS[leagueId] || ROUTE_DIRS.ucl;
+    return `https://urjiko.github.io/UEFA/${directory}/tahmin/${teamSlug}/`;
+  }
 
   const headerThemes = Object.freeze({
     ucl: Object.freeze({ start: '#102a82', end: '#050914', final: '#030303', stroke: 'rgba(118, 151, 255, 0.52)' }),
@@ -202,13 +215,20 @@
     const filename = `2026-27-${slug(snapshot.activeName)}-${snapshot.competition.id}-yolculugu.png`;
     const file = new File([blob], filename, { type: 'image/png' });
     const title = `2026-27 ${snapshot.activeName} ${journeyTitles[snapshot.competition.id] || snapshot.competition.shortName}`;
+    const url = predictionLink(snapshot);
+    const text = `${title}\nSen de ${snapshot.activeName} için tahminini yap:\n${url}`;
     if (navigator.share && navigator.canShare?.({ files: [file] })) {
-      await navigator.share({ title, files: [file] });
-      showToast('Paylaşım görseli hazır.');
+      await navigator.share({ title, text, files: [file] });
+      showToast('Görsel ve takım tahmin linki paylaşıma hazır.');
       return 'shared';
     }
     downloadBlob(blob, filename);
-    showToast('Paylaşım görseli indirildi.');
+    try {
+      await navigator.clipboard?.writeText?.(text);
+      showToast('Görsel indirildi, tahmin mesajı ve link panoya kopyalandı.');
+    } catch {
+      showToast('Paylaşım görseli indirildi.');
+    }
     return 'downloaded';
   }
 

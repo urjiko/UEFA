@@ -161,7 +161,7 @@
     if (document.querySelector('script[data-prediction-share-v7]')) return true;
     if (!window.UCLDRAW_PREDICTION_SHARE_V6) return false;
     const script = document.createElement('script');
-    script.src = 'prediction-share-v7.js';
+    script.src = 'prediction-share-v7.js?v=20260901a';
     script.async = false;
     script.dataset.predictionShareV7 = 'true';
     document.body.appendChild(script);
@@ -173,7 +173,7 @@
     if (document.querySelector('script[data-prediction-share-v8]')) return true;
     if (!window.UCLDRAW_PREDICTION_SHARE_V7) return false;
     const script = document.createElement('script');
-    script.src = 'prediction-share-v8.js?v=20260828p1';
+    script.src = 'prediction-share-v8.js?v=20260901a';
     script.async = false;
     script.dataset.predictionShareV8 = 'true';
     document.body.appendChild(script);

@@ -166,6 +166,12 @@
     return rows.find((row) => row.match_key === key) || null;
   }
 
+  async function sharePredictionImage() {
+    const renderer = window.UCLDRAW_PREDICTION_SHARE_V8 || window.UCLDRAW_PREDICTION_SHARE_V7;
+    if (!renderer?.shareCurrent) throw new Error('Tahmin paylaşımı hazır değil.');
+    return renderer.shareCurrent();
+  }
+
   async function downloadPredictionImage() {
     const v9 = window.UCLDRAW_PREDICTION_SHARE_V9;
     if (v9?.downloadCurrent) return v9.downloadCurrent();
@@ -310,9 +316,27 @@
     const actions = document.createElement('div');
     actions.className = 'community-average-actions glass';
     if (options.personal && window.UCLDRAW_PREDICTION_SESSION?.state?.()) {
+      const share = document.createElement('button');
+      share.type = 'button';
+      share.className = 'action-button primary';
+      share.textContent = 'Paylaş';
+      share.addEventListener('click', async () => {
+        share.disabled = true;
+        share.textContent = 'Hazırlanıyor...';
+        try {
+          await sharePredictionImage();
+          status.textContent = 'Görsel, mesaj ve takım tahmin linki paylaşım ekranına gönderildi.';
+        } catch (error) {
+          if (error?.name !== 'AbortError') status.textContent = error.message;
+        } finally {
+          share.disabled = false;
+          share.textContent = 'Paylaş';
+        }
+      });
+
       const download = document.createElement('button');
       download.type = 'button';
-      download.className = 'action-button primary';
+      download.className = 'action-button';
       download.textContent = 'Tahmin Görselini İndir';
       download.addEventListener('click', async () => {
         download.disabled = true;
@@ -324,7 +348,7 @@
           download.textContent = 'Tahmin Görselini İndir';
         }
       });
-      actions.appendChild(download);
+      actions.append(share, download);
     }
 
     const copyLink = document.createElement('button');
@@ -400,6 +424,7 @@
     submitPrediction,
     fetchAverages,
     openAveragePage,
+    sharePredictionImage,
     downloadPredictionImage,
     finishProgress,
     finishCurrentPrediction

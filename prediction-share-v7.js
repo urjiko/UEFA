@@ -9,6 +9,11 @@
   const CARD_HEIGHT = 1600;
   const CARD_OPACITY = 0.62;
   const SITE_LINK = 'urjiko.github.io/UEFA';
+  const ROUTE_DIRS = Object.freeze({
+    ucl: 'champions-league',
+    uel: 'europa-league',
+    uecl: 'conference-league'
+  });
   const HEADER = Object.freeze({ x: 48, y: 36, width: 1104, height: 236, radius: 30 });
   const BODY = Object.freeze({ y: 306, height: 1230, leftX: 48, leftWidth: 680, rightX: 752, rightWidth: 400 });
   const imageCache = new Map();
@@ -36,6 +41,15 @@
     uel: 'Avrupa Ligi Yolculuğu',
     uecl: 'Konferans Ligi Yolculuğu'
   });
+
+  function predictionLink(snapshot, absolute = false) {
+    const leagueId = snapshot.competition?.id || document.body.dataset.league || 'ucl';
+    const team = snapshot.competition?.teams?.find((candidate) => candidate.name === snapshot.activeName) || null;
+    const teamSlug = team?.poolSlug || team?.qualificationId || slug(snapshot.activeName);
+    const directory = ROUTE_DIRS[leagueId] || ROUTE_DIRS.ucl;
+    const path = `urjiko.github.io/UEFA/${directory}/tahmin/${teamSlug}/`;
+    return absolute ? `https://${path}` : path;
+  }
 
   function absoluteAsset(source) {
     if (!source) return null;
@@ -183,6 +197,12 @@
     context.font = `400 ${journeySize}px "Champions Sans", Arial, sans-serif`;
     context.fillStyle = 'rgba(255, 255, 255, 0.76)';
     context.fillText(journey, copyX, clubY + 145);
+
+    const directLink = predictionLink(snapshot);
+    const linkSize = fitFont(context, directLink, copyWidth, 17, 11, 600);
+    context.font = `600 ${linkSize}px "Champions Sans", Arial, sans-serif`;
+    context.fillStyle = 'rgba(255, 255, 255, 0.62)';
+    context.fillText(directLink, copyX, clubY + 174);
 
     context.textAlign = 'right';
     context.font = '700 16px "Champions Sans", Arial, sans-serif';
@@ -339,13 +359,20 @@
     const filename = `2026-27-${slug(snapshot.activeName)}-${snapshot.competition.id}-yolculugu.png`;
     const file = new File([blob], filename, { type: 'image/png' });
     const title = `2026-27 ${snapshot.activeName} ${journeyTitles[snapshot.competition.id] || snapshot.competition.shortName}`;
+    const url = predictionLink(snapshot, true);
+    const text = `${title}\nSen de ${snapshot.activeName} için tahminini yap:\n${url}`;
     if (navigator.share && navigator.canShare?.({ files: [file] })) {
-      await navigator.share({ title, files: [file] });
-      showToast('Paylaşım görseli hazır.');
+      await navigator.share({ title, text, files: [file] });
+      showToast('Görsel ve takım tahmin linki paylaşıma hazır.');
       return 'shared';
     }
     downloadBlob(blob, filename);
-    showToast('Paylaşım görseli indirildi.');
+    try {
+      await navigator.clipboard?.writeText?.(text);
+      showToast('Görsel indirildi, tahmin mesajı ve link panoya kopyalandı.');
+    } catch {
+      showToast('Paylaşım görseli indirildi.');
+    }
     return 'downloaded';
   }
 

@@ -6,13 +6,15 @@ const v9 = fs.readFileSync('prediction-share-v9.js', 'utf8');
 const css = fs.readFileSync('prediction-share-v9.css', 'utf8');
 
 assert.match(v8, /stylesheet\.href\s*=\s*'prediction-share-v9\.css'/);
-assert.match(v8, /script\.src\s*=\s*'prediction-share-v9\.js\?v=20260828p1'/);
+assert.match(v8, /script\.src\s*=\s*'prediction-share-v9\.js\?v=20260901hq1'/);
 assert.match(v8, /installHighResolutionExport\(\)/);
 
-assert.match(v9, /const EXPORT_SCALE = 2/);
-assert.match(v9, /const OUTPUT_WIDTH = CARD_WIDTH \* EXPORT_SCALE/);
-assert.match(v9, /const OUTPUT_HEIGHT = CARD_HEIGHT \* EXPORT_SCALE/);
-assert.match(v9, /context\.imageSmoothingQuality = 'high'/);
+assert.match(v9, /const NATIVE_SCALE = 2/);
+assert.match(v9, /const OUTPUT_WIDTH = CARD_WIDTH \\* NATIVE_SCALE/);
+assert.match(v9, /const OUTPUT_HEIGHT = CARD_HEIGHT \\* NATIVE_SCALE/);
+assert.doesNotMatch(v9, /function upscaleCanvas/);
+assert.doesNotMatch(v9, /drawImage\(sourceCanvas/);
+assert.match(v9, /native 2400×3200 çözünürlükte/);
 assert.match(v9, /2400x3200\.png/);
 assert.match(v9, /async function shareCurrent\(\)/);
 assert.match(v9, /async function copyCurrent\(\)/);

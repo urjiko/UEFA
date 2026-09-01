@@ -7,6 +7,9 @@
 
   const CARD_WIDTH = 1200;
   const CARD_HEIGHT = 1600;
+  const NATIVE_SCALE = 2;
+  const OUTPUT_WIDTH = CARD_WIDTH * NATIVE_SCALE;
+  const OUTPUT_HEIGHT = CARD_HEIGHT * NATIVE_SCALE;
   const CARD_OPACITY = 0.62;
   const SITE_LINK = 'urjiko.github.io/UEFA';
   const HEADER = Object.freeze({ x: 48, y: 36, width: 1104, height: 236, radius: 30 });
@@ -86,8 +89,23 @@
     const scale = Math.min(width / image.naturalWidth, height / image.naturalHeight);
     const targetWidth = image.naturalWidth * scale;
     const targetHeight = image.naturalHeight * scale;
+    context.imageSmoothingEnabled = true;
+    context.imageSmoothingQuality = 'high';
     context.drawImage(image, x + (width - targetWidth) / 2, y + (height - targetHeight) / 2, targetWidth, targetHeight);
     return true;
+  }
+
+  function promoteToNativeResolution(sourceCanvas) {
+    if (sourceCanvas.width === OUTPUT_WIDTH && sourceCanvas.height === OUTPUT_HEIGHT) return sourceCanvas;
+    const canvas = document.createElement('canvas');
+    canvas.width = OUTPUT_WIDTH;
+    canvas.height = OUTPUT_HEIGHT;
+    const context = canvas.getContext('2d');
+    if (!context) throw new Error('Yüksek çözünürlüklü paylaşım tuvali oluşturulamadı.');
+    context.imageSmoothingEnabled = true;
+    context.imageSmoothingQuality = 'high';
+    context.drawImage(sourceCanvas, 0, 0, OUTPUT_WIDTH, OUTPUT_HEIGHT);
+    return canvas;
   }
 
   function rgba(rgb, alpha = CARD_OPACITY) {
@@ -267,6 +285,44 @@
     return canvas;
   }
 
+  async function redrawStandingsLogos(canvas, snapshot) {
+    const context = canvas.getContext('2d');
+    if (!context || !snapshot.standings?.length) return canvas;
+    const scaleX = canvas.width / CARD_WIDTH;
+    const scaleY = canvas.height / CARD_HEIGHT;
+    const standingsX = BODY.rightX + 14;
+    const standingsWidth = BODY.rightWidth - 28;
+    const labelsY = BODY.y + 68;
+    const standingsTop = labelsY + 31;
+    const standingsHeight = BODY.y + BODY.height - 20 - standingsTop;
+    const standingRowHeight = standingsHeight / snapshot.standings.length;
+    const images = await Promise.all(snapshot.standings.map((row) => loadImage(row.team?.crest)));
+
+    context.save();
+    context.scale(scaleX, scaleY);
+    context.globalCompositeOperation = 'source-over';
+    context.globalAlpha = 1;
+    context.filter = 'none';
+    context.shadowColor = 'transparent';
+    context.shadowBlur = 0;
+
+    snapshot.standings.forEach((row, index) => {
+      const rowY = standingsTop + standingRowHeight * index;
+      const rowHeight = Math.max(24, standingRowHeight - 1.5);
+      const crestSize = Math.min(20, rowHeight - 5);
+      drawImageContain(
+        context,
+        images[index],
+        standingsX + 34,
+        rowY + (rowHeight - crestSize) / 2,
+        crestSize,
+        crestSize
+      );
+    });
+    context.restore();
+    return canvas;
+  }
+
   async function redrawFixtureCards(canvas, snapshot) {
     await window.UCLDRAW_CHAMPIONS_FONT_READY;
     const context = canvas.getContext('2d');
@@ -329,9 +385,11 @@
   }
 
   async function renderShareCard(snapshot) {
-    const canvas = await V5.renderShareCard(snapshot);
+    const lowResolutionCanvas = await V5.renderShareCard(snapshot);
+    const canvas = promoteToNativeResolution(lowResolutionCanvas);
     await redrawHeader(canvas, snapshot);
     await redrawFixtureCards(canvas, snapshot);
+    await redrawStandingsLogos(canvas, snapshot);
     return canvas;
   }
 
@@ -418,7 +476,11 @@
     shareCurrent,
     redrawHeader,
     redrawFixtureCards,
+    redrawStandingsLogos,
+    promoteToNativeResolution,
     fixtureRects,
+    outputWidth: OUTPUT_WIDTH,
+    outputHeight: OUTPUT_HEIGHT,
     cardOpacity: CARD_OPACITY
   });
 })();

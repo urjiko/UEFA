@@ -10,8 +10,8 @@ assert.match(v8, /script\.src\s*=\s*'prediction-share-v9\.js\?v=20260901hq1'/);
 assert.match(v8, /installHighResolutionExport\(\)/);
 
 assert.match(v9, /const NATIVE_SCALE = 2/);
-assert.match(v9, /const OUTPUT_WIDTH = CARD_WIDTH \\* NATIVE_SCALE/);
-assert.match(v9, /const OUTPUT_HEIGHT = CARD_HEIGHT \\* NATIVE_SCALE/);
+assert.match(v9, /const OUTPUT_WIDTH = CARD_WIDTH \* NATIVE_SCALE/);
+assert.match(v9, /const OUTPUT_HEIGHT = CARD_HEIGHT \* NATIVE_SCALE/);
 assert.doesNotMatch(v9, /function upscaleCanvas/);
 assert.doesNotMatch(v9, /drawImage\(sourceCanvas/);
 assert.match(v9, /native 2400×3200 çözünürlükte/);

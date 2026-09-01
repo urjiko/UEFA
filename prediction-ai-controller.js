@@ -5,6 +5,8 @@
   if (!base?.createState || window.UCLDRAW_PREDICTION_AI) return;
 
   const PROFILE_SCRIPT_ID = 'ucldraw-home-advantage-profiles';
+  const CONTEXT_DATA_SCRIPT_ID = 'ucldraw-prediction-context-data';
+  const CONTEXT_MODEL_SCRIPT_ID = 'ucldraw-prediction-context-model';
   const DEFAULT_METHODOLOGY = Object.freeze({
     opponentStrengthThreshold: 0.55,
     attackBounds: Object.freeze([0.84, 1.18]),
@@ -296,6 +298,23 @@
     return state;
   }
 
+  function installContextModel() {
+    if (typeof document === 'undefined' || document.getElementById(CONTEXT_DATA_SCRIPT_ID)) return;
+    const dataScript = document.createElement('script');
+    dataScript.id = CONTEXT_DATA_SCRIPT_ID;
+    dataScript.src = 'prediction-context-data.js?v=20260901a';
+    dataScript.async = true;
+    dataScript.addEventListener('load', () => {
+      if (document.getElementById(CONTEXT_MODEL_SCRIPT_ID)) return;
+      const modelScript = document.createElement('script');
+      modelScript.id = CONTEXT_MODEL_SCRIPT_ID;
+      modelScript.src = 'prediction-context-model.js?v=20260901a';
+      modelScript.async = true;
+      document.head.appendChild(modelScript);
+    }, { once: true });
+    document.head.appendChild(dataScript);
+  }
+
   function installProfileData() {
     if (typeof document === 'undefined' || document.getElementById(PROFILE_SCRIPT_ID)) return;
     const script = document.createElement('script');
@@ -332,5 +351,6 @@
     predictMissing
   });
 
+  installContextModel();
   installProfileData();
 })();

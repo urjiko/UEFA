@@ -13,7 +13,8 @@
     ENG: 23.903, ESP: 19.409, ITA: 19.989, GER: 18.580, FRA: 16.699,
     NED: 13.585, POR: 11.625, BEL: 12.650, AUT: 6.770, NOR: 8.247,
     CZE: 9.705, GRE: 9.682, CRO: 10.850, HUN: 7.875, ROU: 8.250,
-    POL: 9.350
+    POL: 9.350, SUI: 6.940, SWE: 5.925, ISR: 5.500, UKR: 5.182,
+    SVK: 4.475, LTU: 3.300
   });
 
   const clamp = (value, minimum, maximum) => Math.max(minimum, Math.min(maximum, value));
@@ -36,6 +37,13 @@
       return {
         for: clamp(1.48 + difference * 0.28, 0.25, 3.45),
         against: clamp(1.02 - difference * 0.24, 0.20, 3.10)
+      };
+    }
+    if (record.venue === 'neutral') {
+      const difference = strength(teamCoefficient) - strength(opponentCoefficient);
+      return {
+        for: clamp(1.22 + difference * 0.26, 0.22, 3.25),
+        against: clamp(1.22 - difference * 0.26, 0.22, 3.25)
       };
     }
     const difference = strength(opponentCoefficient) - strength(teamCoefficient);
@@ -100,6 +108,7 @@
       }
       profiles[teamSlug] = Object.freeze({
         overall: summarize(records, 14, [0.96, 1.04]),
+        home: summarize(records.filter((record) => record.venue === 'home'), 8, [0.94, 1.06]),
         away: summarize(records.filter((record) => record.venue === 'away'), 8, [0.94, 1.06]),
         associationMatchups: Object.freeze(associationMatchups),
         pairMatchups: Object.freeze(pairMatchups),
@@ -125,6 +134,11 @@
     let defense = profile.overall.defense;
     const details = { overall: profile.overall };
 
+    if (venue === 'home' && profile.home.samples) {
+      attack *= profile.home.attack;
+      defense *= profile.home.defense;
+      details.home = profile.home;
+    }
     if (venue === 'away' && profile.away.samples) {
       attack *= profile.away.attack;
       defense *= profile.away.defense;
@@ -150,6 +164,13 @@
       attack *= blend(1, historic.attackTarget, historic.confidence);
       defense *= blend(1, historic.defenseTarget, historic.confidence);
       details.historicalSignal = historic;
+    }
+
+    const historicPair = DATA.historicalPairSignals?.[slug]?.[opponentSlug];
+    if (historicPair && (!historicPair.venue || historicPair.venue === venue)) {
+      attack *= blend(1, historicPair.attackTarget, historicPair.confidence);
+      defense *= blend(1, historicPair.defenseTarget, historicPair.confidence);
+      details.historicalPairSignal = historicPair;
     }
 
     const squad = DATA.squadProfiles?.[slug];
@@ -184,6 +205,7 @@
     methodology: Object.freeze({
       recencyHalfLifeYears: HALF_LIFE_YEARS,
       overallPriorMatches: 14,
+      homePriorMatches: 8,
       awayPriorMatches: 8,
       associationPriorMatches: 8,
       directPairPriorMatches: 6,

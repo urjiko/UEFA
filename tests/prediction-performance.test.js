@@ -54,11 +54,13 @@ for (const asset of [
   'interface-polish.js?v=20260828p1',
   'prediction-header-v2.js?v=20260828p1',
   'ui-refinement-v4.js?v=20260828p1',
-  'ui-refinement-v5.js?v=20260901a',
+  'ui-refinement-v5.js?v=20260901hq1',
   'prediction-share.js?v=20260828p1',
   'prediction-share-v2.js?v=20260828p1',
   'prediction-share-v3.js?v=20260828p1',
-  'prediction-share-v4.js?v=20260828f1'
+  'prediction-share-v4.js?v=20260828f1',
+  'prediction-share-v6.js?v=20260901hq1',
+  'prediction-share-v7.js?v=20260901hq1'
 ]) {
   assert.ok(html.includes(asset), `performance cache revision missing: ${asset}`);
 }

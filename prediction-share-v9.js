@@ -7,9 +7,9 @@
 
   const CARD_WIDTH = 1200;
   const CARD_HEIGHT = 1600;
-  const EXPORT_SCALE = 2;
-  const OUTPUT_WIDTH = CARD_WIDTH * EXPORT_SCALE;
-  const OUTPUT_HEIGHT = CARD_HEIGHT * EXPORT_SCALE;
+  const NATIVE_SCALE = 2;
+  const OUTPUT_WIDTH = CARD_WIDTH * NATIVE_SCALE;
+  const OUTPUT_HEIGHT = CARD_HEIGHT * NATIVE_SCALE;
 
   let cachedKey = '';
   let cachedExport = null;
@@ -75,22 +75,12 @@
     });
   }
 
-  function upscaleCanvas(sourceCanvas) {
-    const canvas = document.createElement('canvas');
-    canvas.width = OUTPUT_WIDTH;
-    canvas.height = OUTPUT_HEIGHT;
-    const context = canvas.getContext('2d');
-    if (!context) throw new Error('Yüksek çözünürlüklü çıktı tuvali oluşturulamadı.');
-    context.imageSmoothingEnabled = true;
-    context.imageSmoothingQuality = 'high';
-    context.drawImage(sourceCanvas, 0, 0, OUTPUT_WIDTH, OUTPUT_HEIGHT);
-    return canvas;
-  }
-
   async function renderExportCard(snapshot) {
-    const sourceCanvas = await V8.renderShareCard(snapshot);
-    if (sourceCanvas.width === OUTPUT_WIDTH && sourceCanvas.height === OUTPUT_HEIGHT) return sourceCanvas;
-    return upscaleCanvas(sourceCanvas);
+    const canvas = await V8.renderShareCard(snapshot);
+    if (canvas.width !== OUTPUT_WIDTH || canvas.height !== OUTPUT_HEIGHT) {
+      throw new Error('Paylaşım kartı native 2400×3200 çözünürlükte oluşturulamadı.');
+    }
+    return canvas;
   }
 
   async function prepareExport() {

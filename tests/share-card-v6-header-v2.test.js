@@ -15,7 +15,7 @@ const branding = read('branding-fixes.js');
 
 assert.ok(html.includes('<link rel="stylesheet" href="prediction-header-v2.css">'));
 assert.match(html, /<script src="prediction-header-v2\.js(?:\?v=[^"]+)?"><\/script>/);
-assert.ok(html.includes('<script src="prediction-share-v6.js"></script>'));
+assert.match(html, /<script src="prediction-share-v6\.js(?:\?v=[^"]+)?"><\/script>/);
 assert.ok(html.indexOf('prediction-share-v5.js') < html.indexOf('prediction-share-v6.js'));
 
 assert.match(share, /const V5 = window\.UCLDRAW_PREDICTION_SHARE_V5/);

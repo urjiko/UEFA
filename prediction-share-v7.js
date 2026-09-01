@@ -88,6 +88,8 @@
     const scale = Math.min(width / image.naturalWidth, height / image.naturalHeight);
     const targetWidth = image.naturalWidth * scale;
     const targetHeight = image.naturalHeight * scale;
+    context.imageSmoothingEnabled = true;
+    context.imageSmoothingQuality = 'high';
     context.drawImage(image, x + (width - targetWidth) / 2, y + (height - targetHeight) / 2, targetWidth, targetHeight);
     return true;
   }

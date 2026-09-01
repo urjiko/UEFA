@@ -70,6 +70,10 @@
     };
   }
 
+  function contextModel() {
+    return window.UCLDRAW_PREDICTION_CONTEXT_MODEL || null;
+  }
+
   function profileFor(team) {
     const slug = String(team?.poolSlug || '').trim();
     return slug ? profileData().profiles?.[slug] || null : null;
@@ -109,8 +113,6 @@
 
     const association = profile.associationMatchups?.[opponentCountry];
     if (association && Number.isFinite(Number(association[metric]))) {
-      // Country-specific history is deliberately capped so a small historic streak
-      // cannot outweigh current team strength or the broader home sample.
       multiplier = blend(multiplier, association[metric], association.confidence, 0.45);
     }
 
@@ -126,26 +128,32 @@
     const context = opponentBand(match.home, match.away, comp.potCount);
     const attackMultiplier = metricMultiplier(profile, 'attack', context, comp.id, match.away.country);
     const defenseMultiplier = metricMultiplier(profile, 'defense', context, comp.id, match.away.country);
+    const homeAdjusted = clamp(homeExpected * attackMultiplier, 0.2, 3.8);
+    const awayAdjusted = clamp(awayExpected * defenseMultiplier, 0.15, 3.4);
+    const contextual = contextModel()?.adjustExpectedGoals?.(match, homeAdjusted, awayAdjusted) || null;
     return {
-      homeExpected: clamp(homeExpected * attackMultiplier, 0.2, 3.8),
-      awayExpected: clamp(awayExpected * defenseMultiplier, 0.15, 3.4),
+      homeExpected: clamp(contextual?.homeExpected ?? homeAdjusted, 0.15, 4.0),
+      awayExpected: clamp(contextual?.awayExpected ?? awayAdjusted, 0.15, 4.0),
       attackMultiplier,
       defenseMultiplier,
       context,
-      profileSlug: profile ? match.home.poolSlug : null
+      profileSlug: profile ? match.home.poolSlug : null,
+      contextual
     };
   }
 
   function simulateAdjustedScore(match, comp, seed, version = 0) {
-    const random = seededRandom(`${seed}:${version}:${match.id}:home-profile-v${profileData().version || 0}`);
+    const contextVersion = contextModel()?.version || 0;
+    const random = seededRandom(`${seed}:${version}:${match.id}:home-profile-v${profileData().version || 0}:context-v${contextVersion}`);
     const difference = strength(match.home, comp.potCount) - strength(match.away, comp.potCount);
     const baseHomeExpected = clamp(1.48 + difference * 0.28, 0.25, 3.45);
     const baseAwayExpected = clamp(1.02 - difference * 0.24, 0.2, 3.1);
     const adjusted = adjustExpectedGoals(match, comp, baseHomeExpected, baseAwayExpected);
+    const hasContext = Boolean(adjusted.contextual?.home?.profileSlug || adjusted.contextual?.away?.profileSlug);
     return {
       homeGoals: samplePoisson(adjusted.homeExpected, random),
       awayGoals: samplePoisson(adjusted.awayExpected, random),
-      source: adjusted.profileSlug ? 'model-home-adjusted' : 'model',
+      source: hasContext ? 'model-context-adjusted' : adjusted.profileSlug ? 'model-home-adjusted' : 'model',
       model: {
         baseHomeExpected,
         baseAwayExpected,
@@ -154,7 +162,10 @@
         homeAttackMultiplier: adjusted.attackMultiplier,
         homeDefenseMultiplier: adjusted.defenseMultiplier,
         homeContext: adjusted.context,
-        homeProfile: adjusted.profileSlug
+        homeProfile: adjusted.profileSlug,
+        contextProfileVersion: contextVersion,
+        contextualHome: adjusted.contextual?.home || null,
+        contextualAway: adjusted.contextual?.away || null
       }
     };
   }
@@ -242,7 +253,8 @@
         matchdays: lastMatchday,
         predictionRun,
         mode: 'all',
-        homeAdvantageProfileVersion: profileData().version || 0
+        homeAdvantageProfileVersion: profileData().version || 0,
+        contextProfileVersion: contextModel()?.version || 0
       }
     }));
     return state;
@@ -277,7 +289,8 @@
         matchdays: matchdays.length,
         predictionRun,
         mode: 'missing',
-        homeAdvantageProfileVersion: profileData().version || 0
+        homeAdvantageProfileVersion: profileData().version || 0,
+        contextProfileVersion: contextModel()?.version || 0
       }
     }));
     return state;
@@ -300,7 +313,8 @@
     applyPoints,
     setManualScore,
     __explicitMatchLock: true,
-    __homeAdvantageModel: true
+    __homeAdvantageModel: true,
+    __contextMatchupModel: true
   });
 
   window.UCLDRAW_HOME_ADVANTAGE_MODEL = Object.freeze({

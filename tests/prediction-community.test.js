@@ -17,9 +17,9 @@ const sql = read('supabase/community-predictions.sql');
 const shareV4 = read('prediction-share-v4.js');
 const ai = read('prediction-ai-controller.js');
 
-assert.ok(html.includes('prediction-community.css?v=20260828b'));
+assert.ok(html.includes('prediction-community.css?v=20260901a'));
 assert.ok(html.includes('community-config.js?v=20260828b'));
-assert.ok(html.includes('prediction-community.js?v=20260828c'));
+assert.ok(html.includes('prediction-community.js?v=20260901a'));
 assert.ok(html.indexOf('prediction-ui.js') < html.indexOf('prediction-community.js'));
 
 assert.match(app, /openCurrentPredictionForSlug/);
@@ -32,6 +32,8 @@ assert.match(community, /finishCurrentPrediction/);
 assert.match(community, /submitPrediction\(payload\)/);
 assert.match(community, /openAveragePage\(payload\.leagueId, payload\.teamSlug/);
 assert.match(community, /Tahmin Görselini İndir/);
+assert.match(community, /sharePredictionImage/);
+assert.match(community, /share\.textContent = 'Paylaş'/);
 assert.match(community, /draw\.source === 'uefa-current'/);
 assert.doesNotMatch(community, /state\.matchLocks/);
 assert.match(community, /score\.source === 'user-score'/);
@@ -39,6 +41,9 @@ assert.match(community, /backendConfigured/);
 assert.match(community, /get_prediction_averages/);
 assert.match(community, /submit_prediction/);
 assert.match(community, /history\.pushState/);
+assert.match(app, /history\.replaceState/);
+assert.match(app, /champions-league/);
+assert.match(app, /ensureAppBase/);
 
 for (const legacy of [
   '.prediction-share-button',
@@ -48,6 +53,9 @@ for (const legacy of [
   assert.ok(css.includes(legacy), `legacy share control must be hidden: ${legacy}`);
 }
 assert.match(css, /prediction-community-finish-button/);
+assert.match(css, /align-items:\s*center/);
+assert.match(css, /justify-content:\s*center/);
+assert.match(css, /text-align:\s*center/);
 assert.doesNotMatch(css, /prediction-community-finish-note/);
 assert.match(css, /community-average-grid/);
 assert.match(css, /community-average-active/);

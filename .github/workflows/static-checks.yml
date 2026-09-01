@@ -29,6 +29,8 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '22'
+      - name: Audit crest PNG dimensions
+        run: node tests/crest-dimensions-audit.test.js
       - name: Check JavaScript syntax
         run: |
           node --check app-v3.js

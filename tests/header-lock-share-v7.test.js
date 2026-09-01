@@ -15,7 +15,7 @@ const share = read('prediction-share-v7.js');
 const share8 = read('prediction-share-v8.js');
 
 assert.match(html, /<script src="ui-refinement-v5\.js(?:\?v=[^"]+)?"><\/script>/);
-assert.ok(html.includes('<script src="prediction-share-v7.js" data-prediction-share-v7="true"></script>'));
+assert.match(html, /<script src="prediction-share-v7\.js\?v=20260901a" data-prediction-share-v7="true"><\/script>/);
 assert.ok(html.indexOf('ui-refinement-v5.js') < html.indexOf('prediction-share-v4.js'), 'share interception must register before legacy share listeners');
 assert.ok(html.indexOf('prediction-share-v6.js') < html.indexOf('prediction-share-v7.js'), 'v7 must render after v6');
 assert.match(branding, /ui-refinement-v5\.css/);
@@ -70,6 +70,7 @@ assert.match(ui, /prediction-share-floating-button/);
 assert.match(ui, /event\.stopImmediatePropagation\(\)/);
 assert.match(ui, /UCLDRAW_PREDICTION_SHARE_V8 \|\| window\.UCLDRAW_PREDICTION_SHARE_V7/);
 assert.match(ui, /function installShareRendererV8\(\)/);
+assert.match(ui, /prediction-share-v8\.js\?v=20260901a/);
 assert.match(ui, /legacyShareUiEnabled/);
 assert.match(ui, /ucldraw:prediction-rendered/);
 
@@ -78,6 +79,10 @@ assert.match(share, /async function redrawAlignedHeader/);
 assert.match(share, /context\.fillText\('2026-27', copyX, clubY \+ 30\)/);
 assert.match(share, /context\.fillText\(snapshot\.activeName, copyX, clubY \+ 96\)/);
 assert.match(share, /context\.fillText\(journey, copyX, clubY \+ 145\)/);
+assert.match(share, /predictionLink\(snapshot\)/);
+assert.match(share, /context\.fillText\(directLink, copyX, clubY \+ 174\)/);
+assert.match(share, /Sen de \$\{snapshot\.activeName\} için tahminini yap/);
+assert.match(share, /navigator\.share\(\{ title, text, files: \[file\] \}\)/);
 assert.match(share, /drawCrestWithShadow\(context, leagueLogo[\s\S]*30, 44\)/);
 assert.match(share, /function conferenceFixtureRects\(snapshot\)/);
 assert.match(share, /const bottomMargin = 18/);
@@ -101,5 +106,8 @@ assert.match(share8, /context\.fillText\(FOOTER_LABEL, FOOTER\.leftX, FOOTER\.te
 assert.match(share8, /context\.fillText\(SITE_LINK, FOOTER\.rightX, FOOTER\.textY\)/);
 assert.match(share8, /await redrawClubCrestWithBlackShadow\(canvas, snapshot\)[\s\S]*redrawFooter\(canvas, snapshot\)/);
 assert.doesNotMatch(share8, /theme\.glow/);
+assert.match(share8, /function predictionLink\(snapshot\)/);
+assert.match(share8, /https:\/\/urjiko\.github\.io\/UEFA/);
+assert.match(share8, /navigator\.share\(\{ title, text, files: \[file\] \}\)/);
 
 console.log('Roomier draw header, tighter stage spacing and clean v8 footer checks passed.');

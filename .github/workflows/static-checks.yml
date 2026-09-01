@@ -50,6 +50,8 @@ jobs:
           node --check qualification-bracket.js
           node --check qualification-current-state.js
           node --check prediction-engine.js
+          node --check prediction-context-data.js
+          node --check prediction-context-model.js
           node --check prediction-ai-controller.js
           node --check prediction-bridge.js
           node --check prediction-ui.js
@@ -95,6 +97,7 @@ jobs:
         run: |
           node scripts/check-home-advantage-profiles.mjs
           node tests/home-advantage-model.test.js
+          node tests/prediction-context-model.test.js
       - name: Check base HTML and controls
         run: |
           node tests/ui-v3.test.js

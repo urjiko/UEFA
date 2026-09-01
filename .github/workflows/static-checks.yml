@@ -107,6 +107,7 @@ jobs:
           node tests/ui-refinement-v4.test.js
           node tests/header-lock-share-v7.test.js
           node tests/prediction-export-v9.test.js
+          node tests/native-share-resolution.test.js
           node scripts/generate-league-routes.mjs
           git diff --exit-code -- champions-league europa-league conference-league sitemap.xml
           node tests/league-routes.test.js

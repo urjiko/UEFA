@@ -17,7 +17,7 @@ on:
       - agent/svg-logos-minimal-copy
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
   validate:
@@ -25,22 +25,10 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        with:
-          ref: agent/ai-history-batch1-gala-fener
       - name: Set up Node
         uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - name: Refresh generated home profile snapshot
-        run: |
-          node scripts/build-home-advantage-profiles.mjs
-          if ! git diff --quiet -- generated-home-advantage-profiles.js; then
-            git config user.name "github-actions[bot]"
-            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-            git add generated-home-advantage-profiles.js
-            git commit -m "Regenerate home advantage profiles"
-            git push origin HEAD:agent/ai-history-batch1-gala-fener
-          fi
       - name: Check JavaScript syntax
         run: |
           node --check app-v3.js
@@ -62,6 +50,7 @@ jobs:
           node --check qualification-bracket.js
           node --check qualification-current-state.js
           node --check prediction-engine.js
+          node --check current-team-strength-profiles.js
           node --check prediction-ai-controller.js
           node --check prediction-bridge.js
           node --check prediction-ui.js

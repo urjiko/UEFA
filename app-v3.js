@@ -120,17 +120,34 @@
   function initials(name) { return name.split(/\s+/).filter(Boolean).slice(0, 2).map((part) => part[0]).join('').toUpperCase(); }
   function teamIndex(team) { return competition().teams.indexOf(team); }
 
+  function appRootUrl() {
+    return new URL(window.UCLDRAW_APP_ROOT || './', document.baseURI);
+  }
+
+  function ensureAppBase(root = appRootUrl()) {
+    let base = document.querySelector('base');
+    if (!base) {
+      base = document.createElement('base');
+      base.dataset.ucldrawAppRoot = 'true';
+      document.head.prepend(base);
+    }
+    if (!base.href || base.dataset.ucldrawAppRoot === 'true') base.href = root.href;
+    return root;
+  }
+
   function predictionRouteUrl(leagueId, team) {
     const directory = routeDirectories[leagueId];
     const slug = team?.poolSlug || team?.qualificationId;
     if (!directory || !slug) return null;
-    const root = new URL(window.UCLDRAW_APP_ROOT || './', document.baseURI);
+    const root = appRootUrl();
     return new URL(`${directory}/tahmin/${slug}/`, root);
   }
 
   function syncCurrentPredictionRoute() {
+    const root = appRootUrl();
     const target = predictionRouteUrl(state.leagueId, state.selectedTeam);
     if (!target || window.location.pathname === target.pathname) return;
+    ensureAppBase(root);
     history.replaceState({
       currentPrediction: true,
       leagueId: state.leagueId,

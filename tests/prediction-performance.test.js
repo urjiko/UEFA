@@ -46,15 +46,15 @@ assert.match(shareV9, /legacyShareUiEnabled/);
 assert.match(shareV9, /if \(legacyShareUiEnabled\)/);
 
 for (const asset of [
-  'prediction-community.css?v=20260828b',
+  'prediction-community.css?v=20260901a',
   'prediction-ai-controller.js?v=20260828f1',
   'prediction-ui.js?v=20260831a',
   'community-config.js?v=20260828b',
-  'prediction-community.js?v=20260828c',
+  'prediction-community.js?v=20260901a',
   'interface-polish.js?v=20260828p1',
   'prediction-header-v2.js?v=20260828p1',
   'ui-refinement-v4.js?v=20260828p1',
-  'ui-refinement-v5.js?v=20260828p1',
+  'ui-refinement-v5.js?v=20260901a',
   'prediction-share.js?v=20260828p1',
   'prediction-share-v2.js?v=20260828p1',
   'prediction-share-v3.js?v=20260828p1',

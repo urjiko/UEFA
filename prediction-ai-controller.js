@@ -92,7 +92,7 @@
     return current + (safeTarget - current) * safeConfidence;
   }
 
-  function metricMultiplier(profile, metric, context, leagueId, opponentCountry) {
+  function metricMultiplier(profile, metric, context, leagueId, opponentCountry, opponentSlug) {
     if (!profile) return 1;
     const values = profile[metric] || {};
     const confidence = metric === 'defense'
@@ -114,6 +114,13 @@
       multiplier = blend(multiplier, association[metric], association.confidence, 0.45);
     }
 
+    const direct = opponentSlug ? profile.directMatchups?.[opponentSlug] : null;
+    if (direct && Number.isFinite(Number(direct[metric]))) {
+      // Exact-opponent history is useful, but many H2Hs are sparse or old.
+      // It is intentionally weaker than the broader European/home-country signal.
+      multiplier = blend(multiplier, direct[metric], direct.confidence, 0.25);
+    }
+
     const methodology = profileData().methodology || DEFAULT_METHODOLOGY;
     const bounds = metric === 'attack'
       ? methodology.attackBounds || DEFAULT_METHODOLOGY.attackBounds
@@ -124,8 +131,9 @@
   function adjustExpectedGoals(match, comp, homeExpected, awayExpected) {
     const profile = profileFor(match.home);
     const context = opponentBand(match.home, match.away, comp.potCount);
-    const attackMultiplier = metricMultiplier(profile, 'attack', context, comp.id, match.away.country);
-    const defenseMultiplier = metricMultiplier(profile, 'defense', context, comp.id, match.away.country);
+    const opponentSlug = String(match.away?.poolSlug || '').trim();
+    const attackMultiplier = metricMultiplier(profile, 'attack', context, comp.id, match.away.country, opponentSlug);
+    const defenseMultiplier = metricMultiplier(profile, 'defense', context, comp.id, match.away.country, opponentSlug);
     return {
       homeExpected: clamp(homeExpected * attackMultiplier, 0.2, 3.8),
       awayExpected: clamp(awayExpected * defenseMultiplier, 0.15, 3.4),

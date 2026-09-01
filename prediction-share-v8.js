@@ -76,6 +76,8 @@
     const scale = Math.min(width / image.naturalWidth, height / image.naturalHeight);
     const targetWidth = image.naturalWidth * scale;
     const targetHeight = image.naturalHeight * scale;
+    context.imageSmoothingEnabled = true;
+    context.imageSmoothingQuality = 'high';
     context.drawImage(image, x + (width - targetWidth) / 2, y + (height - targetHeight) / 2, targetWidth, targetHeight);
     return true;
   }
@@ -242,7 +244,7 @@
     }
     if (window.UCLDRAW_PREDICTION_SHARE_V9 || document.querySelector('script[data-prediction-share-v9]')) return;
     const script = document.createElement('script');
-    script.src = 'prediction-share-v9.js?v=20260828p1';
+    script.src = 'prediction-share-v9.js?v=20260901hq1';
     script.async = false;
     script.dataset.predictionShareV9 = 'true';
     document.body.appendChild(script);

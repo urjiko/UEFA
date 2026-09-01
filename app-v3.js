@@ -7,6 +7,11 @@
   if (!ENGINE?.generateCompetitionDraw) throw new Error('Draw engine could not be loaded.');
 
   const competitionOrder = ['ucl', 'uel', 'uecl'];
+  const routeDirectories = Object.freeze({
+    ucl: 'champions-league',
+    uel: 'europa-league',
+    uecl: 'conference-league'
+  });
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const BASE_TIMING = {
     initialPause: 650,
@@ -114,6 +119,24 @@
   }
   function initials(name) { return name.split(/\s+/).filter(Boolean).slice(0, 2).map((part) => part[0]).join('').toUpperCase(); }
   function teamIndex(team) { return competition().teams.indexOf(team); }
+
+  function predictionRouteUrl(leagueId, team) {
+    const directory = routeDirectories[leagueId];
+    const slug = team?.poolSlug || team?.qualificationId;
+    if (!directory || !slug) return null;
+    const root = new URL(window.UCLDRAW_APP_ROOT || './', document.baseURI);
+    return new URL(`${directory}/tahmin/${slug}/`, root);
+  }
+
+  function syncCurrentPredictionRoute() {
+    const target = predictionRouteUrl(state.leagueId, state.selectedTeam);
+    if (!target || window.location.pathname === target.pathname) return;
+    history.replaceState({
+      currentPrediction: true,
+      leagueId: state.leagueId,
+      teamSlug: state.selectedTeam?.poolSlug || state.selectedTeam?.qualificationId || null
+    }, '', target.href);
+  }
 
   function createCrest(team, size = 'normal') {
     const shell = document.createElement('span');
@@ -699,6 +722,7 @@
     state.activeCustomSlot = null;
     state.customBackup = null;
 
+    syncCurrentPredictionRoute();
     showDrawScreen();
     els.drawActions.hidden = false;
     els.customActions.hidden = true;
@@ -900,6 +924,10 @@
     },
     teamBySlug(leagueId, teamSlug) {
       return DATA.competitions[leagueId]?.teams.find((candidate) => candidate.poolSlug === teamSlug || candidate.qualificationId === teamSlug) || null;
+    },
+    predictionUrlForTeam(leagueId, teamSlug) {
+      const team = DATA.competitions[leagueId]?.teams.find((candidate) => candidate.poolSlug === teamSlug || candidate.qualificationId === teamSlug);
+      return team ? predictionRouteUrl(leagueId, team)?.href || null : null;
     }
   });
 

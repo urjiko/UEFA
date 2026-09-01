@@ -13,8 +13,12 @@ const methodology = Object.freeze({
   recencyHalfLifeYears: 3,
   overallPriorMatches: 18,
   contextPriorMatches: 12,
+  directPriorMatches: 10,
   opponentStrengthThreshold: 0.55,
-  minimumAssociationSample: 6,
+  minimumAssociationSample: 4,
+  minimumAssociationEffectiveSample: 2.5,
+  minimumDirectSample: 2,
+  minimumDirectEffectiveSample: 1.2,
   attackBounds: Object.freeze([0.84, 1.18]),
   defenseBounds: Object.freeze([0.82, 1.16])
 });
@@ -207,7 +211,13 @@ function createAccumulator(team) {
     vsSimilar: emptyBucket(),
     vsWeaker: emptyBucket()
   });
-  return { team, attack: metric(), defense: metric(), associations: new Map() };
+  return {
+    team,
+    attack: metric(),
+    defense: metric(),
+    associations: new Map(),
+    directOpponents: new Map()
+  };
 }
 
 function serializeMetric(buckets, bounds) {
@@ -247,6 +257,13 @@ function buildProfiles(matches, anchor) {
     const association = accumulator.associations.get(match.awayCountry);
     observe(association.attack, match.homeGoals, baseline.home, observationWeight);
     observe(association.defense, match.awayGoals, baseline.away, observationWeight);
+
+    if (!accumulator.directOpponents.has(match.awaySlug)) {
+      accumulator.directOpponents.set(match.awaySlug, { attack: emptyBucket(), defense: emptyBucket() });
+    }
+    const direct = accumulator.directOpponents.get(match.awaySlug);
+    observe(direct.attack, match.homeGoals, baseline.home, observationWeight);
+    observe(direct.defense, match.awayGoals, baseline.away, observationWeight);
   }
 
   const profiles = {};
@@ -256,9 +273,25 @@ function buildProfiles(matches, anchor) {
     const associationMatchups = {};
     for (const [country, buckets] of [...accumulator.associations.entries()].sort(([first], [second]) => first.localeCompare(second))) {
       if (buckets.attack.rawMatches < methodology.minimumAssociationSample) continue;
+      if (buckets.attack.effectiveSample < methodology.minimumAssociationEffectiveSample) continue;
       const attackResult = summarize(buckets.attack, methodology.contextPriorMatches, methodology.attackBounds);
       const defenseResult = summarize(buckets.defense, methodology.contextPriorMatches, methodology.defenseBounds);
       associationMatchups[country] = {
+        attack: attackResult.multiplier,
+        defense: defenseResult.multiplier,
+        confidence: Math.min(attackResult.confidence, defenseResult.confidence),
+        samples: attackResult.samples,
+        effectiveSample: Math.min(attackResult.effectiveSample, defenseResult.effectiveSample)
+      };
+    }
+
+    const directMatchups = {};
+    for (const [opponentSlug, buckets] of [...accumulator.directOpponents.entries()].sort(([first], [second]) => first.localeCompare(second))) {
+      if (buckets.attack.rawMatches < methodology.minimumDirectSample) continue;
+      if (buckets.attack.effectiveSample < methodology.minimumDirectEffectiveSample) continue;
+      const attackResult = summarize(buckets.attack, methodology.directPriorMatches, methodology.attackBounds);
+      const defenseResult = summarize(buckets.defense, methodology.directPriorMatches, methodology.defenseBounds);
+      directMatchups[opponentSlug] = {
         attack: attackResult.multiplier,
         defense: defenseResult.multiplier,
         confidence: Math.min(attackResult.confidence, defenseResult.confidence),
@@ -274,7 +307,8 @@ function buildProfiles(matches, anchor) {
       confidence: attack.confidence,
       defenseConfidence: defense.confidence,
       samples: attack.samples,
-      associationMatchups
+      associationMatchups,
+      directMatchups
     };
   }
   return profiles;
@@ -282,7 +316,7 @@ function buildProfiles(matches, anchor) {
 
 function generatedSource(storedMatches, scopedMatches, profiles, files, scope, anchor) {
   const payload = {
-    version: 1,
+    version: 2,
     generatedAt: anchor ? `${anchor}T00:00:00.000Z` : null,
     latestMatchDate: anchor,
     sourceSummary: {

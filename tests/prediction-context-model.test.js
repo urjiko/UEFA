@@ -32,9 +32,9 @@ const model = context.UCLDRAW_PREDICTION_CONTEXT_MODEL;
 const coefficients = context.UCLDRAW_CLUB_COEFFICIENTS.clubs;
 const fixtures = context.UCLDRAW_CURRENT_FIXTURES.uclMatches;
 
-assert.equal(data.version, 25);
+assert.equal(data.version, 30);
 assert.equal(data.reviewedAt, '2026-09-02');
-assert.equal(data.matches.length, 559);
+assert.equal(data.matches.length, 683);
 assert.equal(model.methodology.recencyHalfLifeYears, 3);
 assert.equal(model.methodology.homePriorMatches, 8);
 assert.equal(model.methodology.awayPriorMatches, 8);
@@ -66,6 +66,15 @@ assert.equal(model.profiles.galatasaray.overall.samples, 26);
 assert.equal(model.profiles.fenerbahce.overall.samples, 34);
 assert.equal(model.profiles.besiktas.overall.samples, 20);
 assert.equal(model.profiles.trabzonspor.overall.samples, 18);
+assert.equal(model.profiles.bayerleverkusen.overall.samples, 16);
+assert.equal(model.profiles.benfica.overall.samples, 16);
+assert.equal(model.profiles.juventus.overall.samples, 16);
+assert.equal(model.profiles.milan.overall.samples, 8);
+assert.equal(model.profiles.lyon.overall.samples, 16);
+assert.equal(model.profiles.azalkmaar.overall.samples, 20);
+assert.equal(model.profiles.olympiacos.overall.samples, 16);
+assert.equal(model.profiles.realsociedad.overall.samples, 8);
+assert.equal(model.profiles.marseille.overall.samples, 8);
 assert.equal(model.profiles.galatasaray.associationMatchups.ENG.samples, 7);
 assert.equal(model.profiles.galatasaray.pairMatchups.liverpool.samples, 3);
 assert.equal(model.profiles.fenerbahce.associationMatchups.ENG.samples, 4);
@@ -144,6 +153,22 @@ assert.ok(barcelonaComo.details.analogueSignal, 'Barcelona-Como should use the r
 const bodoAtleti = model.teamModifiers(team('bodo'), team('atleti'), 'home');
 assert.ok(bodoAtleti.details.historicalPairSignal, 'Bodo-Atletico should retain the January 2026 direct meeting.');
 
+
+const leverkusenSalzburg = model.teamModifiers(team('bayerleverkusen'), team('salzburg'), 'home');
+assert.ok(leverkusenSalzburg.details.historicalPairSignal, 'Leverkusen-Salzburg should use the exact 5-0 home repeat.');
+
+const lyonHoffenheim = model.teamModifiers(team('lyon'), team('hoffenheim'), 'away');
+assert.ok(lyonHoffenheim.details.historicalPairSignal, 'Lyon at Hoffenheim should retain the 2024 2-2 same-venue repeat.');
+
+const milanOlympiacos = model.teamModifiers(team('milan'), team('olympiacos'), 'away');
+assert.ok(milanOlympiacos.details.historicalPairSignal, 'Milan at Olympiacos should use the 2018 Piraeus venue signal.');
+
+const marseilleBesiktas = model.teamModifiers(team('marseille'), team('besiktas'), 'away');
+assert.ok(marseilleBesiktas.details.historicalPairSignal, 'Marseille at Besiktas should retain the Istanbul H2H signal.');
+
+const benficaAz = model.teamModifiers(team('benfica'), team('azalkmaar'), 'home');
+assert.ok(benficaAz.details.historicalPairSignal, 'Benfica-AZ should retain the old quarter-final signal at low confidence.');
+
 const galaVilla = model.teamModifiers(team('galatasaray'), team('astonvilla'), 'home');
 assert.ok(galaVilla.details.home);
 assert.ok(galaVilla.details.association);
@@ -163,8 +188,8 @@ assert.ok(adjusted.awayExpected >= 0.15 && adjusted.awayExpected <= 4);
 assert.match(sources['prediction-context-model.js'], /reciprocalHistoricPair/);
 assert.match(sources['prediction-context-model.js'], /appliedConfidence/);
 assert.match(sources['prediction-context-model.js'], /analogueSignals/);
-assert.match(controller, /prediction-context-data\.js\?v=20260902auditv25/);
-assert.match(controller, /prediction-context-model\.js\?v=20260902auditv25/);
+assert.match(controller, /prediction-context-data\.js\?v=20260902uelpot1v30/);
+assert.match(controller, /prediction-context-model\.js\?v=20260902uelpot1v30/);
 assert.match(controller, /contextModel\(\)\?\.adjustExpectedGoals/);
 assert.match(controller, /__contextMatchupModel: true/);
 

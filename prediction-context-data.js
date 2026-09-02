@@ -558,8 +558,7 @@
     ['2025-11-26','atleti','inter','ITA','home',2,1],
     ['2025-12-09','atleti','psv','NED','away',3,2],
     ['2026-01-21','atleti','galatasaray','TUR','away',1,1],
-    ['2026-01-28','atleti','bodo','NOR','home',1,2]
-
+    ['2026-01-28','atleti','bodo','NOR','home',1,2],
 
     // Pot 4: Slavia Praha, latest Champions League league-phase sample.
     ['2025-09-17','slavia','bodo','NOR','home',2,2],
@@ -1787,7 +1786,7 @@
   });
 
   window.UCLDRAW_PREDICTION_CONTEXT_DATA = Object.freeze({
-    version: 20,
+    version: 21,
     reviewedAt: '2026-09-02',
     matches,
     historicalSignals,

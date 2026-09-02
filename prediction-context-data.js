@@ -1053,6 +1053,55 @@
     ['2025-12-11','celtavigo','bologna','ITA','home',1,2],
     ['2026-01-22','celtavigo','lille','FRA','home',2,1],
     ['2026-01-29','celtavigo','crvenazvezda','SRB','away',1,1]
+
+
+    // Europa League Pot 4: Hoffenheim, 2024/25 Europa League league phase.
+    ['2024-09-25','hoffenheim','midtjylland','DEN','away',1,1],
+    ['2024-10-03','hoffenheim','dynamokyiv','UKR','home',2,0],
+    ['2024-10-24','hoffenheim','porto','POR','away',0,2],
+    ['2024-11-07','hoffenheim','lyon','FRA','home',2,2],
+    ['2024-11-28','hoffenheim','braga','POR','away',0,3],
+    ['2024-12-12','hoffenheim','fcsb','ROU','home',0,0],
+    ['2025-01-23','hoffenheim','tottenham','ENG','home',2,3],
+    ['2025-01-30','hoffenheim','anderlecht','BEL','away',4,3],
+
+    // Europa League Pot 4: Hapoel Beer-Sheva, 2026/27 Champions League qualifying run.
+    ['2026-07-21','hapoelbeersheva','vikingurreykjavik','ISL','away',1,2],
+    ['2026-07-29','hapoelbeersheva','vikingurreykjavik','ISL','home',2,0],
+    ['2026-08-04','hapoelbeersheva','crvenazvezda','SRB','home',1,0],
+    ['2026-08-11','hapoelbeersheva','crvenazvezda','SRB','away',2,0],
+    ['2026-08-19','hapoelbeersheva','sabah','AZE','home',2,1],
+    ['2026-08-25','hapoelbeersheva','sabah','AZE','away',2,5],
+
+    // Europa League Pot 4: Levski Sofia, 2026/27 Champions League qualifying run from Q2 onward.
+    ['2026-07-22','levskisofia','craiova','ROU','home',1,0],
+    ['2026-07-29','levskisofia','craiova','ROU','away',2,2],
+    ['2026-08-04','levskisofia','kairat','KAZ','home',1,0],
+    ['2026-08-11','levskisofia','kairat','KAZ','away',1,0],
+    ['2026-08-18','levskisofia','aek','GRE','home',0,0],
+    ['2026-08-26','levskisofia','aek','GRE','away',0,4],
+
+    // Europa League Pot 4: N.E.C., 2026/27 Champions League Q3 + play-off.
+    ['2026-08-04','nec','olympiacos','GRE','away',0,0],
+    ['2026-08-11','nec','olympiacos','GRE','home',2,1],
+    ['2026-08-19','nec','bodo','NOR','home',1,3],
+    ['2026-08-25','nec','bodo','NOR','away',0,3],
+
+    // Europa League Pot 4: Ararat-Armenia, latest UCL Q2/Q3 + Europa play-off.
+    ['2026-07-21','ararat','shamrock','IRL','home',2,0],
+    ['2026-07-28','ararat','shamrock','IRL','away',1,2],
+    ['2026-08-04','ararat','celje','SVN','home',2,1],
+    ['2026-08-11','ararat','celje','SVN','away',0,2],
+    ['2026-08-20','ararat','craiova','ROU','away',1,1],
+    ['2026-08-27','ararat','craiova','ROU','home',1,0],
+
+    // Europa League Pot 4: Lillestrom, 2026/27 Europa League play-off.
+    ['2026-08-20','lillestrom','egnatia','ALB','away',0,0],
+    ['2026-08-27','lillestrom','egnatia','ALB','home',2,1],
+
+    // Europa League Pot 4: OFI Crete, 2026/27 Europa League play-off.
+    ['2026-08-20','crete','cskasofia','BUL','home',3,0],
+    ['2026-08-27','crete','cskasofia','BUL','away',2,0]
   ].map(([date, teamSlug, opponentSlug, opponentCountry, venue, goalsFor, goalsAgainst]) => Object.freeze({
     date, teamSlug, opponentSlug, opponentCountry, venue, goalsFor, goalsAgainst
   })));
@@ -2923,7 +2972,7 @@
   });
 
   window.UCLDRAW_PREDICTION_CONTEXT_DATA = Object.freeze({
-    version: 37,
+    version: 38,
     reviewedAt: '2026-09-02',
     matches,
     historicalSignals,

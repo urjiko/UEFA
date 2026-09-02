@@ -134,36 +134,37 @@
     let defense = profile.overall.defense;
     const details = { overall: profile.overall };
 
-    if (venue === 'home' && profile.home.samples) {
-      attack *= profile.home.attack;
-      defense *= profile.home.defense;
-      details.home = profile.home;
-    }
-    if (venue === 'away' && profile.away.samples) {
-      attack *= profile.away.attack;
-      defense *= profile.away.defense;
-      details.away = profile.away;
+    // Venue, association and recent direct-pair summaries are overlapping subsets
+    // of the same recent match archive. Blending them prevents the same match from
+    // being multiplied two or three times while still allowing context to move the
+    // overall profile toward the more specific evidence.
+    const venueProfile = venue === 'home' ? profile.home : venue === 'away' ? profile.away : null;
+    if (venueProfile?.samples) {
+      attack = blend(attack, venueProfile.attack, 0.58);
+      defense = blend(defense, venueProfile.defense, 0.58);
+      details[venue] = venueProfile;
     }
 
     const association = profile.associationMatchups?.[opponent?.country];
     if (association) {
-      attack *= association.attack;
-      defense *= association.defense;
+      attack = blend(attack, association.attack, 0.46);
+      defense = blend(defense, association.defense, 0.46);
       details.association = association;
     }
 
     const pair = profile.pairMatchups?.[opponentSlug];
     if (pair) {
-      attack *= pair.attack;
-      defense *= pair.defense;
+      attack = blend(attack, pair.attack, 0.62);
+      defense = blend(defense, pair.defense, 0.62);
       details.pair = pair;
     }
 
     const historic = DATA.historicalSignals?.[slug]?.[opponent?.country];
     if (historic && (!historic.venue || historic.venue === venue)) {
-      attack *= blend(1, historic.attackTarget, historic.confidence);
-      defense *= blend(1, historic.defenseTarget, historic.confidence);
-      details.historicalSignal = historic;
+      const historicConfidence = historic.confidence * (association ? 0.48 : 1);
+      attack *= blend(1, historic.attackTarget, historicConfidence);
+      defense *= blend(1, historic.defenseTarget, historicConfidence);
+      details.historicalSignal = Object.freeze({ ...historic, appliedConfidence: Number(historicConfidence.toFixed(4)) });
     }
 
     const historicPair = DATA.historicalPairSignals?.[slug]?.[opponentSlug];

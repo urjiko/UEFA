@@ -939,6 +939,19 @@
   // Long-run association facts remain deliberately tiny. They preserve patterns
   // that survive beyond one season without letting folklore overpower current strength.
   const historicalSignals = Object.freeze({
+    ferencvarosi: Object.freeze({
+      ITA: Object.freeze({
+        venue: 'away',
+        sample: 2,
+        wins: 0,
+        draws: 2,
+        losses: 0,
+        attackTarget: 1.010,
+        defenseTarget: 0.995,
+        confidence: 0.40,
+        note: 'Fresh Italian-club analogue: Ferencvaros drew 2-2 away to Fiorentina and 1-1 at home in the 2023/24 Conference League. The away split is used for the Milan trip.'
+      })
+    }),
     sporting: Object.freeze({
       TUR: Object.freeze({
         sample: 10,
@@ -1103,6 +1116,19 @@
       })
     }),
     celtic: Object.freeze({
+      benfica: Object.freeze({
+        venue: 'away',
+        sample: 8,
+        wins: 4,
+        draws: 1,
+        losses: 3,
+        goalsFor: 8,
+        goalsAgainst: 9,
+        attackTarget: 0.995,
+        defenseTarget: 1.005,
+        confidence: 0.16,
+        note: 'UEFA H2H is Celtic W4 D1 L3 vs Benfica across eight meetings. The last series was in 2012/13, so this only supplies a faint historical layer for Lisbon.'
+      }),
       ferencvarosi: Object.freeze({
         venue: 'home',
         sample: 1,
@@ -1826,7 +1852,48 @@
         confidence: 0.38,
         note: 'Same-venue H2H: Atletico drew 1-1 at home to Manchester United in February 2022.'
       }),
-      psv: Object.freeze({
+      union: Object.freeze({
+      besiktas: Object.freeze({
+        venue: 'away',
+        attackTarget: 0.985,
+        defenseTarget: 1.015,
+        confidence: 0.42,
+        note: 'Fresh Turkish-club away analogue: Union SG lost 2-1 away to Fenerbahce in September 2024. Used for the Besiktas trip.'
+      }),
+      lyon: Object.freeze({
+        venue: 'away',
+        attackTarget: 1.005,
+        defenseTarget: 0.995,
+        confidence: 0.24,
+        note: 'Recent French-club analogue: Union SG beat Nice 2-1 at home in December 2024. Venue mismatch makes the Lyon-away effect deliberately small.'
+      })
+    }),
+    dinamo: Object.freeze({
+      sunderland: Object.freeze({
+        venue: 'away',
+        attackTarget: 0.975,
+        defenseTarget: 1.025,
+        confidence: 0.40,
+        note: 'Recent English-club away analogue: Dinamo lost 3-0 away to Arsenal in January 2025. Used for Sunderland with reduced confidence because Arsenal are a much stronger reference.'
+      }),
+      strumgraz: Object.freeze({
+        venue: 'home',
+        attackTarget: 1.015,
+        defenseTarget: 0.990,
+        confidence: 0.30,
+        note: 'Austrian-club analogue: Dinamo won 2-0 away to Salzburg in October 2024. Venue flips for Sturm Graz, so the effect remains modest.'
+      })
+    }),
+    celtic: Object.freeze({
+      besiktas: Object.freeze({
+        venue: 'home',
+        attackTarget: 1.000,
+        defenseTarget: 1.000,
+        confidence: 0.28,
+        note: 'Turkish-club home analogue: Celtic drew 2-2 at home to Fenerbahce in October 2015. Used lightly for Besiktas because of age and different opponent profile.'
+      })
+    }),
+    psv: Object.freeze({
         venue: 'away',
         sample: 1,
         wins: 1,
@@ -2353,6 +2420,20 @@
       })
     }),
     spartapraha: Object.freeze({
+      bournemouth: Object.freeze({
+        venue: 'home',
+        attackTarget: 0.970,
+        defenseTarget: 1.030,
+        confidence: 0.50,
+        note: 'Recent English-club home analogue: Sparta lost 5-1 at home to Liverpool in March 2024. Used for Bournemouth, but capped because Liverpool are a stronger reference side.'
+      }),
+      crystalpalace: Object.freeze({
+        venue: 'away',
+        attackTarget: 0.970,
+        defenseTarget: 1.030,
+        confidence: 0.44,
+        note: 'Recent English-club away analogue: Sparta lost 5-0 away to Manchester City in October 2024. Used for Crystal Palace with reduced confidence because opponent strength differs.'
+      }),
       rennais: Object.freeze({
         venue: 'home',
         attackTarget: 0.990,
@@ -2585,7 +2666,7 @@
   });
 
   window.UCLDRAW_PREDICTION_CONTEXT_DATA = Object.freeze({
-    version: 32,
+    version: 33,
     reviewedAt: '2026-09-02',
     matches,
     historicalSignals,

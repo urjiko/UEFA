@@ -3771,6 +3771,40 @@
       "confidence": 0.22,
       "note": "Swiss-club analogue: CSKA Sofia won 3-1 away to Basel in the 2020/21 Europa League play-off. Venue flips for Thun and the match is old, so the effect stays small."
     }
+  },
+  "brann": {
+    "aarhus": {
+      "venue": "home",
+      "attackTarget": 1.01,
+      "defenseTarget": 1.005,
+      "confidence": 0.42,
+      "note": "Fresh Danish-club home analogue: Brann drew 3-3 at home to Midtjylland in January 2026. Used for Aarhus; the draw keeps the adjustment modest rather than strongly positive."
+    }
+  },
+  "kairat": {
+    "atalanta": {
+      "venue": "away",
+      "attackTarget": 0.99,
+      "defenseTarget": 1.015,
+      "confidence": 0.46,
+      "note": "Fresh Italian-club away analogue: Kairat lost 2-1 away to Inter in November 2025. Used for the Atalanta trip."
+    },
+    "panathinaikos": {
+      "venue": "home",
+      "attackTarget": 0.985,
+      "defenseTarget": 1.015,
+      "confidence": 0.42,
+      "note": "Fresh Greek-club home analogue: Kairat lost 1-0 at home to Olympiacos in December 2025. Used for Panathinaikos."
+    }
+  },
+  "hearts": {
+    "nordsjaelland": {
+      "venue": "home",
+      "attackTarget": 0.995,
+      "defenseTarget": 1.01,
+      "confidence": 0.22,
+      "note": "Danish-club analogue: Hearts lost 2-0 away to Copenhagen in December 2024. Venue flips for Nordsjaelland, so only a small country-level adjustment is applied."
+    }
   }
 });
 
@@ -3830,7 +3864,7 @@
   });
 
   window.UCLDRAW_PREDICTION_CONTEXT_DATA = Object.freeze({
-    version: 51,
+    version: 52,
     reviewedAt: '2026-09-02',
     matches,
     historicalSignals,

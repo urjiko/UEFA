@@ -559,6 +559,93 @@
     ['2025-12-09','atleti','psv','NED','away',3,2],
     ['2026-01-21','atleti','galatasaray','TUR','away',1,1],
     ['2026-01-28','atleti','bodo','NOR','home',1,2]
+
+
+    // Pot 4: Slavia Praha, latest Champions League league-phase sample.
+    ['2025-09-17','slavia','bodo','NOR','home',2,2],
+    ['2025-09-30','slavia','inter','ITA','away',0,3],
+    ['2025-10-22','slavia','atalanta','ITA','away',0,0],
+    ['2025-11-04','slavia','arsenal','ENG','home',0,3],
+    ['2025-11-25','slavia','athleticbilbao','ESP','home',0,0],
+    ['2025-12-09','slavia','tottenham','ENG','away',0,3],
+    ['2026-01-21','slavia','barcelona','ESP','home',2,4],
+    ['2026-01-28','slavia','pafos','CYP','away',1,4],
+
+    // Pot 4: Slovan Bratislava, 2025/26 Conference League plus 2026/27 Champions League qualifying.
+    ['2025-10-02','slovanbratislava','strasbourg','FRA','home',1,2],
+    ['2025-10-23','slovanbratislava','azalkmaar','NED','away',0,1],
+    ['2025-11-06','slovanbratislava','kuopio','FIN','away',1,3],
+    ['2025-11-27','slovanbratislava','rayo','ESP','home',2,1],
+    ['2025-12-11','slovanbratislava','shkendija','MKD','away',0,2],
+    ['2025-12-18','slovanbratislava','hacken','SWE','home',1,0],
+    ['2026-07-21','slovanbratislava','iberia1999','GEO','away',2,0],
+    ['2026-07-29','slovanbratislava','iberia1999','GEO','home',1,1],
+    ['2026-08-04','slovanbratislava','mjallby','SWE','away',2,1],
+    ['2026-08-11','slovanbratislava','mjallby','SWE','home',2,0],
+    ['2026-08-19','slovanbratislava','celje','SVN','home',1,1],
+    ['2026-08-26','slovanbratislava','celje','SVN','away',2,1],
+
+    // Pot 4: Stuttgart, 2024/25 Champions League league phase.
+    ['2024-09-17','stuttgart','real','ESP','away',1,3],
+    ['2024-10-01','stuttgart','spartapraha','CZE','home',1,1],
+    ['2024-10-22','stuttgart','juventus','ITA','away',1,0],
+    ['2024-11-06','stuttgart','atalanta','ITA','home',0,2],
+    ['2024-11-27','stuttgart','crvenazvezda','SRB','away',1,5],
+    ['2024-12-11','stuttgart','youngboys','SUI','home',5,1],
+    ['2025-01-21','stuttgart','slovanbratislava','SVK','away',3,1],
+    ['2025-01-29','stuttgart','psg','FRA','home',1,4],
+
+    // Pot 4: AEK Athens, 2025/26 Conference League run plus 2026/27 Champions League play-off.
+    ['2025-10-02','aek','celje','SVN','away',1,3],
+    ['2025-10-23','aek','aberdeen','SCO','home',6,0],
+    ['2025-11-06','aek','shamrock','IRL','home',1,1],
+    ['2025-11-27','aek','fiorentina','ITA','away',1,0],
+    ['2025-12-11','aek','samsunspor','TUR','away',2,1],
+    ['2025-12-18','aek','craiova','ROU','home',3,2],
+    ['2026-03-12','aek','celje','SVN','away',4,0],
+    ['2026-03-19','aek','celje','SVN','home',0,2],
+    ['2026-04-09','aek','rayo','ESP','away',0,3],
+    ['2026-04-16','aek','rayo','ESP','home',3,1],
+    ['2026-08-18','aek','levskisofia','BUL','away',0,0],
+    ['2026-08-26','aek','levskisofia','BUL','home',4,0],
+
+    // Pot 4: LASK, 2024/25 Conference League league phase plus 2026/27 Champions League play-off.
+    ['2024-10-03','lask','djurgarden','SWE','home',2,2],
+    ['2024-10-24','lask','olimpija','SVN','away',0,2],
+    ['2024-11-07','lask','cerclebrugge','BEL','home',0,0],
+    ['2024-11-28','lask','borac','BIH','away',1,2],
+    ['2024-12-12','lask','fiorentina','ITA','away',0,7],
+    ['2024-12-19','lask','vikingurreykjavik','ISL','home',1,1],
+    ['2026-08-19','lask','celtic','SCO','away',0,3],
+    ['2026-08-25','lask','celtic','SCO','home',5,1],
+
+    // Pot 4: Lens, latest full European sample from 2023/24.
+    ['2023-09-20','lens','sevilla','ESP','away',1,1],
+    ['2023-10-03','lens','arsenal','ENG','home',2,1],
+    ['2023-10-24','lens','psv','NED','home',1,1],
+    ['2023-11-08','lens','psv','NED','away',0,1],
+    ['2023-11-29','lens','arsenal','ENG','away',0,6],
+    ['2023-12-12','lens','sevilla','ESP','home',2,1],
+    ['2024-02-15','lens','freiburg','GER','home',0,0],
+    ['2024-02-22','lens','freiburg','GER','away',2,3],
+
+    // Pot 4: Viking FK, 2025/26 Conference qualifying plus the 2026/27 Champions League play-off.
+    ['2025-07-24','viking','koper','SVN','home',7,0],
+    ['2025-07-31','viking','koper','SVN','away',5,3],
+    ['2025-08-07','viking','basaksehir','TUR','home',1,3],
+    ['2025-08-14','viking','basaksehir','TUR','away',1,1],
+    ['2026-08-18','viking','dinamo','CRO','away',2,2],
+    ['2026-08-26','viking','dinamo','CRO','home',3,1],
+
+    // Pot 4: Sabah, all eight matches from the 2026/27 Champions League qualifying run.
+    ['2026-07-07','sabah','tns','WAL','home',2,0],
+    ['2026-07-14','sabah','tns','WAL','away',2,1],
+    ['2026-07-21','sabah','kuopio','FIN','home',1,0],
+    ['2026-07-28','sabah','kuopio','FIN','away',2,0],
+    ['2026-08-05','sabah','aarhus','DEN','away',1,2],
+    ['2026-08-11','sabah','aarhus','DEN','home',4,0],
+    ['2026-08-19','sabah','hapoelbeersheva','ISR','away',1,2],
+    ['2026-08-25','sabah','hapoelbeersheva','ISR','home',5,2]
   ].map(([date, teamSlug, opponentSlug, opponentCountry, venue, goalsFor, goalsAgainst]) => Object.freeze({
     date, teamSlug, opponentSlug, opponentCountry, venue, goalsFor, goalsAgainst
   })));
@@ -1559,7 +1646,7 @@
   });
 
   window.UCLDRAW_PREDICTION_CONTEXT_DATA = Object.freeze({
-    version: 17,
+    version: 18,
     reviewedAt: '2026-09-02',
     matches,
     historicalSignals,

@@ -1100,7 +1100,7 @@
 
     // Europa League Pot 4: OFI Crete, 2026/27 Europa League play-off.
     ['2026-08-20','crete','cskasofia','BUL','home',3,0],
-    ['2026-08-27','crete','cskasofia','BUL','away',2,0]
+    ['2026-08-27','crete','cskasofia','BUL','away',2,0],
 
     ['2022-08-04','lillestrom','antwerp','BEL','home',1,3],
     ['2022-08-11','lillestrom','antwerp','BEL','away',0,2],
@@ -3102,7 +3102,7 @@
   });
 
   window.UCLDRAW_PREDICTION_CONTEXT_DATA = Object.freeze({
-    version: 41,
+    version: 42,
     reviewedAt: '2026-09-02',
     matches,
     historicalSignals,

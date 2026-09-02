@@ -1323,6 +1323,53 @@
     ['2023-12-14','brighton','marseille','FRA','home',1,0],
     ['2024-03-07','brighton','roma','ITA','away',0,4],
     ['2024-03-14','brighton','roma','ITA','home',1,0],
+
+
+    // Conference League Pot 3: Twente, 2024/25 Europa League league phase.
+    ['2024-09-25','twente','manu','ENG','away',1,1],
+    ['2024-10-03','twente','fenerbahce','TUR','home',1,1],
+    ['2024-10-24','twente','lazio','ITA','home',0,2],
+    ['2024-11-07','twente','nice','FRA','away',2,2],
+    ['2024-11-28','twente','union','BEL','home',0,1],
+    ['2024-12-12','twente','olympiacos','GRE','away',0,0],
+    ['2025-01-23','twente','malmo','SWE','away',3,2],
+    ['2025-01-30','twente','besiktas','TUR','home',1,0],
+
+    // Conference League Pot 3: Hearts, 2024/25 Conference League league phase.
+    ['2024-10-03','hearts','dinamominsk','BLR','away',2,1],
+    ['2024-10-24','hearts','omonia','CYP','home',2,0],
+    ['2024-11-07','hearts','heidenheim','GER','home',0,2],
+    ['2024-11-28','hearts','cerclebrugge','BEL','away',0,2],
+    ['2024-12-12','hearts','copenhagen','DEN','away',0,2],
+    ['2024-12-19','hearts','petrocub','MDA','home',2,2],
+
+    // Conference League Pot 3: Lugano, 2024/25 Conference League league phase + round of 16.
+    ['2024-10-03','lugano','hjk','FIN','home',3,0],
+    ['2024-10-24','lugano','mladaboleslav','CZE','away',1,0],
+    ['2024-11-07','lugano','tsc','SRB','away',1,4],
+    ['2024-11-28','lugano','gent','BEL','home',2,0],
+    ['2024-12-12','lugano','legia','POL','away',2,1],
+    ['2024-12-19','lugano','pafos','CYP','home',2,2],
+    ['2025-03-06','lugano','celje','SVN','away',0,1],
+    ['2025-03-13','lugano','celje','SVN','home',5,4],
+
+    // Conference League Pot 3: Nordsjaelland, 2023/24 Conference League group stage.
+    ['2023-09-21','nordsjaelland','fenerbahce','TUR','away',1,3],
+    ['2023-10-05','nordsjaelland','ludogorets','BUL','home',7,1],
+    ['2023-10-26','nordsjaelland','spartaktrnava','SVK','away',2,0],
+    ['2023-11-09','nordsjaelland','spartaktrnava','SVK','home',1,1],
+    ['2023-11-30','nordsjaelland','fenerbahce','TUR','home',6,1],
+    ['2023-12-14','nordsjaelland','ludogorets','BUL','away',0,1],
+
+    // Conference League Pot 3: CSKA Sofia, latest qualifying tie plus 2021/22 group-stage depth.
+    ['2023-07-27','cskasofia','sepsi','ROU','home',0,2],
+    ['2023-08-03','cskasofia','sepsi','ROU','away',0,4],
+    ['2021-09-16','cskasofia','roma','ITA','away',1,5],
+    ['2021-09-30','cskasofia','bodo','NOR','home',0,0],
+    ['2021-10-21','cskasofia','zorya','UKR','home',0,1],
+    ['2021-11-04','cskasofia','zorya','UKR','away',0,2],
+    ['2021-11-25','cskasofia','bodo','NOR','away',0,2],
+    ['2021-12-09','cskasofia','roma','ITA','home',2,3],
   ].map(([date, teamSlug, opponentSlug, opponentCountry, venue, goalsFor, goalsAgainst]) => Object.freeze({
     date, teamSlug, opponentSlug, opponentCountry, venue, goalsFor, goalsAgainst
   })));
@@ -3631,7 +3678,7 @@
   });
 
   window.UCLDRAW_PREDICTION_CONTEXT_DATA = Object.freeze({
-    version: 46,
+    version: 47,
     reviewedAt: '2026-09-02',
     matches,
     historicalSignals,

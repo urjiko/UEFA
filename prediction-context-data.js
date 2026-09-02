@@ -1370,6 +1370,28 @@
     ['2021-11-04','cskasofia','zorya','UKR','away',0,2],
     ['2021-11-25','cskasofia','bodo','NOR','away',0,2],
     ['2021-12-09','cskasofia','roma','ITA','home',2,3],
+
+    // Conference League Pot 3: freshest 2026/27 qualifying context.
+    ['2026-08-06','twente','dac','SVK','home',6,0],
+    ['2026-08-13','twente','dac','SVK','away',3,3],
+    ['2026-08-20','twente','qarabag','AZE','home',0,1],
+    ['2026-08-27','twente','qarabag','AZE','away',4,1],
+
+    ['2026-08-20','hearts','rapid','AUT','home',2,2],
+    ['2026-08-26','hearts','rapid','AUT','away',2,2],
+
+    ['2026-08-06','lugano','runavik','FRO','home',2,0],
+    ['2026-08-13','lugano','runavik','FRO','away',2,2],
+    ['2026-08-20','lugano','maccabitelaviv','ISR','home',2,1],
+    ['2026-08-27','lugano','maccabitelaviv','ISR','away',1,1],
+
+    ['2026-08-06','nordsjaelland','valur','ISL','away',2,0],
+    ['2026-08-13','nordsjaelland','valur','ISL','home',5,0],
+    ['2026-08-20','nordsjaelland','stgallen','SUI','home',1,0],
+    ['2026-08-27','nordsjaelland','stgallen','SUI','away',3,2],
+
+    ['2026-08-20','cskasofia','crete','GRE','away',0,3],
+    ['2026-08-27','cskasofia','crete','GRE','home',0,2],
   ].map(([date, teamSlug, opponentSlug, opponentCountry, venue, goalsFor, goalsAgainst]) => Object.freeze({
     date, teamSlug, opponentSlug, opponentCountry, venue, goalsFor, goalsAgainst
   })));
@@ -3678,7 +3700,7 @@
   });
 
   window.UCLDRAW_PREDICTION_CONTEXT_DATA = Object.freeze({
-    version: 48,
+    version: 49,
     reviewedAt: '2026-09-02',
     matches,
     historicalSignals,

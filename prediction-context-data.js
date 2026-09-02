@@ -1499,87 +1499,8 @@
     }),
     bodo: Object.freeze({
       atleti: Object.freeze({
-        sample: 1,
-        wins: 1,
-        draws: 0,
-        losses: 0,
-        goalsFor: 2,
-        goalsAgainst: 1,
-        attackTarget: 1.022,
-        defenseTarget: 0.982,
-        confidence: 0.56,
-        note: 'Very recent direct H2H: Bodo/Glimt won 2-1 away to Atletico in January 2026. Venue flips to Bodo in 2026/27, so the signal is strong but not treated as an exact-venue repeat.'
-      })
-    }),
-    city: Object.freeze({
-      psg: Object.freeze({
-        sample: 1,
-        wins: 0,
-        draws: 0,
-        losses: 1,
-        goalsFor: 2,
-        goalsAgainst: 4,
-        attackTarget: 0.985,
-        defenseTarget: 1.020,
-        confidence: 0.44,
-        note: 'Very recent direct H2H: Paris beat Manchester City 4-2 in January 2025. The 2026/27 match is in Manchester, so venue reversal limits the weight.'
-      }),
-      napoli: Object.freeze({
-        venue: 'home',
-        sample: 1,
-        wins: 1,
-        draws: 0,
-        losses: 0,
-        goalsFor: 2,
-        goalsAgainst: 0,
-        attackTarget: 1.022,
-        defenseTarget: 0.978,
-        confidence: 0.68,
-        note: 'Exact very recent repeat: Manchester City beat Napoli 2-0 at home in September 2025.'
-      }),
-      porto: Object.freeze({
+      liverpool: Object.freeze({
         venue: 'away',
-        sample: 1,
-        wins: 0,
-        draws: 1,
-        losses: 0,
-        goalsFor: 0,
-        goalsAgainst: 0,
-        attackTarget: 0.995,
-        defenseTarget: 0.985,
-        confidence: 0.22,
-        note: 'Same-venue H2H: Porto and Manchester City drew 0-0 in Porto in December 2020. Age keeps the effect small.'
-      }),
-      sporting: Object.freeze({
-        venue: 'home',
-        sample: 1,
-        wins: 0,
-        draws: 1,
-        losses: 0,
-        goalsFor: 0,
-        goalsAgainst: 0,
-        attackTarget: 0.990,
-        defenseTarget: 0.990,
-        confidence: 0.22,
-        note: 'Same-venue H2H: Manchester City drew 0-0 at home to Sporting in March 2022; the much newer 1-4 loss in Lisbon is captured in recent form.'
-      })
-    }),
-    psg: Object.freeze({
-      astonvilla: Object.freeze({
-        venue: 'away',
-        sample: 1,
-        wins: 0,
-        draws: 0,
-        losses: 1,
-        goalsFor: 2,
-        goalsAgainst: 3,
-        attackTarget: 1.000,
-        defenseTarget: 1.025,
-        confidence: 0.58,
-        note: 'Exact venue repeat: Aston Villa beat Paris 3-2 at Villa Park in April 2025; Paris return to Villa Park in 2026/27.'
-      }),
-      barcelona: Object.freeze({
-        venue: 'home',
         sample: 1,
         wins: 0,
         draws: 0,
@@ -1587,67 +1508,11 @@
         goalsFor: 2,
         goalsAgainst: 3,
         attackTarget: 1.005,
-        defenseTarget: 1.025,
-        confidence: 0.46,
-        note: 'Same-venue recent H2H: Barcelona won 3-2 away to Paris in the April 2024 quarter-final first leg. Newer 2025/26 H2H is also retained in the recent match sample.'
-      }),
-      galatasaray: Object.freeze({
-        venue: 'home',
-        sample: 4,
-        wins: 3,
-        draws: 0,
-        losses: 1,
-        goalsFor: 8,
-        goalsAgainst: 1,
-        attackTarget: 1.025,
-        defenseTarget: 0.975,
-        confidence: 0.30,
-        note: 'UEFA all-time H2H is Paris W3 L1 vs Galatasaray, including a 5-0 Paris home win in December 2019. Age keeps this below recent-form layers.'
-      })
-    }),
-    bayern: Object.freeze({
-      arsenal: Object.freeze({
-        venue: 'home',
-        sample: 1,
-        wins: 1,
-        draws: 0,
-        losses: 0,
-        goalsFor: 1,
-        goalsAgainst: 0,
-        attackTarget: 1.020,
-        defenseTarget: 0.980,
-        confidence: 0.52,
-        note: 'Exact venue repeat: Bayern beat Arsenal 1-0 in Munich in the April 2024 Champions League quarter-final second leg.'
+        defenseTarget: 1.020,
+        confidence: 0.66,
+        note: 'Exact very recent repeat: Atletico lost 3-2 at Liverpool in September 2025.'
       }),
       manu: Object.freeze({
-        venue: 'away',
-        sample: 1,
-        wins: 1,
-        draws: 0,
-        losses: 0,
-        goalsFor: 1,
-        goalsAgainst: 0,
-        attackTarget: 1.018,
-        defenseTarget: 0.982,
-        confidence: 0.48,
-        note: 'Exact venue repeat: Bayern won 1-0 at Old Trafford in December 2023.'
-      })
-    }),
-    real: Object.freeze({
-      arsenal: Object.freeze({
-        venue: 'away',
-        sample: 1,
-        wins: 0,
-        draws: 0,
-        losses: 1,
-        goalsFor: 0,
-        goalsAgainst: 3,
-        attackTarget: 0.970,
-        defenseTarget: 1.035,
-        confidence: 0.66,
-        note: 'Exact recent repeat: Arsenal beat Real Madrid 3-0 in London in April 2025. Real visit Arsenal again in 2026/27.'
-      }),
-      leipzig: Object.freeze({
         venue: 'home',
         sample: 1,
         wins: 0,
@@ -1657,13 +1522,11 @@
         goalsAgainst: 1,
         attackTarget: 1.000,
         defenseTarget: 1.000,
-        confidence: 0.42,
-        note: 'Same-venue recent H2H: Real Madrid drew 1-1 with Leipzig at the Bernabeu in March 2024.'
-      })
-    }),
-    liverpool: Object.freeze({
-      atleti: Object.freeze({
-        venue: 'home',
+        confidence: 0.38,
+        note: 'Same-venue H2H: Atletico drew 1-1 at home to Manchester United in February 2022.'
+      }),
+      psv: Object.freeze({
+        venue: 'away',
         sample: 1,
         wins: 1,
         draws: 0,
@@ -1672,77 +1535,11 @@
         goalsAgainst: 2,
         attackTarget: 1.020,
         defenseTarget: 1.005,
-        confidence: 0.66,
-        note: 'Exact very recent repeat: Liverpool beat Atletico 3-2 at Anfield in September 2025.'
-      }),
-      inter: Object.freeze({
-        venue: 'away',
-        sample: 1,
-        wins: 1,
-        draws: 0,
-        losses: 0,
-        goalsFor: 1,
-        goalsAgainst: 0,
-        attackTarget: 1.020,
-        defenseTarget: 0.980,
-        confidence: 0.66,
-        note: 'Exact very recent repeat: Liverpool won 1-0 away to Inter in December 2025.'
-      }),
-      porto: Object.freeze({
-        venue: 'home',
-        sample: 8,
-        wins: 6,
-        draws: 2,
-        losses: 0,
-        goalsFor: 23,
-        goalsAgainst: 4,
-        attackTarget: 1.035,
-        defenseTarget: 0.970,
-        confidence: 0.58,
-        note: 'UEFA Champions League H2H: Liverpool are unbeaten in eight meetings with Porto (W6 D2), 23-4 on goals. The 2026/27 meeting is at Anfield.'
-      }),
-      villareal: Object.freeze({
-        venue: 'home',
-        sample: 1,
-        wins: 1,
-        draws: 0,
-        losses: 0,
-        goalsFor: 2,
-        goalsAgainst: 0,
-        attackTarget: 1.020,
-        defenseTarget: 0.980,
-        confidence: 0.34,
-        note: 'Same-venue H2H: Liverpool beat Villarreal 2-0 at Anfield in the 2022 Champions League semi-final first leg.'
-      }),
-      lask: Object.freeze({
-        venue: 'away',
-        sample: 1,
-        wins: 1,
-        draws: 0,
-        losses: 0,
-        goalsFor: 3,
-        goalsAgainst: 1,
-        attackTarget: 1.025,
-        defenseTarget: 0.990,
-        confidence: 0.48,
-        note: 'Exact venue analogue: Liverpool won 3-1 away to LASK in the September 2023 Europa League group stage.'
+        confidence: 0.68,
+        note: 'Exact very recent repeat: Atletico won 3-2 away to PSV in December 2025.'
       })
     }),
-    inter: Object.freeze({
-      liverpool: Object.freeze({
-        venue: 'home',
-        sample: 1,
-        wins: 0,
-        draws: 0,
-        losses: 1,
-        goalsFor: 0,
-        goalsAgainst: 1,
-        attackTarget: 0.980,
-        defenseTarget: 1.020,
-        confidence: 0.66,
-        note: 'Exact very recent repeat: Liverpool won 1-0 at Inter in December 2025.'
-      }),
-      bvb: Object.freeze({
+    bvb: Object.freeze({
         venue: 'away',
         sample: 1,
         wins: 1,
@@ -2408,6 +2205,20 @@
         defenseTarget: 1.020,
         confidence: 0.38,
         note: 'Recent German-elite home analogue: Dinamo lost 3-0 at home to Dortmund in November 2024. Used modestly for Leverkusen.'
+      }),
+      sunderland: Object.freeze({
+        venue: 'away',
+        attackTarget: 0.975,
+        defenseTarget: 1.025,
+        confidence: 0.40,
+        note: 'Recent English-club away analogue: Dinamo lost 3-0 away to Arsenal in January 2025. Used for Sunderland with reduced confidence because Arsenal are a much stronger reference.'
+      }),
+      strumgraz: Object.freeze({
+        venue: 'home',
+        attackTarget: 1.015,
+        defenseTarget: 0.990,
+        confidence: 0.30,
+        note: 'Austrian-club analogue: Dinamo won 2-0 away to Salzburg in October 2024. Venue flips for Sturm Graz, so the effect remains modest.'
       })
     }),
     rennais: Object.freeze({
@@ -2599,6 +2410,31 @@
         note: 'Portuguese-club home analogue: LASK beat Sporting CP 3-0 at home in December 2019. Used lightly for Porto because of age.'
       })
     }),
+    union: Object.freeze({
+      besiktas: Object.freeze({
+        venue: 'away',
+        attackTarget: 0.985,
+        defenseTarget: 1.015,
+        confidence: 0.42,
+        note: 'Fresh Turkish-club away analogue: Union SG lost 2-1 away to Fenerbahce in September 2024. Used for the Besiktas trip.'
+      }),
+      lyon: Object.freeze({
+        venue: 'away',
+        attackTarget: 1.005,
+        defenseTarget: 0.995,
+        confidence: 0.24,
+        note: 'Recent French-club analogue: Union SG beat Nice 2-1 at home in December 2024. Venue mismatch makes the Lyon-away effect deliberately small.'
+      })
+    }),
+    celtic: Object.freeze({
+      besiktas: Object.freeze({
+        venue: 'home',
+        attackTarget: 1.000,
+        defenseTarget: 1.000,
+        confidence: 0.28,
+        note: 'Turkish-club home analogue: Celtic drew 2-2 at home to Fenerbahce in October 2015. Used lightly for Besiktas because of age and different opponent profile.'
+      })
+    }),
     psv: Object.freeze({
       brugge: Object.freeze({
         venue: 'home',
@@ -2666,7 +2502,7 @@
   });
 
   window.UCLDRAW_PREDICTION_CONTEXT_DATA = Object.freeze({
-    version: 33,
+    version: 34,
     reviewedAt: '2026-09-02',
     matches,
     historicalSignals,

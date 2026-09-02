@@ -403,6 +403,43 @@
   // Long-run association facts remain deliberately tiny. They preserve patterns
   // that survive beyond one season without letting folklore overpower current strength.
   const historicalSignals = Object.freeze({
+    sporting: Object.freeze({
+      TUR: Object.freeze({
+        sample: 10,
+        wins: 5,
+        draws: 3,
+        losses: 2,
+        attackTarget: 1.025,
+        defenseTarget: 0.980,
+        confidence: 0.50,
+        note: 'UEFA information kit: Sporting are W5 D3 L2 across ten competitive meetings with Turkish clubs; the freshest strong analogue is the 2021/22 Besiktas pair, won 4-1 away and 4-0 at home. Used conservatively for Galatasaray.'
+      })
+    }),
+    roma: Object.freeze({
+      TUR: Object.freeze({
+        sample: 2,
+        wins: 2,
+        draws: 0,
+        losses: 0,
+        attackTarget: 1.030,
+        defenseTarget: 0.970,
+        confidence: 0.34,
+        note: 'Roma beat Istanbul Basaksehir 4-0 at home and 3-0 away in the 2019/20 Europa League. It is a useful Turkish-club analogue for Fenerbahce, but age and single-opponent scope keep the weight modest.'
+      })
+    }),
+    brugge: Object.freeze({
+      ENG: Object.freeze({
+        venue: 'home',
+        sample: 14,
+        wins: 7,
+        draws: 3,
+        losses: 4,
+        attackTarget: 1.012,
+        defenseTarget: 0.995,
+        confidence: 0.30,
+        note: 'UEFA form guide gives Club Brugge a W7 D3 L4 home record against English clubs. Much of the positive record is old, so this is only a small home-specific layer; recent Villa and Arsenal results carry more weight.'
+      })
+    }),
     galatasaray: Object.freeze({
       GRE: Object.freeze({
         sample: 7,
@@ -887,7 +924,7 @@
   });
 
   window.UCLDRAW_PREDICTION_CONTEXT_DATA = Object.freeze({
-    version: 13,
+    version: 14,
     reviewedAt: '2026-09-02',
     matches,
     historicalSignals,

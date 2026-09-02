@@ -738,8 +738,7 @@
     ['2025-11-25','marseille','newcastle','ENG','home',2,1],
     ['2025-12-09','marseille','union','BEL','away',3,2],
     ['2026-01-21','marseille','liverpool','ENG','home',0,3],
-    ['2026-01-28','marseille','brugge','BEL','away',0,3]
-
+    ['2026-01-28','marseille','brugge','BEL','away',0,3],
 
     // Europa League Pot 1 depth: 2024/25 samples for clubs with consecutive European seasons.
     ['2024-09-19','bayerleverkusen','feyenoord','NED','away',4,0],
@@ -2340,7 +2339,7 @@
   });
 
   window.UCLDRAW_PREDICTION_CONTEXT_DATA = Object.freeze({
-    version: 29,
+    version: 30,
     reviewedAt: '2026-09-02',
     matches,
     historicalSignals,

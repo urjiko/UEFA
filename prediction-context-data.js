@@ -931,8 +931,7 @@
     ['2025-01-23','anderlecht','viktoriaplzen','CZE','away',0,2],
     ['2025-01-30','anderlecht','hoffenheim','GER','home',3,4],
     ['2025-02-13','anderlecht','fenerbahce','TUR','away',0,3],
-    ['2025-02-20','anderlecht','fenerbahce','TUR','home',2,2]
-
+    ['2025-02-20','anderlecht','fenerbahce','TUR','home',2,2],
 
     // Europa League Pot 3: Sturm Graz, consecutive 2024/25 UCL + 2025/26 UEL league phases.
     ['2024-09-19','strumgraz','brest','FRA','away',1,2],
@@ -1504,6 +1503,19 @@
       "defenseTarget": 0.995,
       "confidence": 0.24,
       "note": "Champions League H2H is W2-L2 overall. Marseille won the latest home meeting 2-1 in December 2020."
+    },
+    "celtavigo": {
+      "venue": "home",
+      "sample": 2,
+      "wins": 1,
+      "draws": 1,
+      "losses": 0,
+      "goalsFor": 2,
+      "goalsAgainst": 1,
+      "attackTarget": 1.01,
+      "defenseTarget": 0.99,
+      "confidence": 0.1,
+      "note": "1998/99 UEFA Cup quarter-final: Marseille were W1 D1 against Celta and won 2-1 at home. Age keeps the exact-venue signal tiny."
     }
   },
   "slavia": {
@@ -2470,266 +2482,390 @@
       "confidence": 0.66,
       "note": "Exact very recent repeat: Inter won 2-0 in Dortmund in January 2026."
     }
+  },
+  "poznan": {
+    "benfica": {
+      "venue": "away",
+      "sample": 2,
+      "wins": 0,
+      "draws": 0,
+      "losses": 2,
+      "goalsFor": 2,
+      "goalsAgainst": 8,
+      "attackTarget": 0.975,
+      "defenseTarget": 1.025,
+      "confidence": 0.38,
+      "note": "2020/21 Europa League: Benfica beat Lech Poznan 4-2 in Poland and 4-0 in Lisbon. The 2026/27 fixture is again in Lisbon."
+    }
+  },
+  "celtavigo": {
+    "celtic": {
+      "venue": "away",
+      "sample": 2,
+      "wins": 1,
+      "draws": 0,
+      "losses": 1,
+      "goalsFor": 2,
+      "goalsAgainst": 2,
+      "attackTarget": 0.99,
+      "defenseTarget": 1.01,
+      "confidence": 0.12,
+      "note": "2002/03 UEFA Cup: Celtic won 1-0 in Glasgow and Celta won 2-1 in Vigo. The new match is again in Glasgow; age keeps the signal tiny."
+    },
+    "marseille": {
+      "venue": "away",
+      "sample": 2,
+      "wins": 0,
+      "draws": 1,
+      "losses": 1,
+      "goalsFor": 1,
+      "goalsAgainst": 2,
+      "attackTarget": 0.99,
+      "defenseTarget": 1.01,
+      "confidence": 0.1,
+      "note": "1998/99 UEFA Cup quarter-final: Marseille led the H2H W1 D1, including a 2-1 home win. The 2026/27 match is again in Marseille, so only a tiny historical layer is retained."
+    }
+  },
+  "omonia": {
+    "benfica": {
+      "venue": "home",
+      "sample": 2,
+      "wins": 0,
+      "draws": 0,
+      "losses": 2,
+      "goalsFor": 0,
+      "goalsAgainst": 4,
+      "attackTarget": 0.99,
+      "defenseTarget": 1.01,
+      "confidence": 0.08,
+      "note": "1981/82 European Cup: Benfica won both meetings against Omonia, 4-0 on aggregate. The history is too old for more than a trace signal."
+    },
+    "juventus": {
+      "venue": "away",
+      "sample": 2,
+      "wins": 0,
+      "draws": 0,
+      "losses": 2,
+      "goalsFor": 2,
+      "goalsAgainst": 10,
+      "attackTarget": 0.98,
+      "defenseTarget": 1.02,
+      "confidence": 0.1,
+      "note": "UEFA historical H2H heavily favours Juventus over Omonia. The series is decades old, so the Turin fixture receives only a tiny negative Omonia layer."
+    }
   }
 });
 
   const analogueSignals = Object.freeze({
-    viktoriaplzen: Object.freeze({
-      benfica: Object.freeze({
-        venue: 'home',
-        attackTarget: 1.005,
-        defenseTarget: 0.995,
-        confidence: 0.46,
-        note: 'Very recent Portuguese-club home analogue: Viktoria Plzen drew 1-1 at home to Porto in January 2026. Used for Benfica without pretending Porto and Benfica are identical.'
-      })
-    }),
-    dinamo: Object.freeze({
-      bayerleverkusen: Object.freeze({
-        venue: 'home',
-        attackTarget: 0.980,
-        defenseTarget: 1.020,
-        confidence: 0.38,
-        note: 'Recent German-elite home analogue: Dinamo lost 3-0 at home to Dortmund in November 2024. Used modestly for Leverkusen.'
-      }),
-      sunderland: Object.freeze({
-        venue: 'away',
-        attackTarget: 0.975,
-        defenseTarget: 1.025,
-        confidence: 0.40,
-        note: 'Recent English-club away analogue: Dinamo lost 3-0 away to Arsenal in January 2025. Used for Sunderland with reduced confidence because Arsenal are a much stronger reference.'
-      }),
-      strumgraz: Object.freeze({
-        venue: 'home',
-        attackTarget: 1.015,
-        defenseTarget: 0.990,
-        confidence: 0.30,
-        note: 'Austrian-club analogue: Dinamo won 2-0 away to Salzburg in October 2024. Venue flips for Sturm Graz, so the effect remains modest.'
-      })
-    }),
-    rennais: Object.freeze({
-      juventus: Object.freeze({
-        venue: 'away',
-        attackTarget: 0.975,
-        defenseTarget: 1.025,
-        confidence: 0.44,
-        note: 'Recent Italian-elite away analogue: Rennes lost 3-0 away to Milan in February 2024. Used for the Juventus trip at moderate confidence.'
-      })
-    }),
-    spartapraha: Object.freeze({
-      bournemouth: Object.freeze({
-        venue: 'home',
-        attackTarget: 0.970,
-        defenseTarget: 1.030,
-        confidence: 0.50,
-        note: 'Recent English-club home analogue: Sparta lost 5-1 at home to Liverpool in March 2024. Used for Bournemouth, but capped because Liverpool are a stronger reference side.'
-      }),
-      crystalpalace: Object.freeze({
-        venue: 'away',
-        attackTarget: 0.970,
-        defenseTarget: 1.030,
-        confidence: 0.44,
-        note: 'Recent English-club away analogue: Sparta lost 5-0 away to Manchester City in October 2024. Used for Crystal Palace with reduced confidence because opponent strength differs.'
-      }),
-      rennais: Object.freeze({
-        venue: 'home',
-        attackTarget: 0.990,
-        defenseTarget: 1.010,
-        confidence: 0.34,
-        note: 'Recent French-club home analogue: Sparta lost 2-1 at home to Brest in November 2024. Used lightly for Rennes.'
-      })
-    }),    slavia: Object.freeze({
-      lens: Object.freeze({
-        venue: 'home',
-        attackTarget: 1.018,
-        defenseTarget: 0.990,
-        confidence: 0.28,
-        note: 'Same-country/same-venue analogue: Slavia beat Nice 3-2 at home and 3-1 away in the 2020/21 Europa League. Age keeps the Lens effect modest.'
-      })
-    }),
-    lens: Object.freeze({
-      city: Object.freeze({
-        venue: 'home',
-        attackTarget: 1.020,
-        defenseTarget: 0.985,
-        confidence: 0.34,
-        note: 'Same-country/same-venue analogue: Lens beat Arsenal 2-1 at home in October 2023. Used as a modest English-elite home analogue for Manchester City.'
-      }),
-      liverpool: Object.freeze({
-        venue: 'away',
-        attackTarget: 0.965,
-        defenseTarget: 1.035,
-        confidence: 0.42,
-        note: 'Same-country/same-venue analogue: Lens lost 6-0 away to Arsenal in November 2023. Used as a bounded English-elite away analogue for Liverpool.'
-      })
-    }),
-    aek: Object.freeze({
-      city: Object.freeze({
-        venue: 'away',
-        attackTarget: 1.018,
-        defenseTarget: 1.005,
-        confidence: 0.34,
-        note: 'Same-country/same-venue analogue: AEK won 3-2 away to Brighton in September 2023. Used as a modest English away analogue for Manchester City.'
-      }),
-      galatasaray: Object.freeze({
-        attackTarget: 1.015,
-        defenseTarget: 0.985,
-        confidence: 0.28,
-        note: 'Recent Turkish-club analogue: AEK won 2-1 away to Samsunspor in December 2025. It is not a venue match, so confidence remains modest for Galatasaray.'
-      }),
-      roma: Object.freeze({
-        venue: 'home',
-        attackTarget: 1.012,
-        defenseTarget: 0.988,
-        confidence: 0.24,
-        note: 'Recent Italian-club analogue: AEK won 1-0 away to Fiorentina in November 2025. The Roma match is at home, so venue mismatch keeps the effect small.'
-      })
-    }),
-    bayern: Object.freeze({
-      slavia: Object.freeze({
-        venue: 'home',
-        attackTarget: 1.025,
-        defenseTarget: 0.980,
-        confidence: 0.42,
-        note: 'Same-country/same-venue analogue: Bayern beat Viktoria Plzen 5-0 at home in October 2022. Used as a Czech-club home analogue for Slavia.'
-      }),
-      realbetis: Object.freeze({
-        venue: 'home',
-        attackTarget: 1.018,
-        defenseTarget: 0.985,
-        confidence: 0.28,
-        note: 'Spanish-club home analogue: Bayern beat Barcelona 2-0 at home in September 2022. Used lightly for Real Betis because the opponent profile and age differ.'
-      })
-    }),
-    bodo: Object.freeze({
-      bayern: Object.freeze({
-        venue: 'away',
-        attackTarget: 1.015,
-        defenseTarget: 0.990,
-        confidence: 0.38,
-        note: 'Same-country/same-venue analogue: Bodo/Glimt drew 2-2 away to Dortmund in December 2025. Used as a recent German-elite away analogue for Bayern.'
-      })
-    }),
-    slovanbratislava: Object.freeze({
-      realbetis: Object.freeze({
-        venue: 'home',
-        attackTarget: 1.020,
-        defenseTarget: 0.985,
-        confidence: 0.42,
-        note: 'Same-country/same-venue analogue: Slovan beat Rayo Vallecano 2-1 at home in November 2025. Used for the Real Betis home fixture.'
-      })
-    }),
-    atleti: Object.freeze({
-      viking: Object.freeze({
-        venue: 'home',
-        attackTarget: 0.985,
-        defenseTarget: 1.020,
-        confidence: 0.50,
-        note: 'Same-country/same-venue analogue: Atletico lost 2-1 at home to Bodo/Glimt in January 2026. Viking are also Norwegian, making this a unusually fresh association analogue.'
-      })
-    }),
-    porto: Object.freeze({
-      slavia: Object.freeze({
-        venue: 'home',
-        attackTarget: 1.000,
-        defenseTarget: 1.000,
-        confidence: 0.24,
-        note: 'Recent Czech-club analogue: Porto drew 1-1 away to Viktoria Plzen in January 2026. Venue flips for Slavia, so the model keeps this almost neutral.'
-      })
-    }),
-    arsenal: Object.freeze({
-      sabah: Object.freeze({
-        venue: 'home',
-        attackTarget: 1.020,
-        defenseTarget: 0.980,
-        confidence: 0.24,
-        note: 'Azerbaijani-club analogue: Arsenal beat Qarabag 1-0 at home and 3-0 away in the 2018/19 Europa League. Age keeps the weight low for Sabah.'
-      })
-    }),
-    real: Object.freeze({
-      lask: Object.freeze({
-        venue: 'home',
-        attackTarget: 1.025,
-        defenseTarget: 0.980,
-        confidence: 0.44,
-        note: 'Same-country/same-venue analogue: Real Madrid beat Salzburg 5-1 at home in January 2025. Used as an Austrian-club home analogue for LASK.'
-      })
-    }),
-    barcelona: Object.freeze({
-      sporting: Object.freeze({
-        venue: 'away',
-        attackTarget: 1.022,
-        defenseTarget: 1.005,
-        confidence: 0.42,
-        note: 'Same-country/same-venue analogue: Barcelona won 5-4 away to Benfica in January 2025. Used as a Portuguese away analogue for Sporting.'
-      }),
-      como: Object.freeze({
-        venue: 'home',
-        attackTarget: 1.005,
-        defenseTarget: 1.005,
-        confidence: 0.34,
-        note: 'Same-country/same-venue analogue: Barcelona drew 2-2 at home to Atalanta in January 2025. Used as a modest Italian home analogue for Como.'
-      })
-    }),
-    realbetis: Object.freeze({
-      como: Object.freeze({
-        venue: 'home',
-        attackTarget: 1.005,
-        defenseTarget: 0.995,
-        confidence: 0.24,
-        note: 'Same-country/same-venue analogue: Real Betis drew 1-1 at home to Roma in October 2022 after winning 2-1 in Rome. Used lightly for Como.'
-      })
-    }),
-    lask: Object.freeze({
-      bodo: Object.freeze({
-        venue: 'away',
-        attackTarget: 1.015,
-        defenseTarget: 0.990,
-        confidence: 0.22,
-        note: 'Norwegian-club away analogue: LASK won 2-1 away to Rosenborg in November 2019. Age keeps the Bodo effect small.'
-      }),
-      porto: Object.freeze({
-        venue: 'home',
-        attackTarget: 1.018,
-        defenseTarget: 0.985,
-        confidence: 0.24,
-        note: 'Portuguese-club home analogue: LASK beat Sporting CP 3-0 at home in December 2019. Used lightly for Porto because of age.'
-      })
-    }),
-    union: Object.freeze({
-      besiktas: Object.freeze({
-        venue: 'away',
-        attackTarget: 0.985,
-        defenseTarget: 1.015,
-        confidence: 0.42,
-        note: 'Fresh Turkish-club away analogue: Union SG lost 2-1 away to Fenerbahce in September 2024. Used for the Besiktas trip.'
-      }),
-      lyon: Object.freeze({
-        venue: 'away',
-        attackTarget: 1.005,
-        defenseTarget: 0.995,
-        confidence: 0.24,
-        note: 'Recent French-club analogue: Union SG beat Nice 2-1 at home in December 2024. Venue mismatch makes the Lyon-away effect deliberately small.'
-      })
-    }),
-    celtic: Object.freeze({
-      besiktas: Object.freeze({
-        venue: 'home',
-        attackTarget: 1.000,
-        defenseTarget: 1.000,
-        confidence: 0.28,
-        note: 'Turkish-club home analogue: Celtic drew 2-2 at home to Fenerbahce in October 2015. Used lightly for Besiktas because of age and different opponent profile.'
-      })
-    }),
-    psv: Object.freeze({
-      brugge: Object.freeze({
-        venue: 'home',
-        attackTarget: 0.985,
-        defenseTarget: 1.020,
-        confidence: 0.42,
-        note: 'Same-country/same-venue analogue: PSV lost 3-1 at home to Union Saint-Gilloise in September 2025. Used as a recent Belgian-club home analogue for Club Brugge.'
-      })
-    })
-  });
+  "viktoriaplzen": {
+    "benfica": {
+      "venue": "home",
+      "attackTarget": 1.005,
+      "defenseTarget": 0.995,
+      "confidence": 0.46,
+      "note": "Very recent Portuguese-club home analogue: Viktoria Plzen drew 1-1 at home to Porto in January 2026. Used for Benfica without pretending Porto and Benfica are identical."
+    }
+  },
+  "dinamo": {
+    "bayerleverkusen": {
+      "venue": "home",
+      "attackTarget": 0.98,
+      "defenseTarget": 1.02,
+      "confidence": 0.38,
+      "note": "Recent German-elite home analogue: Dinamo lost 3-0 at home to Dortmund in November 2024. Used modestly for Leverkusen."
+    },
+    "sunderland": {
+      "venue": "away",
+      "attackTarget": 0.975,
+      "defenseTarget": 1.025,
+      "confidence": 0.4,
+      "note": "Recent English-club away analogue: Dinamo lost 3-0 away to Arsenal in January 2025. Used for Sunderland with reduced confidence because Arsenal are a much stronger reference."
+    },
+    "strumgraz": {
+      "venue": "home",
+      "attackTarget": 1.015,
+      "defenseTarget": 0.99,
+      "confidence": 0.3,
+      "note": "Austrian-club analogue: Dinamo won 2-0 away to Salzburg in October 2024. Venue flips for Sturm Graz, so the effect remains modest."
+    }
+  },
+  "rennais": {
+    "juventus": {
+      "venue": "away",
+      "attackTarget": 0.975,
+      "defenseTarget": 1.025,
+      "confidence": 0.44,
+      "note": "Recent Italian-elite away analogue: Rennes lost 3-0 away to Milan in February 2024. Used for the Juventus trip at moderate confidence."
+    }
+  },
+  "spartapraha": {
+    "bournemouth": {
+      "venue": "home",
+      "attackTarget": 0.97,
+      "defenseTarget": 1.03,
+      "confidence": 0.5,
+      "note": "Recent English-club home analogue: Sparta lost 5-1 at home to Liverpool in March 2024. Used for Bournemouth, but capped because Liverpool are a stronger reference side."
+    },
+    "crystalpalace": {
+      "venue": "away",
+      "attackTarget": 0.97,
+      "defenseTarget": 1.03,
+      "confidence": 0.44,
+      "note": "Recent English-club away analogue: Sparta lost 5-0 away to Manchester City in October 2024. Used for Crystal Palace with reduced confidence because opponent strength differs."
+    },
+    "rennais": {
+      "venue": "home",
+      "attackTarget": 0.99,
+      "defenseTarget": 1.01,
+      "confidence": 0.34,
+      "note": "Recent French-club home analogue: Sparta lost 2-1 at home to Brest in November 2024. Used lightly for Rennes."
+    }
+  },
+  "slavia": {
+    "lens": {
+      "venue": "home",
+      "attackTarget": 1.018,
+      "defenseTarget": 0.99,
+      "confidence": 0.28,
+      "note": "Same-country/same-venue analogue: Slavia beat Nice 3-2 at home and 3-1 away in the 2020/21 Europa League. Age keeps the Lens effect modest."
+    }
+  },
+  "lens": {
+    "city": {
+      "venue": "home",
+      "attackTarget": 1.02,
+      "defenseTarget": 0.985,
+      "confidence": 0.34,
+      "note": "Same-country/same-venue analogue: Lens beat Arsenal 2-1 at home in October 2023. Used as a modest English-elite home analogue for Manchester City."
+    },
+    "liverpool": {
+      "venue": "away",
+      "attackTarget": 0.965,
+      "defenseTarget": 1.035,
+      "confidence": 0.42,
+      "note": "Same-country/same-venue analogue: Lens lost 6-0 away to Arsenal in November 2023. Used as a bounded English-elite away analogue for Liverpool."
+    }
+  },
+  "aek": {
+    "city": {
+      "venue": "away",
+      "attackTarget": 1.018,
+      "defenseTarget": 1.005,
+      "confidence": 0.34,
+      "note": "Same-country/same-venue analogue: AEK won 3-2 away to Brighton in September 2023. Used as a modest English away analogue for Manchester City."
+    },
+    "galatasaray": {
+      "attackTarget": 1.015,
+      "defenseTarget": 0.985,
+      "confidence": 0.28,
+      "note": "Recent Turkish-club analogue: AEK won 2-1 away to Samsunspor in December 2025. It is not a venue match, so confidence remains modest for Galatasaray."
+    },
+    "roma": {
+      "venue": "home",
+      "attackTarget": 1.012,
+      "defenseTarget": 0.988,
+      "confidence": 0.24,
+      "note": "Recent Italian-club analogue: AEK won 1-0 away to Fiorentina in November 2025. The Roma match is at home, so venue mismatch keeps the effect small."
+    }
+  },
+  "bayern": {
+    "slavia": {
+      "venue": "home",
+      "attackTarget": 1.025,
+      "defenseTarget": 0.98,
+      "confidence": 0.42,
+      "note": "Same-country/same-venue analogue: Bayern beat Viktoria Plzen 5-0 at home in October 2022. Used as a Czech-club home analogue for Slavia."
+    },
+    "realbetis": {
+      "venue": "home",
+      "attackTarget": 1.018,
+      "defenseTarget": 0.985,
+      "confidence": 0.28,
+      "note": "Spanish-club home analogue: Bayern beat Barcelona 2-0 at home in September 2022. Used lightly for Real Betis because the opponent profile and age differ."
+    }
+  },
+  "bodo": {
+    "bayern": {
+      "venue": "away",
+      "attackTarget": 1.015,
+      "defenseTarget": 0.99,
+      "confidence": 0.38,
+      "note": "Same-country/same-venue analogue: Bodo/Glimt drew 2-2 away to Dortmund in December 2025. Used as a recent German-elite away analogue for Bayern."
+    }
+  },
+  "slovanbratislava": {
+    "realbetis": {
+      "venue": "home",
+      "attackTarget": 1.02,
+      "defenseTarget": 0.985,
+      "confidence": 0.42,
+      "note": "Same-country/same-venue analogue: Slovan beat Rayo Vallecano 2-1 at home in November 2025. Used for the Real Betis home fixture."
+    }
+  },
+  "atleti": {
+    "viking": {
+      "venue": "home",
+      "attackTarget": 0.985,
+      "defenseTarget": 1.02,
+      "confidence": 0.5,
+      "note": "Same-country/same-venue analogue: Atletico lost 2-1 at home to Bodo/Glimt in January 2026. Viking are also Norwegian, making this a unusually fresh association analogue."
+    }
+  },
+  "porto": {
+    "slavia": {
+      "venue": "home",
+      "attackTarget": 1,
+      "defenseTarget": 1,
+      "confidence": 0.24,
+      "note": "Recent Czech-club analogue: Porto drew 1-1 away to Viktoria Plzen in January 2026. Venue flips for Slavia, so the model keeps this almost neutral."
+    }
+  },
+  "arsenal": {
+    "sabah": {
+      "venue": "home",
+      "attackTarget": 1.02,
+      "defenseTarget": 0.98,
+      "confidence": 0.24,
+      "note": "Azerbaijani-club analogue: Arsenal beat Qarabag 1-0 at home and 3-0 away in the 2018/19 Europa League. Age keeps the weight low for Sabah."
+    }
+  },
+  "real": {
+    "lask": {
+      "venue": "home",
+      "attackTarget": 1.025,
+      "defenseTarget": 0.98,
+      "confidence": 0.44,
+      "note": "Same-country/same-venue analogue: Real Madrid beat Salzburg 5-1 at home in January 2025. Used as an Austrian-club home analogue for LASK."
+    }
+  },
+  "barcelona": {
+    "sporting": {
+      "venue": "away",
+      "attackTarget": 1.022,
+      "defenseTarget": 1.005,
+      "confidence": 0.42,
+      "note": "Same-country/same-venue analogue: Barcelona won 5-4 away to Benfica in January 2025. Used as a Portuguese away analogue for Sporting."
+    },
+    "como": {
+      "venue": "home",
+      "attackTarget": 1.005,
+      "defenseTarget": 1.005,
+      "confidence": 0.34,
+      "note": "Same-country/same-venue analogue: Barcelona drew 2-2 at home to Atalanta in January 2025. Used as a modest Italian home analogue for Como."
+    }
+  },
+  "realbetis": {
+    "como": {
+      "venue": "home",
+      "attackTarget": 1.005,
+      "defenseTarget": 0.995,
+      "confidence": 0.24,
+      "note": "Same-country/same-venue analogue: Real Betis drew 1-1 at home to Roma in October 2022 after winning 2-1 in Rome. Used lightly for Como."
+    }
+  },
+  "lask": {
+    "bodo": {
+      "venue": "away",
+      "attackTarget": 1.015,
+      "defenseTarget": 0.99,
+      "confidence": 0.22,
+      "note": "Norwegian-club away analogue: LASK won 2-1 away to Rosenborg in November 2019. Age keeps the Bodo effect small."
+    },
+    "porto": {
+      "venue": "home",
+      "attackTarget": 1.018,
+      "defenseTarget": 0.985,
+      "confidence": 0.24,
+      "note": "Portuguese-club home analogue: LASK beat Sporting CP 3-0 at home in December 2019. Used lightly for Porto because of age."
+    }
+  },
+  "union": {
+    "besiktas": {
+      "venue": "away",
+      "attackTarget": 0.985,
+      "defenseTarget": 1.015,
+      "confidence": 0.42,
+      "note": "Fresh Turkish-club away analogue: Union SG lost 2-1 away to Fenerbahce in September 2024. Used for the Besiktas trip."
+    },
+    "lyon": {
+      "venue": "away",
+      "attackTarget": 1.005,
+      "defenseTarget": 0.995,
+      "confidence": 0.24,
+      "note": "Recent French-club analogue: Union SG beat Nice 2-1 at home in December 2024. Venue mismatch makes the Lyon-away effect deliberately small."
+    }
+  },
+  "celtic": {
+    "besiktas": {
+      "venue": "home",
+      "attackTarget": 1,
+      "defenseTarget": 1,
+      "confidence": 0.28,
+      "note": "Turkish-club home analogue: Celtic drew 2-2 at home to Fenerbahce in October 2015. Used lightly for Besiktas because of age and different opponent profile."
+    }
+  },
+  "psv": {
+    "brugge": {
+      "venue": "home",
+      "attackTarget": 0.985,
+      "defenseTarget": 1.02,
+      "confidence": 0.42,
+      "note": "Same-country/same-venue analogue: PSV lost 3-1 at home to Union Saint-Gilloise in September 2025. Used as a recent Belgian-club home analogue for Club Brugge."
+    }
+  },
+  "strumgraz": {
+    "azalkmaar": {
+      "venue": "away",
+      "attackTarget": 0.975,
+      "defenseTarget": 1.025,
+      "confidence": 0.44,
+      "note": "Fresh Dutch-club away analogue: Sturm lost 3-0 at Feyenoord in January 2026. Used for the AZ away fixture."
+    },
+    "hoffenheim": {
+      "venue": "away",
+      "attackTarget": 0.99,
+      "defenseTarget": 1.015,
+      "confidence": 0.34,
+      "note": "Recent German-club away analogue: Sturm lost 1-0 at Dortmund in November 2024. Used lightly for Hoffenheim."
+    }
+  },
+  "poznan": {
+    "bayerleverkusen": {
+      "venue": "home",
+      "attackTarget": 1.005,
+      "defenseTarget": 0.995,
+      "confidence": 0.34,
+      "note": "Fresh German-club home analogue: Lech drew 1-1 at home to Mainz in December 2025. Used for Leverkusen without equating the two German sides."
+    }
+  },
+  "crystalpalace": {
+    "lyon": {
+      "venue": "away",
+      "attackTarget": 0.985,
+      "defenseTarget": 1.015,
+      "confidence": 0.44,
+      "note": "Fresh French-club away analogue: Crystal Palace lost 2-1 at Strasbourg in November 2025. Used for the Lyon trip."
+    }
+  },
+  "jagiellonia": {
+    "anderlecht": {
+      "venue": "home",
+      "attackTarget": 1.02,
+      "defenseTarget": 0.985,
+      "confidence": 0.38,
+      "note": "Recent Belgian-club home analogue: Jagiellonia beat Cercle Brugge 3-0 at home in March 2025. Used for Anderlecht."
+    }
+  },
+  "celtavigo": {
+    "juventus": {
+      "venue": "home",
+      "attackTarget": 0.985,
+      "defenseTarget": 1.02,
+      "confidence": 0.44,
+      "note": "Fresh Italian-club home analogue: Celta lost 2-1 at home to Bologna in December 2025. Used for Juventus."
+    }
+  }
+});
 
   // Squad changes use tight targets and explicit uncertainty. The runtime blends
   // target -> neutral by confidence, so even major signings cannot swamp match evidence.
@@ -2787,7 +2923,7 @@
   });
 
   window.UCLDRAW_PREDICTION_CONTEXT_DATA = Object.freeze({
-    version: 36,
+    version: 37,
     reviewedAt: '2026-09-02',
     matches,
     historicalSignals,

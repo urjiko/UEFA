@@ -187,6 +187,36 @@
     ['2025-12-10','villareal','copenhagen','DEN','home',2,3],
     ['2026-01-20','villareal','ajax','NED','home',1,2],
     ['2026-01-28','villareal','bayerleverkusen','GER','away',0,3]
+
+
+    // Bodo/Glimt: recent Europa/Champions League sample. Italian and French analogues are especially useful for Napoli, Lille and Lens; recent Dortmund and Atleti meetings are direct opponent evidence.
+    ['2024-09-25','bodo','porto','POR','home',3,2],
+    ['2024-10-03','bodo','union','BEL','away',0,0],
+    ['2024-10-23','bodo','braga','POR','away',2,1],
+    ['2024-11-07','bodo','qarabag','AZE','home',1,2],
+    ['2024-11-28','bodo','manu','ENG','away',2,3],
+    ['2024-12-12','bodo','besiktas','TUR','home',2,1],
+    ['2025-01-23','bodo','maccabitelaviv','ISR','home',3,1],
+    ['2025-01-30','bodo','nice','FRA','away',1,1],
+    ['2025-02-13','bodo','twente','NED','away',1,2],
+    ['2025-02-20','bodo','twente','NED','home',5,2],
+    ['2025-03-06','bodo','olympiacos','GRE','home',3,0],
+    ['2025-03-13','bodo','olympiacos','GRE','away',1,2],
+    ['2025-04-10','bodo','lazio','ITA','home',2,0],
+    ['2025-04-17','bodo','lazio','ITA','away',1,3],
+    ['2025-05-01','bodo','tottenham','ENG','away',1,3],
+    ['2025-05-08','bodo','tottenham','ENG','home',0,2],
+    ['2025-09-17','bodo','slavia','CZE','away',2,2],
+    ['2025-09-30','bodo','tottenham','ENG','home',2,2],
+    ['2025-10-22','bodo','galatasaray','TUR','away',1,3],
+    ['2025-11-04','bodo','monaco','FRA','home',0,1],
+    ['2025-11-25','bodo','juventus','ITA','home',2,3],
+    ['2025-12-10','bodo','bvb','GER','away',2,2],
+    ['2026-01-20','bodo','city','ENG','home',3,1],
+    ['2026-01-28','bodo','atleti','ESP','away',2,1],
+    ['2026-02-18','bodo','inter','ITA','home',3,1],
+    ['2026-02-24','bodo','inter','ITA','away',2,1],
+    ['2026-03-11','bodo','sporting','POR','home',3,0]
   ].map(([date, teamSlug, opponentSlug, opponentCountry, venue, goalsFor, goalsAgainst]) => Object.freeze({
     date, teamSlug, opponentSlug, opponentCountry, venue, goalsFor, goalsAgainst
   })));
@@ -357,7 +387,7 @@
   });
 
   window.UCLDRAW_PREDICTION_CONTEXT_DATA = Object.freeze({
-    version: 6,
+    version: 7,
     reviewedAt: '2026-09-02',
     matches,
     historicalSignals,

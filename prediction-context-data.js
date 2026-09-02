@@ -981,7 +981,7 @@
         note: 'Same-venue H2H: Manchester City drew 0-0 at home to Sporting in March 2022; the much newer 1-4 loss in Lisbon is captured in recent form.'
       })
     }),
-    psg:
+    psg: Object.freeze({
       astonvilla: Object.freeze({
         venue: 'away',
         sample: 1,
@@ -1889,7 +1889,7 @@
   });
 
   window.UCLDRAW_PREDICTION_CONTEXT_DATA = Object.freeze({
-    version: 22,
+    version: 23,
     reviewedAt: '2026-09-02',
     matches,
     historicalSignals,

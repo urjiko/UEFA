@@ -113,6 +113,49 @@
     ['2026-02-26','lille','crvenazvezda','SRB','away',2,0],
     ['2026-03-12','lille','astonvilla','ENG','home',0,1],
     ['2026-03-19','lille','astonvilla','ENG','away',0,2]
+
+
+    // Feyenoord: recent European sample. Includes the 2025 Fenerbahce tie as a direct Turkish-association analogue for the 2026/27 Galatasaray away fixture.
+    ['2024-09-19','feyenoord','bayerleverkusen','GER','home',0,4],
+    ['2024-10-02','feyenoord','girona','ESP','away',3,2],
+    ['2024-10-23','feyenoord','benfica','POR','away',3,1],
+    ['2024-11-06','feyenoord','salzburg','AUT','home',1,3],
+    ['2024-11-26','feyenoord','city','ENG','away',3,3],
+    ['2024-12-11','feyenoord','spartapraha','CZE','home',4,2],
+    ['2025-01-22','feyenoord','bayern','GER','home',3,0],
+    ['2025-01-29','feyenoord','lille','FRA','away',1,6],
+    ['2025-02-12','feyenoord','milan','ITA','home',1,0],
+    ['2025-02-18','feyenoord','milan','ITA','away',1,1],
+    ['2025-03-05','feyenoord','inter','ITA','home',0,2],
+    ['2025-03-11','feyenoord','inter','ITA','away',1,2],
+    ['2025-08-06','feyenoord','fenerbahce','TUR','home',2,1],
+    ['2025-08-12','feyenoord','fenerbahce','TUR','away',2,5],
+    ['2025-09-24','feyenoord','braga','POR','away',0,1],
+    ['2025-10-02','feyenoord','astonvilla','ENG','home',0,2],
+    ['2025-10-23','feyenoord','panathinaikos','GRE','home',3,1],
+    ['2025-11-06','feyenoord','stuttgart','GER','away',0,2],
+    ['2025-11-27','feyenoord','celtic','SCO','home',1,3],
+    ['2025-12-11','feyenoord','fcsb','ROU','away',3,4],
+    ['2026-01-22','feyenoord','strumgraz','AUT','home',3,0],
+    ['2026-01-29','feyenoord','realbetis','ESP','away',1,2],
+
+    // Napoli: 2023/24 and 2025/26 Champions League samples. English, Portuguese and Spanish association analogues are directly relevant to Arsenal, Man City, Porto and Villarreal in 2026/27.
+    ['2023-09-20','napoli','braga','POR','away',2,1],
+    ['2023-10-03','napoli','realmadrid','ESP','home',2,3],
+    ['2023-10-24','napoli','unionberlin','GER','away',1,0],
+    ['2023-11-08','napoli','unionberlin','GER','home',1,1],
+    ['2023-11-29','napoli','realmadrid','ESP','away',2,4],
+    ['2023-12-12','napoli','braga','POR','home',2,0],
+    ['2024-02-21','napoli','barcelona','ESP','home',1,1],
+    ['2024-03-12','napoli','barcelona','ESP','away',1,3],
+    ['2025-09-18','napoli','city','ENG','away',0,2],
+    ['2025-10-01','napoli','sporting','POR','home',2,1],
+    ['2025-10-21','napoli','psv','NED','away',2,6],
+    ['2025-11-04','napoli','frankfurt','GER','home',0,0],
+    ['2025-11-25','napoli','qarabag','AZE','home',2,0],
+    ['2025-12-10','napoli','benfica','POR','away',0,2],
+    ['2026-01-20','napoli','copenhagen','DEN','away',1,1],
+    ['2026-01-28','napoli','chelsea','ENG','home',2,3]
   ].map(([date, teamSlug, opponentSlug, opponentCountry, venue, goalsFor, goalsAgainst]) => Object.freeze({
     date, teamSlug, opponentSlug, opponentCountry, venue, goalsFor, goalsAgainst
   })));
@@ -283,7 +326,7 @@
   });
 
   window.UCLDRAW_PREDICTION_CONTEXT_DATA = Object.freeze({
-    version: 4,
+    version: 5,
     reviewedAt: '2026-09-02',
     matches,
     historicalSignals,

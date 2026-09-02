@@ -801,6 +801,120 @@
   // Direct H2H and exact/same-venue repeats are kept separate from broad form.
   // Confidence is deliberately capped so one matchup never overwhelms coefficient strength.
   const historicalPairSignals = Object.freeze({
+    slavia: Object.freeze({
+      arsenal: Object.freeze({
+        venue: 'home',
+        sample: 1,
+        wins: 0,
+        draws: 0,
+        losses: 1,
+        goalsFor: 0,
+        goalsAgainst: 3,
+        attackTarget: 0.970,
+        defenseTarget: 1.030,
+        confidence: 0.72,
+        note: 'Exact very recent repeat: Arsenal won 3-0 away to Slavia Praha in November 2025; the 2026/27 match is again in Prague.'
+      }),
+      fenerbahce: Object.freeze({
+        venue: 'away',
+        sample: 3,
+        wins: 2,
+        draws: 0,
+        losses: 1,
+        goalsFor: 7,
+        goalsAgainst: 6,
+        attackTarget: 0.995,
+        defenseTarget: 1.005,
+        confidence: 0.34,
+        note: 'Slavia won both 2022 Conference League meetings with Fenerbahce, but lost the much newer 2024 Europa League meeting in Prague 1-2. Current match is in Istanbul, so the signal is deliberately modest.'
+      })
+    }),
+    slovanbratislava: Object.freeze({
+      stuttgart: Object.freeze({
+        venue: 'home',
+        sample: 1,
+        wins: 0,
+        draws: 0,
+        losses: 1,
+        goalsFor: 1,
+        goalsAgainst: 3,
+        attackTarget: 0.975,
+        defenseTarget: 1.025,
+        confidence: 0.66,
+        note: 'Exact venue repeat: Stuttgart won 3-1 away to Slovan Bratislava in January 2025; Slovan host Stuttgart again in 2026/27.'
+      }),
+      lille: Object.freeze({
+        venue: 'away',
+        sample: 2,
+        wins: 0,
+        draws: 1,
+        losses: 1,
+        goalsFor: 2,
+        goalsAgainst: 3,
+        attackTarget: 0.985,
+        defenseTarget: 1.015,
+        confidence: 0.34,
+        note: '2023/24 Conference League: Slovan lost 2-1 at Lille and drew 1-1 at home. The 2026/27 match is again in Lille.'
+      })
+    }),
+    stuttgart: Object.freeze({
+      slovanbratislava: Object.freeze({
+        venue: 'away',
+        sample: 1,
+        wins: 1,
+        draws: 0,
+        losses: 0,
+        goalsFor: 3,
+        goalsAgainst: 1,
+        attackTarget: 1.025,
+        defenseTarget: 0.975,
+        confidence: 0.66,
+        note: 'Exact venue repeat: Stuttgart won 3-1 away to Slovan Bratislava in January 2025.'
+      })
+    }),
+    aek: Object.freeze({
+      real: Object.freeze({
+        venue: 'home',
+        sample: 2,
+        wins: 0,
+        draws: 2,
+        losses: 0,
+        goalsFor: 5,
+        goalsAgainst: 5,
+        attackTarget: 1.005,
+        defenseTarget: 1.005,
+        confidence: 0.12,
+        note: '2002/03 Champions League: AEK and Real Madrid drew both meetings, 5-5 on aggregate. The age of the matchup keeps this almost neutral.'
+      })
+    }),
+    lask: Object.freeze({
+      liverpool: Object.freeze({
+        venue: 'home',
+        sample: 2,
+        wins: 0,
+        draws: 0,
+        losses: 2,
+        goalsFor: 1,
+        goalsAgainst: 7,
+        attackTarget: 0.970,
+        defenseTarget: 1.030,
+        confidence: 0.58,
+        note: '2023/24 Europa League: Liverpool beat LASK 3-1 in Linz and 4-0 at Anfield. The 2026/27 match is again in Linz.'
+      }),
+      sporting: Object.freeze({
+        venue: 'away',
+        sample: 3,
+        wins: 2,
+        draws: 0,
+        losses: 1,
+        goalsFor: 8,
+        goalsAgainst: 3,
+        attackTarget: 1.010,
+        defenseTarget: 0.995,
+        confidence: 0.24,
+        note: 'LASK are W2 L1 in three Europa League meetings with Sporting, including a 4-1 away win in the 2020/21 play-off and a 1-2 away loss in 2019/20. Age keeps the effect small.'
+      })
+    }),
     psg: Object.freeze({
       astonvilla: Object.freeze({
         venue: 'away',
@@ -1590,6 +1704,33 @@
     })
   });
 
+  const analogueSignals = Object.freeze({
+    lens: Object.freeze({
+      city: Object.freeze({
+        venue: 'home',
+        attackTarget: 1.020,
+        defenseTarget: 0.985,
+        confidence: 0.34,
+        note: 'Same-country/same-venue analogue: Lens beat Arsenal 2-1 at home in October 2023. Used as a modest English-elite home analogue for Manchester City.'
+      }),
+      liverpool: Object.freeze({
+        venue: 'away',
+        attackTarget: 0.965,
+        defenseTarget: 1.035,
+        confidence: 0.42,
+        note: 'Same-country/same-venue analogue: Lens lost 6-0 away to Arsenal in November 2023. Used as a bounded English-elite away analogue for Liverpool.'
+      })
+    }),
+    aek: Object.freeze({
+      galatasaray: Object.freeze({
+        attackTarget: 1.015,
+        defenseTarget: 0.985,
+        confidence: 0.28,
+        note: 'Recent Turkish-club analogue: AEK won 2-1 away to Samsunspor in December 2025. It is not a venue match, so confidence remains modest for the Galatasaray fixture.'
+      })
+    })
+  });
+
   // Squad changes use tight targets and explicit uncertainty. The runtime blends
   // target -> neutral by confidence, so even major signings cannot swamp match evidence.
   const squadProfiles = Object.freeze({
@@ -1646,11 +1787,12 @@
   });
 
   window.UCLDRAW_PREDICTION_CONTEXT_DATA = Object.freeze({
-    version: 18,
+    version: 19,
     reviewedAt: '2026-09-02',
     matches,
     historicalSignals,
     historicalPairSignals,
+    analogueSignals,
     squadProfiles,
     sources: Object.freeze({
       uefaResults: 'https://www.uefa.com/',

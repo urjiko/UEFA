@@ -88,7 +88,31 @@
     ['2024-08-22','trabzonspor','gallen','SUI','away',0,0],
     ['2024-08-29','trabzonspor','gallen','SUI','home',1,1],
     ['2026-08-20','trabzonspor','ferencvarosi','HUN','home',0,1],
-    ['2026-08-27','trabzonspor','ferencvarosi','HUN','away',0,4]
+    ['2026-08-27','trabzonspor','ferencvarosi','HUN','away',0,4],
+
+    // Lille: recent European sample centred on the opponents drawn for the 2026/27 Champions League.
+    ['2024-09-17','lille','sporting','POR','away',0,2],
+    ['2024-10-02','lille','realmadrid','ESP','home',1,0],
+    ['2024-10-23','lille','atleti','ESP','away',3,1],
+    ['2024-11-05','lille','juventus','ITA','home',1,1],
+    ['2024-11-27','lille','bologna','ITA','away',2,1],
+    ['2024-12-11','lille','strumgraz','AUT','home',3,2],
+    ['2025-01-21','lille','liverpool','ENG','away',1,2],
+    ['2025-01-29','lille','feyenoord','NED','home',6,1],
+    ['2025-03-04','lille','bvb','GER','away',1,1],
+    ['2025-03-12','lille','bvb','GER','home',1,2],
+    ['2025-09-25','lille','brann','NOR','home',2,1],
+    ['2025-10-02','lille','roma','ITA','away',1,0],
+    ['2025-10-23','lille','paok','GRE','home',3,4],
+    ['2025-11-06','lille','crvenazvezda','SRB','away',0,1],
+    ['2025-11-27','lille','dinamo','CRO','home',4,0],
+    ['2025-12-11','lille','youngboys','SUI','away',0,1],
+    ['2026-01-22','lille','celta','ESP','away',1,2],
+    ['2026-01-29','lille','freiburg','GER','home',1,0],
+    ['2026-02-19','lille','crvenazvezda','SRB','home',0,1],
+    ['2026-02-26','lille','crvenazvezda','SRB','away',2,0],
+    ['2026-03-12','lille','astonvilla','ENG','home',0,1],
+    ['2026-03-19','lille','astonvilla','ENG','away',0,2]
   ].map(([date, teamSlug, opponentSlug, opponentCountry, venue, goalsFor, goalsAgainst]) => Object.freeze({
     date, teamSlug, opponentSlug, opponentCountry, venue, goalsFor, goalsAgainst
   })));
@@ -120,6 +144,41 @@
         confidence: 0.35,
         note: 'UEFA all-time association record before the 2026/27 league phase: W2 D1 L11 against German clubs.'
       })
+    }),
+    lille: Object.freeze({
+      ENG: Object.freeze({
+        venue: 'away',
+        sample: 12,
+        wins: 1,
+        draws: 1,
+        losses: 10,
+        attackTarget: 0.975,
+        defenseTarget: 1.025,
+        confidence: 0.48,
+        note: 'UEFA association history plus recent Liverpool/Aston Villa trips: Lille have historically struggled away to English clubs.'
+      }),
+      ESP: Object.freeze({
+        venue: 'home',
+        sample: 9,
+        wins: 3,
+        draws: 5,
+        losses: 1,
+        attackTarget: 1.020,
+        defenseTarget: 0.980,
+        confidence: 0.52,
+        note: 'UEFA Spanish-opponent history, updated with the 1-0 home win over Real Madrid in 2024/25.'
+      }),
+      ITA: Object.freeze({
+        venue: 'away',
+        sample: 8,
+        wins: 6,
+        draws: 0,
+        losses: 2,
+        attackTarget: 1.020,
+        defenseTarget: 0.980,
+        confidence: 0.50,
+        note: 'UEFA Italian-opponent history, including recent away wins at Bologna and Roma.'
+      })
     })
   });
 
@@ -138,6 +197,32 @@
         defenseTarget: 0.980,
         confidence: 0.28,
         note: '2016/17 UEFA Europa League round of 32: Besiktas won both legs against Hapoel Beer-Sheva.'
+      })
+    }),
+    lille: Object.freeze({
+      bayern: Object.freeze({
+        sample: 2,
+        wins: 0,
+        draws: 0,
+        losses: 2,
+        goalsFor: 1,
+        goalsAgainst: 7,
+        attackTarget: 0.985,
+        defenseTarget: 1.015,
+        confidence: 0.16,
+        note: '2012/13 Champions League: Bayern won both meetings; age of the tie keeps the model weight very low.'
+      }),
+      slovan: Object.freeze({
+        sample: 2,
+        wins: 1,
+        draws: 1,
+        losses: 0,
+        goalsFor: 3,
+        goalsAgainst: 2,
+        attackTarget: 1.015,
+        defenseTarget: 0.985,
+        confidence: 0.36,
+        note: '2023/24 Conference League: Lille beat Slovan Bratislava at home and drew away.'
       })
     })
   });
@@ -198,8 +283,8 @@
   });
 
   window.UCLDRAW_PREDICTION_CONTEXT_DATA = Object.freeze({
-    version: 2,
-    reviewedAt: '2026-09-01',
+    version: 3,
+    reviewedAt: '2026-09-02',
     matches,
     historicalSignals,
     historicalPairSignals,

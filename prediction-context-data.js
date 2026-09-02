@@ -828,6 +828,15 @@
         note: 'Slavia won both 2022 Conference League meetings with Fenerbahce, but lost the much newer 2024 Europa League meeting in Prague 1-2. Current match is in Istanbul, so the signal is deliberately modest.'
       })
     }),
+    bayern: Object.freeze({
+      slavia: Object.freeze({
+        venue: 'home',
+        attackTarget: 1.025,
+        defenseTarget: 0.980,
+        confidence: 0.42,
+        note: 'Same-country/same-venue analogue: Bayern beat Viktoria Plzen 5-0 at home in October 2022. Used as a Czech-club home analogue for Slavia.'
+      })
+    }),
     slovanbratislava: Object.freeze({
       stuttgart: Object.freeze({
         venue: 'home',
@@ -1461,6 +1470,19 @@
       })
     }),
     brugge: Object.freeze({
+      bodo: Object.freeze({
+        venue: 'home',
+        sample: 2,
+        wins: 2,
+        draws: 0,
+        losses: 0,
+        goalsFor: 4,
+        goalsAgainst: 1,
+        attackTarget: 1.025,
+        defenseTarget: 0.980,
+        confidence: 0.58,
+        note: '2023/24 Conference League: Club Brugge beat Bodo/Glimt 1-0 away and 3-1 at home. The 2026/27 fixture is again in Bruges.'
+      }),
       astonvilla: Object.freeze({
         venue: 'home',
         sample: 1,
@@ -1747,6 +1769,13 @@
       })
     }),
     aek: Object.freeze({
+      city: Object.freeze({
+        venue: 'away',
+        attackTarget: 1.018,
+        defenseTarget: 1.005,
+        confidence: 0.34,
+        note: 'Same-country/same-venue analogue: AEK won 3-2 away to Brighton in September 2023. Used as a modest English away analogue for Manchester City.'
+      }),
       galatasaray: Object.freeze({
         attackTarget: 1.015,
         defenseTarget: 0.985,
@@ -1797,6 +1826,15 @@
         note: 'Recent Czech-club analogue: Porto drew 1-1 away to Viktoria Plzen in January 2026. Venue flips for Slavia, so the model keeps this almost neutral.'
       })
     }),
+    arsenal: Object.freeze({
+      sabah: Object.freeze({
+        venue: 'home',
+        attackTarget: 1.020,
+        defenseTarget: 0.980,
+        confidence: 0.24,
+        note: 'Azerbaijani-club analogue: Arsenal beat Qarabag 1-0 at home and 3-0 away in the 2018/19 Europa League. Age keeps the weight low for Sabah.'
+      })
+    }),
     real: Object.freeze({
       lask: Object.freeze({
         venue: 'home',
@@ -1820,6 +1858,31 @@
         defenseTarget: 1.005,
         confidence: 0.34,
         note: 'Same-country/same-venue analogue: Barcelona drew 2-2 at home to Atalanta in January 2025. Used as a modest Italian home analogue for Como.'
+      })
+    }),
+    realbetis: Object.freeze({
+      como: Object.freeze({
+        venue: 'home',
+        attackTarget: 1.005,
+        defenseTarget: 0.995,
+        confidence: 0.24,
+        note: 'Same-country/same-venue analogue: Real Betis drew 1-1 at home to Roma in October 2022 after winning 2-1 in Rome. Used lightly for Como.'
+      })
+    }),
+    lask: Object.freeze({
+      bodo: Object.freeze({
+        venue: 'away',
+        attackTarget: 1.015,
+        defenseTarget: 0.990,
+        confidence: 0.22,
+        note: 'Norwegian-club away analogue: LASK won 2-1 away to Rosenborg in November 2019. Age keeps the Bodo effect small.'
+      }),
+      porto: Object.freeze({
+        venue: 'home',
+        attackTarget: 1.018,
+        defenseTarget: 0.985,
+        confidence: 0.24,
+        note: 'Portuguese-club home analogue: LASK beat Sporting CP 3-0 at home in December 2019. Used lightly for Porto because of age.'
       })
     }),
     psv: Object.freeze({
@@ -1889,7 +1952,7 @@
   });
 
   window.UCLDRAW_PREDICTION_CONTEXT_DATA = Object.freeze({
-    version: 23,
+    version: 24,
     reviewedAt: '2026-09-02',
     matches,
     historicalSignals,

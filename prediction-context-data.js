@@ -265,6 +265,137 @@
     ['2026-04-16','shakhtar','azalkmaar','NED','away',2,2],
     ['2026-04-30','shakhtar','crystalpalace','ENG','home',1,3],
     ['2026-05-07','shakhtar','crystalpalace','ENG','away',1,2]
+
+
+    // Borussia Dortmund: consecutive Champions League league-phase samples (2024/25 and 2025/26).
+    ['2024-09-18','bvb','brugge','BEL','away',3,0],
+    ['2024-10-01','bvb','celtic','SCO','home',7,1],
+    ['2024-10-22','bvb','realmadrid','ESP','away',2,5],
+    ['2024-11-05','bvb','strumgraz','AUT','home',1,0],
+    ['2024-11-27','bvb','dinamo','CRO','away',3,0],
+    ['2024-12-11','bvb','barcelona','ESP','home',2,3],
+    ['2025-01-21','bvb','bologna','ITA','away',1,2],
+    ['2025-01-29','bvb','shakhtar','UKR','home',3,1],
+    ['2025-09-16','bvb','juventus','ITA','away',4,4],
+    ['2025-10-01','bvb','athleticbilbao','ESP','home',4,1],
+    ['2025-10-21','bvb','copenhagen','DEN','away',4,2],
+    ['2025-11-05','bvb','city','ENG','away',1,4],
+    ['2025-11-25','bvb','villareal','ESP','home',4,0],
+    ['2025-12-10','bvb','bodo','NOR','home',2,2],
+    ['2026-01-20','bvb','tottenham','ENG','away',0,2],
+    ['2026-01-28','bvb','inter','ITA','home',0,2],
+
+    // Roma: 2025/26 Europa League league phase.
+    ['2025-09-24','roma','nice','FRA','away',2,1],
+    ['2025-10-02','roma','lille','FRA','home',0,1],
+    ['2025-10-23','roma','viktoriaplzen','CZE','home',1,2],
+    ['2025-11-06','roma','rangers','SCO','away',2,0],
+    ['2025-11-27','roma','midtjylland','DEN','home',2,1],
+    ['2025-12-11','roma','celtic','SCO','away',3,0],
+    ['2026-01-22','roma','stuttgart','GER','home',2,0],
+    ['2026-01-29','roma','panathinaikos','GRE','away',1,1],
+
+    // Sporting CP: consecutive Champions League league-phase samples.
+    ['2024-09-17','sporting','lille','FRA','home',2,0],
+    ['2024-10-01','sporting','psv','NED','away',1,1],
+    ['2024-10-22','sporting','strumgraz','AUT','away',2,0],
+    ['2024-11-05','sporting','city','ENG','home',4,1],
+    ['2024-11-26','sporting','arsenal','ENG','home',1,5],
+    ['2024-12-10','sporting','brugge','BEL','away',1,2],
+    ['2025-01-22','sporting','leipzig','GER','away',1,2],
+    ['2025-01-29','sporting','bologna','ITA','home',1,1],
+    ['2025-09-18','sporting','kairat','KAZ','home',4,1],
+    ['2025-10-01','sporting','napoli','ITA','away',1,2],
+    ['2025-10-22','sporting','marseille','FRA','home',2,1],
+    ['2025-11-04','sporting','juventus','ITA','away',1,1],
+    ['2025-11-26','sporting','brugge','BEL','home',3,0],
+    ['2025-12-09','sporting','bayern','GER','away',1,3],
+    ['2026-01-20','sporting','psg','FRA','home',2,1],
+    ['2026-01-28','sporting','athleticbilbao','ESP','away',3,2],
+
+    // Aston Villa: 2024/25 Champions League plus 2025/26 Europa League league phases.
+    ['2024-09-17','astonvilla','youngboys','SUI','away',3,0],
+    ['2024-10-02','astonvilla','bayern','GER','home',1,0],
+    ['2024-10-22','astonvilla','bologna','ITA','home',2,0],
+    ['2024-11-06','astonvilla','brugge','BEL','away',0,1],
+    ['2024-11-27','astonvilla','juventus','ITA','home',0,0],
+    ['2024-12-10','astonvilla','leipzig','GER','away',3,2],
+    ['2025-01-21','astonvilla','monaco','FRA','away',0,1],
+    ['2025-01-29','astonvilla','celtic','SCO','home',4,2],
+    ['2025-09-25','astonvilla','bologna','ITA','home',1,0],
+    ['2025-10-02','astonvilla','feyenoord','NED','away',2,0],
+    ['2025-10-23','astonvilla','goaheadeagles','NED','away',1,2],
+    ['2025-11-06','astonvilla','maccabitelaviv','ISR','home',2,0],
+    ['2025-11-27','astonvilla','youngboys','SUI','home',2,1],
+    ['2025-12-11','astonvilla','basel','SUI','away',2,1],
+    ['2026-01-22','astonvilla','fenerbahce','TUR','away',1,0],
+    ['2026-01-29','astonvilla','salzburg','AUT','home',3,2],
+
+    // Porto: 2025/26 Europa League league phase.
+    ['2025-09-25','porto','salzburg','AUT','away',1,0],
+    ['2025-10-02','porto','crvenazvezda','SRB','home',2,1],
+    ['2025-10-23','porto','nottinghamforest','ENG','away',0,2],
+    ['2025-11-06','porto','utrecht','NED','away',1,1],
+    ['2025-11-27','porto','nice','FRA','home',3,0],
+    ['2025-12-11','porto','malmo','SWE','home',2,1],
+    ['2026-01-22','porto','viktoriaplzen','CZE','away',1,1],
+    ['2026-01-29','porto','rangers','SCO','home',3,1],
+
+    // Manchester United: 2024/25 Europa League league phase, the latest full European league-phase sample.
+    ['2024-09-25','manu','twente','NED','home',1,1],
+    ['2024-10-03','manu','porto','POR','away',3,3],
+    ['2024-10-24','manu','fenerbahce','TUR','away',1,1],
+    ['2024-11-07','manu','paok','GRE','home',2,0],
+    ['2024-11-28','manu','bodo','NOR','home',3,2],
+    ['2024-12-12','manu','viktoriaplzen','CZE','away',2,1],
+    ['2025-01-23','manu','rangers','SCO','home',2,1],
+    ['2025-01-30','manu','fcsb','ROU','away',2,0],
+
+    // Club Brugge: consecutive Champions League league-phase samples.
+    ['2024-09-18','brugge','bvb','GER','home',0,3],
+    ['2024-10-02','brugge','strumgraz','AUT','away',1,0],
+    ['2024-10-22','brugge','milan','ITA','away',1,3],
+    ['2024-11-06','brugge','astonvilla','ENG','home',1,0],
+    ['2024-11-27','brugge','celtic','SCO','away',1,1],
+    ['2024-12-10','brugge','sporting','POR','home',2,1],
+    ['2025-01-21','brugge','juventus','ITA','home',0,0],
+    ['2025-01-29','brugge','city','ENG','away',1,3],
+    ['2025-09-18','brugge','monaco','FRA','home',4,1],
+    ['2025-09-30','brugge','atalanta','ITA','away',1,2],
+    ['2025-10-22','brugge','bayern','GER','away',0,4],
+    ['2025-11-05','brugge','barcelona','ESP','home',3,3],
+    ['2025-11-26','brugge','sporting','POR','away',0,3],
+    ['2025-12-10','brugge','arsenal','ENG','home',0,3],
+    ['2026-01-20','brugge','kairat','KAZ','away',4,1],
+    ['2026-01-28','brugge','marseille','FRA','home',3,0],
+
+    // Real Betis: 2025/26 Europa League league phase.
+    ['2025-09-24','realbetis','nottinghamforest','ENG','home',2,2],
+    ['2025-10-02','realbetis','ludogorets','BUL','away',2,0],
+    ['2025-10-23','realbetis','genk','BEL','away',0,0],
+    ['2025-11-06','realbetis','lyon','FRA','home',2,0],
+    ['2025-11-27','realbetis','utrecht','NED','home',2,1],
+    ['2025-12-11','realbetis','dinamo','CRO','away',3,1],
+    ['2026-01-22','realbetis','paok','GRE','away',0,2],
+    ['2026-01-29','realbetis','feyenoord','NED','home',2,1],
+
+    // PSV: consecutive Champions League league-phase samples.
+    ['2024-09-17','psv','juventus','ITA','away',1,3],
+    ['2024-10-01','psv','sporting','POR','home',1,1],
+    ['2024-10-22','psv','psg','FRA','away',1,1],
+    ['2024-11-05','psv','girona','ESP','home',4,0],
+    ['2024-11-27','psv','shakhtar','UKR','home',3,2],
+    ['2024-12-10','psv','brest','FRA','away',0,1],
+    ['2025-01-21','psv','crvenazvezda','SRB','away',3,2],
+    ['2025-01-29','psv','liverpool','ENG','home',3,2],
+    ['2025-09-16','psv','union','BEL','home',1,3],
+    ['2025-10-01','psv','bayerleverkusen','GER','away',1,1],
+    ['2025-10-21','psv','napoli','ITA','home',6,2],
+    ['2025-11-04','psv','olympiacos','GRE','away',1,1],
+    ['2025-11-26','psv','liverpool','ENG','away',4,1],
+    ['2025-12-09','psv','atleti','ESP','home',2,3],
+    ['2026-01-21','psv','newcastle','ENG','away',0,3],
+    ['2026-01-28','psv','bayern','GER','home',1,2]
   ].map(([date, teamSlug, opponentSlug, opponentCountry, venue, goalsFor, goalsAgainst]) => Object.freeze({
     date, teamSlug, opponentSlug, opponentCountry, venue, goalsFor, goalsAgainst
   })));
@@ -521,7 +652,7 @@
   });
 
   window.UCLDRAW_PREDICTION_CONTEXT_DATA = Object.freeze({
-    version: 11,
+    version: 12,
     reviewedAt: '2026-09-02',
     matches,
     historicalSignals,

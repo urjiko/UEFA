@@ -41,16 +41,13 @@
     document.querySelectorAll('#predictionSection .prediction-standings-panel').forEach((panel) => {
       panel.classList.remove('glass');
       if (panel.querySelector(':scope > .prediction-standings-card')) return;
-
       const legend = panel.querySelector(':scope > .prediction-zone-legend');
       const table = panel.querySelector(':scope > .prediction-standings-table');
       if (!table) return;
-
       const card = document.createElement('div');
       card.className = 'prediction-standings-card glass';
       if (legend) card.appendChild(legend);
       card.appendChild(table);
-
       const actions = panel.querySelector(':scope > .prediction-share-actions-v4');
       panel.insertBefore(card, actions || null);
     });
@@ -86,19 +83,106 @@
     card.querySelectorAll('.prediction-score-editor input').forEach((input) => { input.disabled = false; });
     button.classList.remove('is-match-locked');
     button.disabled = false;
+    button.title = 'Bu skoru kilitle';
+    button.setAttribute('aria-label', 'Bu skoru kilitle');
     setText(button, 'Kilitle');
     return true;
   }
 
   function refinePredictionLocks() {
-    document.querySelectorAll('#predictionSection .prediction-fixture-card').forEach((card) => {
-      const locked = card.classList.contains('is-locked');
-      const button = card.querySelector('.prediction-score-apply');
-      if (!button) return;
-      button.disabled = false;
-      button.classList.toggle('is-match-locked', locked);
-      setText(button, locked ? 'Kilitli' : 'Kilitle');
+    const state = predictionState();
+
+    document.querySelectorAll('#predictionSection .prediction-team-lock').forEach((button) => {
+      const locked = button.classList.contains('is-locked') || button.getAttribute('aria-pressed') === 'true';
+      setText(button, locked ? '🔒' : 'Takımı Kilitle');
+      button.title = locked ? 'Takım kilidini aç' : 'Takımı kilitle';
+      button.setAttribute('aria-label', button.title);
     });
+
+    document.querySelectorAll('#predictionSection .prediction-fixture-card').forEach((card) => {
+      const match = matchForCard(card);
+      const matchLocked = Boolean(match && state?.matchLocks?.[match.id]);
+      const teamLocked = Boolean(match && (state?.teamLocks?.[match.home.name] || state?.teamLocks?.[match.away.name]));
+      const button = card.querySelector('.prediction-score-apply');
+      if (button) {
+        button.disabled = false;
+        button.classList.toggle('is-match-locked', matchLocked);
+        button.title = matchLocked ? 'Skor kilidini aç' : 'Bu skoru kilitle';
+        button.setAttribute('aria-label', button.title);
+        setText(button, matchLocked ? '🔒' : 'Kilitle');
+      }
+      const stateLabel = card.querySelector('.prediction-fixture-top small');
+      if (stateLabel && (matchLocked || (teamLocked && state?.scores?.[match?.id]))) setText(stateLabel, '🔒');
+    });
+
+    document.querySelectorAll('#predictionSection .prediction-panel-heading > span').forEach((note) => {
+      if (/kilitli/i.test(note.textContent || '')) setText(note, '🔒');
+    });
+  }
+
+  function cloneScore(score) {
+    if (!score || typeof score !== 'object') return score;
+    return {
+      ...score,
+      model: score.model && typeof score.model === 'object' ? { ...score.model } : score.model
+    };
+  }
+
+  function snapshotProtectedPredictions(state) {
+    const matchLocks = { ...(state?.matchLocks || {}) };
+    const teamLocks = { ...(state?.teamLocks || {}) };
+    const scores = {};
+    for (const match of state?.matches || []) {
+      const score = state.scores?.[match.id];
+      const protectedResult = Boolean(score && (
+        matchLocks[match.id]
+        || teamLocks[match.home.name]
+        || teamLocks[match.away.name]
+      ));
+      if (protectedResult) scores[match.id] = cloneScore(score);
+    }
+    return { matchLocks, teamLocks, scores };
+  }
+
+  function restoreProtectedPredictions(state, protectedState) {
+    if (!state || !protectedState) return;
+    state.matchLocks = { ...protectedState.matchLocks };
+    state.teamLocks = { ...protectedState.teamLocks };
+    for (const [matchId, score] of Object.entries(protectedState.scores)) state.scores[matchId] = cloneScore(score);
+  }
+
+  function refreshPredictionView() {
+    const selectedRow = document.querySelector('#predictionSection .prediction-standing-row.is-selected-team');
+    if (selectedRow) selectedRow.click();
+    else window.dispatchEvent(new CustomEvent('ucldraw:prediction-refresh-requested'));
+  }
+
+  function runAiPredictionPreservingLocks(button) {
+    const AI = window.UCLDRAW_PREDICTION_AI;
+    const state = predictionState();
+    if (!AI?.predictAll || !state) return false;
+    if (button.dataset.busy === 'true') return true;
+
+    const protectedState = snapshotProtectedPredictions(state);
+    button.dataset.busy = 'true';
+    button.disabled = true;
+    setText(button, 'Hazırlanıyor...');
+    try {
+      AI.predictAll(state);
+      restoreProtectedPredictions(state, protectedState);
+      refreshPredictionView();
+      window.dispatchEvent(new CustomEvent('ucldraw:ai-predictions-restored-locks', {
+        detail: { protectedMatches: Object.keys(protectedState.scores).length }
+      }));
+    } catch (error) {
+      console.error(error);
+    } finally {
+      delete button.dataset.busy;
+      button.disabled = false;
+      setText(button, 'Yapay Zeka Tahmini');
+      window.requestAnimationFrame(refresh);
+    }
+    return true;
   }
 
   function createFloatingShare() {
@@ -184,7 +268,7 @@
     if (window.UCLDRAW_PREDICTION_SHARE_FIDELITY_PATCH) return true;
     if (document.querySelector('script[data-prediction-share-fidelity]')) return true;
     const script = document.createElement('script');
-    script.src = 'prediction-share-fidelity-patch.js?v=20260902a';
+    script.src = 'prediction-share-fidelity-patch.js?v=20260902hq2';
     script.async = false;
     script.dataset.predictionShareFidelity = 'true';
     document.body.appendChild(script);
@@ -192,6 +276,13 @@
   }
 
   document.addEventListener('click', (event) => {
+    const aiButton = event.target.closest?.('.prediction-ai-button');
+    if (aiButton && runAiPredictionPreservingLocks(aiButton)) {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      return;
+    }
+
     const lockedButton = event.target.closest?.('.prediction-score-apply.is-match-locked');
     if (lockedButton) {
       const card = lockedButton.closest('.prediction-fixture-card');
@@ -263,6 +354,8 @@
   });
 
   window.addEventListener('ucldraw:prediction-rendered', queueRefresh);
+  window.addEventListener('ucldraw:ai-predictions-applied', queueRefresh);
+  window.addEventListener('ucldraw:ai-predictions-restored-locks', queueRefresh);
   if (legacyShareUiEnabled) {
     window.addEventListener('resize', queueRefresh, { passive: true });
     window.addEventListener('scroll', syncFloatingShare, { passive: true });

@@ -644,8 +644,7 @@
     ['2026-08-05','sabah','aarhus','DEN','away',1,2],
     ['2026-08-11','sabah','aarhus','DEN','home',4,0],
     ['2026-08-19','sabah','hapoelbeersheva','ISR','away',1,2],
-    ['2026-08-25','sabah','hapoelbeersheva','ISR','home',5,2]
-
+    ['2026-08-25','sabah','hapoelbeersheva','ISR','home',5,2],
 
     // Europa League Pot 1: Bayer Leverkusen, 2025/26 Champions League league phase.
     ['2025-09-18','bayerleverkusen','copenhagen','DEN','away',2,2],
@@ -2088,7 +2087,7 @@
   });
 
   window.UCLDRAW_PREDICTION_CONTEXT_DATA = Object.freeze({
-    version: 26,
+    version: 27,
     reviewedAt: '2026-09-02',
     matches,
     historicalSignals,

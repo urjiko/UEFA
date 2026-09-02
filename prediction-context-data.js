@@ -3063,6 +3063,104 @@
       "confidence": 0.16,
       "note": "2016/17 Europa League: Braga and Gent drew both meetings, 1-1 in Braga and 2-2 in Gent. Retained as a small direct H2H layer."
     }
+  },
+  "midtjylland": {
+    "ajax": {
+      "venue": "home",
+      "sample": 2,
+      "wins": 0,
+      "draws": 0,
+      "losses": 2,
+      "goalsFor": 2,
+      "goalsAgainst": 5,
+      "attackTarget": 0.98,
+      "defenseTarget": 1.02,
+      "confidence": 0.42,
+      "note": "2020/21 Champions League: Ajax beat Midtjylland 2-1 in Denmark and 3-1 in Amsterdam. The 2026/27 fixture is again at Midtjylland."
+    }
+  },
+  "crvenazvezda": {
+    "copenhagen": {
+      "venue": "home",
+      "sample": 2,
+      "wins": 0,
+      "draws": 2,
+      "losses": 0,
+      "goalsFor": 2,
+      "goalsAgainst": 2,
+      "attackTarget": 1,
+      "defenseTarget": 1,
+      "confidence": 0.22,
+      "note": "2019/20 Champions League qualifying: both Crvena Zvezda-Copenhagen legs finished 1-1. The 2026/27 match is again in Belgrade."
+    },
+    "gent": {
+      "venue": "away",
+      "sample": 2,
+      "wins": 2,
+      "draws": 0,
+      "losses": 0,
+      "goalsFor": 4,
+      "goalsAgainst": 1,
+      "attackTarget": 1.022,
+      "defenseTarget": 0.978,
+      "confidence": 0.42,
+      "note": "2020/21 Europa League: Crvena Zvezda beat Gent 2-1 at home and 2-0 away. The 2026/27 fixture is again in Gent."
+    },
+    "trabzonspor": {
+      "venue": "home",
+      "sample": 2,
+      "wins": 1,
+      "draws": 0,
+      "losses": 1,
+      "goalsFor": 3,
+      "goalsAgainst": 3,
+      "attackTarget": 1.018,
+      "defenseTarget": 0.992,
+      "confidence": 0.48,
+      "note": "2022/23 Europa League: each side won its home game 2-1. The 2026/27 fixture is again in Belgrade, matching Crvena Zvezda's 2-1 home win."
+    }
+  },
+  "gent": {
+    "crvenazvezda": {
+      "venue": "home",
+      "sample": 2,
+      "wins": 0,
+      "draws": 0,
+      "losses": 2,
+      "goalsFor": 1,
+      "goalsAgainst": 4,
+      "attackTarget": 0.978,
+      "defenseTarget": 1.022,
+      "confidence": 0.42,
+      "note": "2020/21 Europa League: Gent lost both meetings with Crvena Zvezda, including 0-2 at home. The 2026/27 match is again in Gent."
+    },
+    "braga": {
+      "venue": "away",
+      "sample": 2,
+      "wins": 0,
+      "draws": 2,
+      "losses": 0,
+      "goalsFor": 3,
+      "goalsAgainst": 3,
+      "attackTarget": 1,
+      "defenseTarget": 1,
+      "confidence": 0.16,
+      "note": "2016/17 Europa League: Braga-Gent finished 1-1 in Portugal and 2-2 in Belgium. The old, balanced tie is retained as a small direct H2H layer."
+    }
+  },
+  "panathinaikos": {
+    "borac": {
+      "sample": 1,
+      "wins": 0,
+      "draws": 1,
+      "losses": 0,
+      "goalsFor": 1,
+      "goalsAgainst": 1,
+      "attackTarget": 1,
+      "defenseTarget": 1,
+      "confidence": 0.28,
+      "note": "Very recent direct H2H: Borac and Panathinaikos drew 1-1 in Bosnia in October 2024. Venue flips to Athens in 2026/27, so the signal remains modest."
+    }
   }
 });
 
@@ -3399,6 +3497,81 @@
       "confidence": 0.28,
       "note": "English away analogue: Monaco lost 3-0 at Arsenal in December 2024. Used cautiously for Brighton because the English opponent strength is different."
     }
+  },
+  "midtjylland": {
+    "truidense": {
+      "venue": "home",
+      "attackTarget": 1.02,
+      "defenseTarget": 0.98,
+      "confidence": 0.5,
+      "note": "Fresh Belgian-club home analogue: Midtjylland beat Union SG 1-0 at home in October 2024 and Genk 1-0 at home in December 2025. Used for Sint-Truiden."
+    },
+    "hajduksplit": {
+      "venue": "home",
+      "attackTarget": 1.018,
+      "defenseTarget": 0.982,
+      "confidence": 0.44,
+      "note": "Fresh Croatian-club home analogue: Midtjylland beat GNK Dinamo 2-0 at home in January 2026. Used for Hajduk Split."
+    }
+  },
+  "crvenazvezda": {
+    "lugano": {
+      "venue": "away",
+      "attackTarget": 1.018,
+      "defenseTarget": 0.982,
+      "confidence": 0.42,
+      "note": "Fresh Swiss-club away analogue: Crvena Zvezda won 1-0 away to Young Boys in January 2025. Used for the Lugano trip."
+    }
+  },
+  "gent": {
+    "thun": {
+      "venue": "away",
+      "attackTarget": 0.98,
+      "defenseTarget": 1.02,
+      "confidence": 0.42,
+      "note": "Fresh Swiss-club away analogue: Gent lost 2-0 away to Lugano in November 2024. Used for Thun."
+    },
+    "brann": {
+      "venue": "home",
+      "attackTarget": 1.018,
+      "defenseTarget": 0.985,
+      "confidence": 0.42,
+      "note": "Fresh Norwegian-club home analogue: Gent beat Molde 2-1 at home in October 2024. Used for Brann."
+    }
+  },
+  "panathinaikos": {
+    "brighton": {
+      "venue": "home",
+      "attackTarget": 0.985,
+      "defenseTarget": 1.02,
+      "confidence": 0.24,
+      "note": "English-club home analogue: Panathinaikos lost 4-1 at home to Chelsea in October 2024. Used lightly for Brighton because Chelsea are a much stronger reference side."
+    }
+  },
+  "pafos": {
+    "mjallby": {
+      "venue": "away",
+      "attackTarget": 0.975,
+      "defenseTarget": 1.025,
+      "confidence": 0.4,
+      "note": "Fresh Swedish-club away analogue: Pafos lost 3-0 away to Djurgarden in March 2025. Used for the Mjallby trip."
+    }
+  },
+  "brighton": {
+    "monaco": {
+      "venue": "home",
+      "attackTarget": 1.018,
+      "defenseTarget": 0.985,
+      "confidence": 0.34,
+      "note": "French-club home analogue: Brighton beat Marseille 1-0 at home in December 2023. Used for Monaco."
+    },
+    "panathinaikos": {
+      "venue": "away",
+      "attackTarget": 1.018,
+      "defenseTarget": 0.985,
+      "confidence": 0.34,
+      "note": "Greek-club away analogue: Brighton beat AEK Athens 1-0 away in November 2023. Used for Panathinaikos."
+    }
   }
 });
 
@@ -3458,7 +3631,7 @@
   });
 
   window.UCLDRAW_PREDICTION_CONTEXT_DATA = Object.freeze({
-    version: 45,
+    version: 46,
     reviewedAt: '2026-09-02',
     matches,
     historicalSignals,

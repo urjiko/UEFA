@@ -828,15 +828,6 @@
         note: 'Slavia won both 2022 Conference League meetings with Fenerbahce, but lost the much newer 2024 Europa League meeting in Prague 1-2. Current match is in Istanbul, so the signal is deliberately modest.'
       })
     }),
-    bayern: Object.freeze({
-      slavia: Object.freeze({
-        venue: 'home',
-        attackTarget: 1.025,
-        defenseTarget: 0.980,
-        confidence: 0.42,
-        note: 'Same-country/same-venue analogue: Bayern beat Viktoria Plzen 5-0 at home in October 2022. Used as a Czech-club home analogue for Slavia.'
-      })
-    }),
     slovanbratislava: Object.freeze({
       stuttgart: Object.freeze({
         venue: 'home',
@@ -1333,6 +1324,19 @@
       })
     }),
     roma: Object.freeze({
+      slovanbratislava: Object.freeze({
+        venue: 'home',
+        sample: 2,
+        wins: 0,
+        draws: 1,
+        losses: 1,
+        goalsFor: 1,
+        goalsAgainst: 2,
+        attackTarget: 0.995,
+        defenseTarget: 1.005,
+        confidence: 0.12,
+        note: '2011/12 Europa League play-off: Roma drew 1-1 at home to Slovan Bratislava after a 0-1 away loss. The exact home venue repeats in 2026/27, but age keeps the effect tiny.'
+      }),
       lille: Object.freeze({
         venue: 'home',
         sample: 1,
@@ -1401,6 +1405,18 @@
       })
     }),
     porto: Object.freeze({
+      psv: Object.freeze({
+        sample: 4,
+        wins: 2,
+        draws: 1,
+        losses: 1,
+        goalsFor: 5,
+        goalsAgainst: 7,
+        attackTarget: 0.995,
+        defenseTarget: 1.005,
+        confidence: 0.10,
+        note: 'UEFA H2H: Porto lead PSV W2 D1 L1 across four meetings, but all are from 1988/89 and 1992/93. Retained only as a tiny historical pair signal.'
+      }),
       liverpool: Object.freeze({
         venue: 'away',
         sample: 8,
@@ -1752,6 +1768,15 @@
   });
 
   const analogueSignals = Object.freeze({
+    slavia: Object.freeze({
+      lens: Object.freeze({
+        venue: 'home',
+        attackTarget: 1.018,
+        defenseTarget: 0.990,
+        confidence: 0.28,
+        note: 'Same-country/same-venue analogue: Slavia beat Nice 3-2 at home and 3-1 away in the 2020/21 Europa League. Age keeps the Lens effect modest.'
+      })
+    }),
     lens: Object.freeze({
       city: Object.freeze({
         venue: 'home',
@@ -1788,6 +1813,22 @@
         defenseTarget: 0.988,
         confidence: 0.24,
         note: 'Recent Italian-club analogue: AEK won 1-0 away to Fiorentina in November 2025. The Roma match is at home, so venue mismatch keeps the effect small.'
+      })
+    }),
+    bayern: Object.freeze({
+      slavia: Object.freeze({
+        venue: 'home',
+        attackTarget: 1.025,
+        defenseTarget: 0.980,
+        confidence: 0.42,
+        note: 'Same-country/same-venue analogue: Bayern beat Viktoria Plzen 5-0 at home in October 2022. Used as a Czech-club home analogue for Slavia.'
+      }),
+      realbetis: Object.freeze({
+        venue: 'home',
+        attackTarget: 1.018,
+        defenseTarget: 0.985,
+        confidence: 0.28,
+        note: 'Spanish-club home analogue: Bayern beat Barcelona 2-0 at home in September 2022. Used lightly for Real Betis because the opponent profile and age differ.'
       })
     }),
     bodo: Object.freeze({
@@ -1952,7 +1993,7 @@
   });
 
   window.UCLDRAW_PREDICTION_CONTEXT_DATA = Object.freeze({
-    version: 24,
+    version: 25,
     reviewedAt: '2026-09-02',
     matches,
     historicalSignals,

@@ -554,6 +554,241 @@
   // Older direct H2H facts get a separate, low-confidence layer. This avoids
   // mixing a decade-old tie into current form while still retaining real matchup history.
   const historicalPairSignals = Object.freeze({
+    bvb: Object.freeze({
+      villareal: Object.freeze({
+        venue: 'home',
+        sample: 1,
+        wins: 1,
+        draws: 0,
+        losses: 0,
+        goalsFor: 4,
+        goalsAgainst: 0,
+        attackTarget: 1.045,
+        defenseTarget: 0.965,
+        confidence: 0.64,
+        note: 'Exact recent repeat: Dortmund beat Villarreal 4-0 at home in the 2025/26 Champions League; the 2026/27 fixture is again in Dortmund.'
+      }),
+      inter: Object.freeze({
+        venue: 'home',
+        sample: 1,
+        wins: 0,
+        draws: 0,
+        losses: 1,
+        goalsFor: 0,
+        goalsAgainst: 2,
+        attackTarget: 0.970,
+        defenseTarget: 1.030,
+        confidence: 0.58,
+        note: 'Exact recent repeat: Inter won 2-0 in Dortmund in January 2026; the 2026/27 meeting is again at Dortmund.'
+      }),
+      bodo: Object.freeze({
+        sample: 1,
+        wins: 0,
+        draws: 1,
+        losses: 0,
+        goalsFor: 2,
+        goalsAgainst: 2,
+        attackTarget: 1.005,
+        defenseTarget: 1.005,
+        confidence: 0.38,
+        note: 'Very recent H2H: Dortmund and Bodo/Glimt drew 2-2 in Dortmund in December 2025. Venue flips in 2026/27, so the weight is moderate.'
+      })
+    }),
+    roma: Object.freeze({
+      lille: Object.freeze({
+        venue: 'home',
+        sample: 1,
+        wins: 0,
+        draws: 0,
+        losses: 1,
+        goalsFor: 0,
+        goalsAgainst: 1,
+        attackTarget: 0.975,
+        defenseTarget: 1.020,
+        confidence: 0.60,
+        note: 'Exact recent repeat: Lille won 1-0 away to Roma in October 2025; Roma host Lille again in 2026/27.'
+      }),
+      manu: Object.freeze({
+        venue: 'away',
+        sample: 2,
+        wins: 1,
+        draws: 0,
+        losses: 1,
+        goalsFor: 5,
+        goalsAgainst: 8,
+        attackTarget: 0.985,
+        defenseTarget: 1.020,
+        confidence: 0.20,
+        note: '2020/21 Europa League semi-final: Manchester United won 6-2 at Old Trafford and Roma won the return 3-2. Current fixture is again at Old Trafford, but age keeps the signal small.'
+      })
+    }),
+    astonvilla: Object.freeze({
+      brugge: Object.freeze({
+        venue: 'away',
+        sample: 1,
+        wins: 0,
+        draws: 0,
+        losses: 1,
+        goalsFor: 0,
+        goalsAgainst: 1,
+        attackTarget: 0.975,
+        defenseTarget: 1.020,
+        confidence: 0.60,
+        note: 'Exact venue repeat: Club Brugge beat Aston Villa 1-0 in Bruges in November 2024; Villa return to Bruges in 2026/27.'
+      }),
+      psg: Object.freeze({
+        venue: 'home',
+        sample: 1,
+        wins: 1,
+        draws: 0,
+        losses: 0,
+        goalsFor: 3,
+        goalsAgainst: 2,
+        attackTarget: 1.025,
+        defenseTarget: 1.005,
+        confidence: 0.54,
+        note: 'Exact venue repeat: Aston Villa beat Paris 3-2 at Villa Park in the April 2025 Champions League quarter-final second leg.'
+      }),
+      fenerbahce: Object.freeze({
+        sample: 1,
+        wins: 1,
+        draws: 0,
+        losses: 0,
+        goalsFor: 1,
+        goalsAgainst: 0,
+        attackTarget: 1.020,
+        defenseTarget: 0.980,
+        confidence: 0.52,
+        note: 'Very recent direct H2H: Aston Villa won 1-0 away to Fenerbahce in January 2026. Venue flips to Villa Park in 2026/27.'
+      })
+    }),
+    porto: Object.freeze({
+      liverpool: Object.freeze({
+        venue: 'away',
+        sample: 8,
+        wins: 0,
+        draws: 2,
+        losses: 6,
+        goalsFor: 4,
+        goalsAgainst: 23,
+        attackTarget: 0.965,
+        defenseTarget: 1.040,
+        confidence: 0.58,
+        note: 'UEFA Champions League H2H before 2026/27: Porto are W0 D2 L6 against Liverpool, 4-23 on goals. The new fixture is at Anfield, where Porto have never won.'
+      }),
+      city: Object.freeze({
+        venue: 'home',
+        sample: 2,
+        wins: 0,
+        draws: 1,
+        losses: 1,
+        goalsFor: 1,
+        goalsAgainst: 3,
+        attackTarget: 0.990,
+        defenseTarget: 1.010,
+        confidence: 0.18,
+        note: '2020/21 Champions League group: Porto lost 3-1 in Manchester and drew 0-0 at home. Current match is again in Porto; age keeps the signal light.'
+      })
+    }),
+    manu: Object.freeze({
+      atleti: Object.freeze({
+        venue: 'away',
+        sample: 1,
+        wins: 0,
+        draws: 1,
+        losses: 0,
+        goalsFor: 1,
+        goalsAgainst: 1,
+        attackTarget: 1.000,
+        defenseTarget: 1.000,
+        confidence: 0.38,
+        note: 'Same-venue H2H: Manchester United drew 1-1 at Atletico in the 2021/22 Champions League round of 16.'
+      }),
+      villareal: Object.freeze({
+        venue: 'away',
+        sample: 1,
+        wins: 1,
+        draws: 0,
+        losses: 0,
+        goalsFor: 2,
+        goalsAgainst: 0,
+        attackTarget: 1.020,
+        defenseTarget: 0.980,
+        confidence: 0.36,
+        note: 'Same-venue recent H2H: Manchester United won 2-0 away to Villarreal in November 2021.'
+      }),
+      bayern: Object.freeze({
+        venue: 'home',
+        sample: 1,
+        wins: 0,
+        draws: 0,
+        losses: 1,
+        goalsFor: 0,
+        goalsAgainst: 1,
+        attackTarget: 0.985,
+        defenseTarget: 1.015,
+        confidence: 0.42,
+        note: 'Same-venue recent H2H: Bayern won 1-0 at Old Trafford in December 2023.'
+      })
+    }),
+    brugge: Object.freeze({
+      astonvilla: Object.freeze({
+        venue: 'home',
+        sample: 1,
+        wins: 1,
+        draws: 0,
+        losses: 0,
+        goalsFor: 1,
+        goalsAgainst: 0,
+        attackTarget: 1.020,
+        defenseTarget: 0.980,
+        confidence: 0.60,
+        note: 'Exact venue repeat: Club Brugge beat Aston Villa 1-0 at home in November 2024.'
+      })
+    }),
+    realbetis: Object.freeze({
+      feyenoord: Object.freeze({
+        venue: 'home',
+        sample: 1,
+        wins: 1,
+        draws: 0,
+        losses: 0,
+        goalsFor: 2,
+        goalsAgainst: 1,
+        attackTarget: 1.025,
+        defenseTarget: 0.990,
+        confidence: 0.66,
+        note: 'Exact very recent repeat: Real Betis beat Feyenoord 2-1 at home in January 2026 and host Feyenoord again in 2026/27.'
+      })
+    }),
+    psv: Object.freeze({
+      shakhtar: Object.freeze({
+        venue: 'home',
+        sample: 1,
+        wins: 1,
+        draws: 0,
+        losses: 0,
+        goalsFor: 3,
+        goalsAgainst: 2,
+        attackTarget: 1.025,
+        defenseTarget: 1.000,
+        confidence: 0.62,
+        note: 'Exact venue repeat: PSV beat Shakhtar 3-2 in Eindhoven in November 2024; the 2026/27 fixture is again at PSV.'
+      }),
+      atleti: Object.freeze({
+        venue: 'home',
+        sample: 1,
+        wins: 0,
+        draws: 0,
+        losses: 1,
+        goalsFor: 2,
+        goalsAgainst: 3,
+        attackTarget: 1.005,
+        defenseTarget: 1.025,
+        confidence: 0.68,
+        note: 'Exact very recent repeat: Atletico won 3-2 at PSV in December 2025; the 2026/27 meeting is again in Eindhoven.'
+      })
+    }),
     besiktas: Object.freeze({
       hapoelbeersheva: Object.freeze({
         sample: 2,
@@ -652,7 +887,7 @@
   });
 
   window.UCLDRAW_PREDICTION_CONTEXT_DATA = Object.freeze({
-    version: 12,
+    version: 13,
     reviewedAt: '2026-09-02',
     matches,
     historicalSignals,

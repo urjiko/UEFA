@@ -24,8 +24,20 @@
     ['2026-03-18','galatasaray','liverpool','ENG','away',0,4],
 
     // Fenerbahce: recent European sample (2024/25 -> 2026/27 qualifying).
+    ['2023-03-09','fenerbahce','sevilla','ESP','away',0,2],
+    ['2023-03-16','fenerbahce','sevilla','ESP','home',1,0],
+    ['2024-09-26','fenerbahce','union','BEL','home',2,1],
+    ['2024-10-03','fenerbahce','twente','NED','away',1,1],
     ['2024-10-24','fenerbahce','manu','ENG','home',1,1],
+    ['2024-11-07','fenerbahce','azalkmaar','NED','away',1,3],
     ['2024-11-28','fenerbahce','slavia','CZE','away',2,1],
+    ['2024-12-11','fenerbahce','athleticbilbao','ESP','home',0,2],
+    ['2025-01-23','fenerbahce','lyon','FRA','home',0,0],
+    ['2025-01-30','fenerbahce','midtjylland','DEN','away',2,2],
+    ['2025-02-13','fenerbahce','anderlecht','BEL','home',3,0],
+    ['2025-02-20','fenerbahce','anderlecht','BEL','away',2,2],
+    ['2025-03-06','fenerbahce','rangers','SCO','home',1,3],
+    ['2025-03-13','fenerbahce','rangers','SCO','away',2,0],
     ['2025-08-06','fenerbahce','feyenoord','NED','away',1,2],
     ['2025-08-12','fenerbahce','feyenoord','NED','home',5,2],
     ['2025-08-20','fenerbahce','benfica','POR','home',0,0],
@@ -262,6 +274,44 @@
         note: 'UEFA: only one loss in the last nine home matches against English visitors (W5 D3).'
       })
     }),
+    fenerbahce: Object.freeze({
+      astonvilla: Object.freeze({
+        sample: 3,
+        wins: 0,
+        draws: 0,
+        losses: 3,
+        goalsFor: 0,
+        goalsAgainst: 7,
+        attackTarget: 0.975,
+        defenseTarget: 1.025,
+        confidence: 0.34,
+        note: 'UEFA H2H: Fenerbahce have lost all three competitive meetings with Aston Villa without scoring; the freshest is the 0-1 home loss in January 2026, while the two 1977 games are heavily age-discounted.'
+      }),
+      slavia: Object.freeze({
+        sample: 3,
+        wins: 1,
+        draws: 0,
+        losses: 2,
+        goalsFor: 6,
+        goalsAgainst: 7,
+        attackTarget: 0.995,
+        defenseTarget: 1.008,
+        confidence: 0.27,
+        note: 'UEFA H2H: Slavia won both 2022 Conference League meetings, but Fenerbahce won the much newer 2024 Europa League trip to Prague 2-1.'
+      }),
+      shakhtar: Object.freeze({
+        sample: 2,
+        wins: 0,
+        draws: 1,
+        losses: 1,
+        goalsFor: 0,
+        goalsAgainst: 3,
+        attackTarget: 0.985,
+        defenseTarget: 1.015,
+        confidence: 0.18,
+        note: '2015/16 Champions League qualifying: Fenerbahce drew 0-0 at home and lost 3-0 away to Shakhtar. Low weight because the tie is old.'
+      })
+    }),
     shakhtar: Object.freeze({
       TUR: Object.freeze({
         sample: 10,
@@ -424,7 +474,7 @@
   });
 
   window.UCLDRAW_PREDICTION_CONTEXT_DATA = Object.freeze({
-    version: 9,
+    version: 10,
     reviewedAt: '2026-09-02',
     matches,
     historicalSignals,

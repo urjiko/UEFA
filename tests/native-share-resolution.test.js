@@ -8,6 +8,7 @@ const v6 = read('prediction-share-v6.js');
 const v7 = read('prediction-share-v7.js');
 const v8 = read('prediction-share-v8.js');
 const v9 = read('prediction-share-v9.js');
+const fidelity = read('prediction-share-fidelity-patch.js');
 const ui = read('ui-refinement-v5.js');
 const html = read('index.html');
 
@@ -38,6 +39,7 @@ for (const source of [v6, v7, v8]) {
 
 assert.match(v8, /prediction-share-v9\.js\?v=20260901hq1/);
 assert.match(ui, /prediction-share-v8\.js\?v=20260901hq1/);
+assert.match(ui, /prediction-share-fidelity-patch\.js\?v=20260902hq2/);
 assert.ok(html.includes('prediction-share-v6.js?v=20260901hq1'));
 assert.ok(html.includes('prediction-share-v7.js?v=20260901hq1'));
 assert.ok(html.includes('ui-refinement-v5.js?v=20260901hq1'));
@@ -47,4 +49,22 @@ assert.doesNotMatch(v9, /drawImage\(sourceCanvas/);
 assert.match(v9, /canvas\.width !== OUTPUT_WIDTH \|\| canvas\.height !== OUTPUT_HEIGHT/);
 assert.match(v9, /native 2400×3200 çözünürlükte/);
 
-console.log('Native 2400x3200 share rendering and direct crest redraw checks passed.');
+assert.match(fidelity, /version: 2/);
+assert.match(fidelity, /function repaintHeaderCopy/);
+assert.match(fidelity, /function repaintFixtureText/);
+assert.match(fidelity, /function repaintStandingsText/);
+assert.match(fidelity, /function repaintFooter/);
+assert.match(fidelity, /nativeTextScale: SCALE/);
+assert.match(fidelity, /fixture\.score\.homeGoals/);
+assert.match(fidelity, /row\.goalDifference/);
+assert.match(fidelity, /String\(row\.points\)/);
+
+assert.match(ui, /function snapshotProtectedPredictions/);
+assert.match(ui, /function restoreProtectedPredictions/);
+assert.match(ui, /runAiPredictionPreservingLocks/);
+assert.match(ui, /matchLocks\[match\.id\]/);
+assert.match(ui, /teamLocks\[match\.home\.name\]/);
+assert.match(ui, /setText\(button, locked \? '🔒' : 'Takımı Kilitle'\)/);
+assert.match(ui, /setText\(button, matchLocked \? '🔒' : 'Kilitle'\)/);
+
+console.log('Native 2400x3200 text fidelity and lock-preservation checks passed.');

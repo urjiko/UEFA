@@ -1599,6 +1599,19 @@
       "confidence": 0.44,
       "note": "Greek-club home analogue: Freiburg drew 1-1 with Olympiacos at home in 2022/23 and won 5-0 at home in 2023/24. Used for Panathinaikos."
     }
+  },
+  "cskasofia": {
+    "TUR": {
+      "venue": "home",
+      "sample": 2,
+      "wins": 0,
+      "draws": 1,
+      "losses": 1,
+      "attackTarget": 0.985,
+      "defenseTarget": 1.015,
+      "confidence": 0.2,
+      "note": "UEFA historical Turkish-club home split is W0 D1 L1 in the documented CSKA sample; the broader six-match record was W1 D1 L4. Used lightly for Trabzonspor because the evidence is old."
+    }
   }
 });
 
@@ -3230,6 +3243,63 @@
       "confidence": 0.28,
       "note": "Very recent direct H2H: Borac and Panathinaikos drew 1-1 in Bosnia in October 2024. Venue flips to Athens in 2026/27, so the signal remains modest."
     }
+  },
+  "trabzonspor": {
+    "crvenazvezda": {
+      "venue": "away",
+      "sample": 2,
+      "wins": 1,
+      "draws": 0,
+      "losses": 1,
+      "goalsFor": 3,
+      "goalsAgainst": 3,
+      "attackTarget": 0.992,
+      "defenseTarget": 1.018,
+      "confidence": 0.48,
+      "note": "2022/23 Europa League: each side won its home match 2-1. Trabzonspor lost 2-1 in Belgrade, and the 2026/27 fixture is again at Crvena Zvezda."
+    }
+  },
+  "lugano": {
+    "copenhagen": {
+      "venue": "away",
+      "sample": 2,
+      "wins": 0,
+      "draws": 0,
+      "losses": 2,
+      "goalsFor": 0,
+      "goalsAgainst": 2,
+      "attackTarget": 0.985,
+      "defenseTarget": 1.015,
+      "confidence": 0.3,
+      "note": "2019/20 Europa League: Copenhagen beat Lugano 1-0 home and away. The 2026/27 fixture is again in Copenhagen."
+    }
+  },
+  "cskasofia": {
+    "panathinaikos": {
+      "venue": "away",
+      "sample": 2,
+      "wins": 2,
+      "draws": 0,
+      "losses": 0,
+      "goalsFor": 3,
+      "goalsAgainst": 0,
+      "attackTarget": 1.01,
+      "defenseTarget": 0.99,
+      "confidence": 0.12,
+      "note": "UEFA historical H2H: CSKA Sofia won both old away meetings at Panathinaikos, 2-0 in 1972 and 1-0 in 1988. The venue matches 2026/27, but the age makes this trace-level."
+    },
+    "monaco": {
+      "sample": 3,
+      "wins": 1,
+      "draws": 1,
+      "losses": 1,
+      "goalsFor": 5,
+      "goalsAgainst": 5,
+      "attackTarget": 1,
+      "defenseTarget": 1,
+      "confidence": 0.08,
+      "note": "UEFA Europa League H2H is balanced at W1 D1 L1 and 5-5 across old Monaco-CSKA meetings. Retained only as a neutral historical reference."
+    }
   }
 });
 
@@ -3641,6 +3711,31 @@
       "confidence": 0.34,
       "note": "Greek-club away analogue: Brighton beat AEK Athens 1-0 away in November 2023. Used for Panathinaikos."
     }
+  },
+  "lugano": {
+    "jablonec": {
+      "venue": "away",
+      "attackTarget": 1.02,
+      "defenseTarget": 0.985,
+      "confidence": 0.46,
+      "note": "Fresh Czech-club away analogue: Lugano won 1-0 away to Mlada Boleslav in October 2024. Used for Jablonec."
+    },
+    "truidense": {
+      "venue": "home",
+      "attackTarget": 1.025,
+      "defenseTarget": 0.98,
+      "confidence": 0.46,
+      "note": "Fresh Belgian-club home analogue: Lugano beat Gent 2-0 at home in November 2024. Used for Sint-Truiden."
+    }
+  },
+  "cskasofia": {
+    "thun": {
+      "venue": "home",
+      "attackTarget": 1.01,
+      "defenseTarget": 0.995,
+      "confidence": 0.22,
+      "note": "Swiss-club analogue: CSKA Sofia won 3-1 away to Basel in the 2020/21 Europa League play-off. Venue flips for Thun and the match is old, so the effect stays small."
+    }
   }
 });
 
@@ -3700,7 +3795,7 @@
   });
 
   window.UCLDRAW_PREDICTION_CONTEXT_DATA = Object.freeze({
-    version: 49,
+    version: 50,
     reviewedAt: '2026-09-02',
     matches,
     historicalSignals,

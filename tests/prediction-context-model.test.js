@@ -32,9 +32,9 @@ const model = context.UCLDRAW_PREDICTION_CONTEXT_MODEL;
 const coefficients = context.UCLDRAW_CLUB_COEFFICIENTS.clubs;
 const fixtures = context.UCLDRAW_CURRENT_FIXTURES.uclMatches;
 
-assert.equal(data.version, 46);
+assert.equal(data.version, 50);
 assert.equal(data.reviewedAt, '2026-09-02');
-assert.equal(data.matches.length, 1139);
+assert.equal(data.matches.length, 1191);
 assert.equal(model.methodology.recencyHalfLifeYears, 3);
 assert.equal(model.methodology.homePriorMatches, 8);
 assert.equal(model.methodology.awayPriorMatches, 8);
@@ -111,6 +111,12 @@ assert.equal(model.profiles.gent.overall.samples, 8);
 assert.equal(model.profiles.panathinaikos.overall.samples, 18);
 assert.equal(model.profiles.pafos.overall.samples, 18);
 assert.equal(model.profiles.brighton.overall.samples, 8);
+assert.equal(model.profiles.trabzonspor.overall.samples, 18);
+assert.equal(model.profiles.twente.overall.samples, 12);
+assert.equal(model.profiles.hearts.overall.samples, 8);
+assert.equal(model.profiles.lugano.overall.samples, 12);
+assert.equal(model.profiles.nordsjaelland.overall.samples, 10);
+assert.equal(model.profiles.cskasofia.overall.samples, 10);
 assert.equal(model.profiles.bournemouth, undefined, 'Bournemouth has no recent UEFA sample before the 2026/27 league phase.');
 assert.equal(model.profiles.sunderland, undefined, 'Sunderland has no recent UEFA sample before the 2026/27 league phase.');
 assert.equal(model.profiles.galatasaray.associationMatchups.ENG.samples, 7);
@@ -211,7 +217,7 @@ for (const [homeSlug, awaySlug] of context.UCLDRAW_CURRENT_FIXTURES.ueclMatches)
   }
 }
 assert.equal(context.UCLDRAW_CURRENT_FIXTURES.ueclMatches.length, 108);
-assert.ok(ueclFixtureSpecificCoverage >= 22, `Only ${ueclFixtureSpecificCoverage}/108 UECL fixtures have matchup-specific evidence after Pot 1.`);
+assert.ok(ueclFixtureSpecificCoverage >= 29, `Only ${ueclFixtureSpecificCoverage}/108 UECL fixtures have matchup-specific evidence after Pot 1.`);
 assert.equal(ueclCapHits, 0, 'Conference League context should not hit safety caps.');
 
 
@@ -327,6 +333,29 @@ assert.ok(brightonPana.details.analogueSignal, 'Brighton at Panathinaikos should
 const pafosAtalanta = model.teamModifiers(team('pafos'), team('atalanta'), 'away');
 assert.ok(pafosAtalanta.details.association, 'Pafos at Atalanta should use its recent Italian-away association sample.');
 
+
+const trabzonCrvena = model.teamModifiers(team('trabzonspor'), team('crvenazvezda'), 'away');
+assert.ok(trabzonCrvena.details.historicalPairSignal, 'Trabzonspor at Crvena Zvezda should retain the 2022 Belgrade H2H.');
+
+const luganoCopenhagen = model.teamModifiers(team('lugano'), team('copenhagen'), 'away');
+assert.ok(luganoCopenhagen.details.historicalPairSignal, 'Lugano at Copenhagen should retain the 2019 exact-away H2H.');
+
+const luganoJablonec = model.teamModifiers(team('lugano'), team('jablonec'), 'away');
+assert.ok(luganoJablonec.details.analogueSignal, 'Lugano at Jablonec should use the Mlada Boleslav Czech-away analogue.');
+
+const luganoTruidense = model.teamModifiers(team('lugano'), team('truidense'), 'home');
+assert.ok(luganoTruidense.details.analogueSignal, 'Lugano-Sint-Truiden should use the recent Gent home analogue.');
+
+const cskaPana = model.teamModifiers(team('cskasofia'), team('panathinaikos'), 'away');
+assert.ok(cskaPana.details.association, 'CSKA at Panathinaikos should use the fresh OFI Greek association sample.');
+assert.ok(cskaPana.details.historicalPairSignal, 'CSKA at Panathinaikos should retain the old Athens H2H only at trace confidence.');
+
+const cskaTrabzon = model.teamModifiers(team('cskasofia'), team('trabzonspor'), 'home');
+assert.ok(cskaTrabzon.details.historicalSignal, 'CSKA-Trabzonspor should use the low-confidence Turkish-club home history.');
+
+const cskaThun = model.teamModifiers(team('cskasofia'), team('thun'), 'home');
+assert.ok(cskaThun.details.analogueSignal, 'CSKA-Thun should use the old Basel Swiss analogue at low confidence.');
+
 const lensCity = model.teamModifiers(team('lens'), team('city'), 'home');
 assert.ok(lensCity.details.analogueSignal, 'Lens-Man City should use the Arsenal home analogue.');
 
@@ -377,8 +406,8 @@ assert.ok(adjusted.awayExpected >= 0.15 && adjusted.awayExpected <= 4);
 assert.match(sources['prediction-context-model.js'], /reciprocalHistoricPair/);
 assert.match(sources['prediction-context-model.js'], /appliedConfidence/);
 assert.match(sources['prediction-context-model.js'], /analogueSignals/);
-assert.match(controller, /prediction-context-data\.js\?v=20260902ueclpot2v46/);
-assert.match(controller, /prediction-context-model\.js\?v=20260902ueclpot2v46/);
+assert.match(controller, /prediction-context-data\.js\?v=20260902ueclpot3v50/);
+assert.match(controller, /prediction-context-model\.js\?v=20260902ueclpot3v50/);
 assert.match(controller, /contextModel\(\)\?\.adjustExpectedGoals/);
 assert.match(controller, /__contextMatchupModel: true/);
 

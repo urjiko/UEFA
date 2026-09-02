@@ -156,6 +156,37 @@
     ['2025-12-10','napoli','benfica','POR','away',0,2],
     ['2026-01-20','napoli','copenhagen','DEN','away',1,1],
     ['2026-01-28','napoli','chelsea','ENG','home',2,3]
+
+
+    // Leipzig: recent Champions League sample. Direct Real Madrid, Manchester City and Shakhtar history is especially relevant to the 2026/27 draw.
+    ['2022-09-06','leipzig','shakhtar','UKR','home',1,4],
+    ['2022-11-02','leipzig','shakhtar','UKR','away',4,0],
+    ['2023-09-19','leipzig','youngboys','SUI','away',3,1],
+    ['2023-10-04','leipzig','city','ENG','home',1,3],
+    ['2023-10-25','leipzig','crvenazvezda','SRB','home',3,1],
+    ['2023-11-07','leipzig','crvenazvezda','SRB','away',2,1],
+    ['2023-11-28','leipzig','city','ENG','away',2,3],
+    ['2023-12-13','leipzig','youngboys','SUI','home',2,1],
+    ['2024-02-13','leipzig','realmadrid','ESP','home',0,1],
+    ['2024-03-06','leipzig','realmadrid','ESP','away',1,1],
+    ['2024-09-19','leipzig','atleti','ESP','away',1,2],
+    ['2024-10-02','leipzig','juventus','ITA','home',2,3],
+    ['2024-10-23','leipzig','liverpool','ENG','home',0,1],
+    ['2024-11-05','leipzig','celtic','SCO','away',1,3],
+    ['2024-11-26','leipzig','inter','ITA','away',0,1],
+    ['2024-12-10','leipzig','astonvilla','ENG','home',2,3],
+    ['2025-01-22','leipzig','sporting','POR','home',2,1],
+    ['2025-01-29','leipzig','strumgraz','AUT','away',0,1],
+
+    // Villarreal: 2025/26 Champions League sample. Dortmund is a same-opponent/same-venue repeat in 2026/27; English results inform Liverpool and Manchester United.
+    ['2025-09-16','villareal','tottenham','ENG','away',0,1],
+    ['2025-10-01','villareal','juventus','ITA','home',2,2],
+    ['2025-10-21','villareal','city','ENG','home',0,2],
+    ['2025-11-05','villareal','pafos','CYP','away',0,1],
+    ['2025-11-25','villareal','bvb','GER','away',0,4],
+    ['2025-12-10','villareal','copenhagen','DEN','home',2,3],
+    ['2026-01-20','villareal','ajax','NED','home',1,2],
+    ['2026-01-28','villareal','bayerleverkusen','GER','away',0,3]
   ].map(([date, teamSlug, opponentSlug, opponentCountry, venue, goalsFor, goalsAgainst]) => Object.freeze({
     date, teamSlug, opponentSlug, opponentCountry, venue, goalsFor, goalsAgainst
   })));
@@ -326,7 +357,7 @@
   });
 
   window.UCLDRAW_PREDICTION_CONTEXT_DATA = Object.freeze({
-    version: 5,
+    version: 6,
     reviewedAt: '2026-09-02',
     matches,
     historicalSignals,

@@ -793,8 +793,7 @@
     ['2024-11-28','azalkmaar','galatasaray','TUR','home',1,1],
     ['2024-12-12','azalkmaar','ludogorets','BUL','away',2,2],
     ['2025-01-23','azalkmaar','roma','ITA','home',1,0],
-    ['2025-01-30','azalkmaar','ferencvarosi','HUN','away',3,4]
-
+    ['2025-01-30','azalkmaar','ferencvarosi','HUN','away',3,4],
 
     // Europa League Pot 2: Ferencvaros, 2024/25 + 2025/26 Europa League samples.
     ['2024-09-25','ferencvarosi','anderlecht','BEL','away',1,2],
@@ -1088,7 +1087,80 @@
   // Direct H2H and exact/same-venue repeats are kept separate from broad form.
   // Confidence is deliberately capped so one matchup never overwhelms coefficient strength.
   const historicalPairSignals = Object.freeze({
-    bayerleverkusen: Object.freeze({
+    ferencvarosi: Object.freeze({
+      juventus: Object.freeze({
+        venue: 'home',
+        sample: 2,
+        wins: 0,
+        draws: 0,
+        losses: 2,
+        goalsFor: 2,
+        goalsAgainst: 6,
+        attackTarget: 0.975,
+        defenseTarget: 1.025,
+        confidence: 0.42,
+        note: '2020/21 Champions League: Juventus beat Ferencvaros 4-1 in Budapest and 2-1 in Turin. The 2026/27 fixture is again in Budapest.'
+      })
+    }),
+    celtic: Object.freeze({
+      ferencvarosi: Object.freeze({
+        venue: 'home',
+        sample: 1,
+        wins: 0,
+        draws: 0,
+        losses: 1,
+        goalsFor: 1,
+        goalsAgainst: 2,
+        attackTarget: 0.985,
+        defenseTarget: 1.018,
+        confidence: 0.36,
+        note: 'Exact venue history: Ferencvaros won 2-1 away to Celtic in the 2020/21 Champions League second qualifying round.'
+      })
+    }),
+    dinamo: Object.freeze({
+      anderlecht: Object.freeze({
+        venue: 'home',
+        sample: 4,
+        wins: 2,
+        draws: 1,
+        losses: 1,
+        goalsFor: 3,
+        goalsAgainst: 2,
+        attackTarget: 1.010,
+        defenseTarget: 0.990,
+        confidence: 0.22,
+        note: 'UEFA H2H: Dinamo lead Anderlecht W2 D1 L1 across four Europa League meetings. The newest Zagreb meeting was 0-0 in December 2018, so the weight stays low.'
+      })
+    }),
+    salzburg: Object.freeze({
+      spartapraha: Object.freeze({
+        sample: 1,
+        wins: 0,
+        draws: 0,
+        losses: 1,
+        goalsFor: 0,
+        goalsAgainst: 3,
+        attackTarget: 0.980,
+        defenseTarget: 1.020,
+        confidence: 0.44,
+        note: 'Very recent direct H2H: Sparta Praha beat Salzburg 3-0 in September 2024. Venue flips to Salzburg in 2026/27.'
+      })
+    }),
+    anderlecht: Object.freeze({
+      hoffenheim: Object.freeze({
+        venue: 'home',
+        sample: 1,
+        wins: 0,
+        draws: 0,
+        losses: 1,
+        goalsFor: 3,
+        goalsAgainst: 4,
+        attackTarget: 1.005,
+        defenseTarget: 1.025,
+        confidence: 0.66,
+        note: 'Exact recent repeat: Hoffenheim won 4-3 away to Anderlecht in January 2025; the 2026/27 fixture is again in Brussels.'
+      })
+    }),    bayerleverkusen: Object.freeze({
       salzburg: Object.freeze({
         venue: 'home',
         sample: 1,
@@ -2253,7 +2325,42 @@
   });
 
   const analogueSignals = Object.freeze({
-    slavia: Object.freeze({
+    viktoriaplzen: Object.freeze({
+      benfica: Object.freeze({
+        venue: 'home',
+        attackTarget: 1.005,
+        defenseTarget: 0.995,
+        confidence: 0.46,
+        note: 'Very recent Portuguese-club home analogue: Viktoria Plzen drew 1-1 at home to Porto in January 2026. Used for Benfica without pretending Porto and Benfica are identical.'
+      })
+    }),
+    dinamo: Object.freeze({
+      bayerleverkusen: Object.freeze({
+        venue: 'home',
+        attackTarget: 0.980,
+        defenseTarget: 1.020,
+        confidence: 0.38,
+        note: 'Recent German-elite home analogue: Dinamo lost 3-0 at home to Dortmund in November 2024. Used modestly for Leverkusen.'
+      })
+    }),
+    rennais: Object.freeze({
+      juventus: Object.freeze({
+        venue: 'away',
+        attackTarget: 0.975,
+        defenseTarget: 1.025,
+        confidence: 0.44,
+        note: 'Recent Italian-elite away analogue: Rennes lost 3-0 away to Milan in February 2024. Used for the Juventus trip at moderate confidence.'
+      })
+    }),
+    spartapraha: Object.freeze({
+      rennais: Object.freeze({
+        venue: 'home',
+        attackTarget: 0.990,
+        defenseTarget: 1.010,
+        confidence: 0.34,
+        note: 'Recent French-club home analogue: Sparta lost 2-1 at home to Brest in November 2024. Used lightly for Rennes.'
+      })
+    }),    slavia: Object.freeze({
       lens: Object.freeze({
         venue: 'home',
         attackTarget: 1.018,
@@ -2478,7 +2585,7 @@
   });
 
   window.UCLDRAW_PREDICTION_CONTEXT_DATA = Object.freeze({
-    version: 31,
+    version: 32,
     reviewedAt: '2026-09-02',
     matches,
     historicalSignals,

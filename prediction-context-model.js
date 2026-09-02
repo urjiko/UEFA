@@ -154,9 +154,11 @@
 
     const pair = profile.pairMatchups?.[opponentSlug];
     if (pair) {
-      attack = blend(attack, pair.attack, 0.62);
-      defense = blend(defense, pair.defense, 0.62);
-      details.pair = pair;
+      const reciprocalPair = profiles[opponentSlug]?.pairMatchups?.[slug];
+      const pairBlendWeight = reciprocalPair ? 0.31 : 0.62;
+      attack = blend(attack, pair.attack, pairBlendWeight);
+      defense = blend(defense, pair.defense, pairBlendWeight);
+      details.pair = Object.freeze({ ...pair, appliedBlendWeight: pairBlendWeight });
     }
 
     const historic = DATA.historicalSignals?.[slug]?.[opponent?.country];
@@ -169,9 +171,11 @@
 
     const historicPair = DATA.historicalPairSignals?.[slug]?.[opponentSlug];
     if (historicPair && (!historicPair.venue || historicPair.venue === venue)) {
-      attack *= blend(1, historicPair.attackTarget, historicPair.confidence);
-      defense *= blend(1, historicPair.defenseTarget, historicPair.confidence);
-      details.historicalPairSignal = historicPair;
+      const reciprocalHistoricPair = DATA.historicalPairSignals?.[opponentSlug]?.[slug];
+      const historicPairConfidence = historicPair.confidence * (reciprocalHistoricPair ? 0.5 : 1);
+      attack *= blend(1, historicPair.attackTarget, historicPairConfidence);
+      defense *= blend(1, historicPair.defenseTarget, historicPairConfidence);
+      details.historicalPairSignal = Object.freeze({ ...historicPair, appliedConfidence: Number(historicPairConfidence.toFixed(4)) });
     }
 
     const analogue = DATA.analogueSignals?.[slug]?.[opponentSlug];

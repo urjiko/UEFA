@@ -7,9 +7,20 @@
   // tendencies and direct H2H can be applied without distorting the home-only archive.
   const matches = Object.freeze([
     // Galatasaray: recent European sample (2023/24 -> 2025/26).
+    ['2023-10-24','galatasaray','bayern','GER','home',1,3],
+    ['2023-11-08','galatasaray','bayern','GER','away',1,2],
+    ['2024-09-25','galatasaray','paok','GRE','home',3,1],
+    ['2024-10-03','galatasaray','rfs','LVA','away',2,2],
+    ['2024-10-23','galatasaray','elfsborg','SWE','home',4,3],
     ['2023-10-03','galatasaray','manu','ENG','away',3,2],
     ['2023-11-29','galatasaray','manu','ENG','home',3,3],
     ['2024-11-07','galatasaray','tottenham','ENG','home',3,2],
+    ['2024-11-28','galatasaray','azalkmaar','NED','away',1,1],
+    ['2024-12-12','galatasaray','malmo','SWE','away',2,2],
+    ['2025-01-21','galatasaray','dynamokyiv','UKR','home',3,3],
+    ['2025-01-30','galatasaray','ajax','NED','away',1,2],
+    ['2025-02-13','galatasaray','azalkmaar','NED','away',1,4],
+    ['2025-02-20','galatasaray','azalkmaar','NED','home',2,2],
     ['2025-09-18','galatasaray','frankfurt','GER','away',1,5],
     ['2025-09-30','galatasaray','liverpool','ENG','home',1,0],
     ['2025-10-22','galatasaray','bodo','NOR','home',3,1],
@@ -262,6 +273,16 @@
   // that survive beyond one season without letting folklore overpower current strength.
   const historicalSignals = Object.freeze({
     galatasaray: Object.freeze({
+      GRE: Object.freeze({
+        sample: 7,
+        wins: 6,
+        draws: 0,
+        losses: 1,
+        attackTarget: 1.025,
+        defenseTarget: 0.975,
+        confidence: 0.58,
+        note: 'UEFA information kit: Galatasaray are W6 D0 L1 against Greek clubs, with the freshest meeting a 3-1 home win over PAOK in September 2024. This is used as the association analogue for the AEK Athens away fixture.'
+      }),
       ENG: Object.freeze({
         venue: 'home',
         sample: 9,
@@ -272,6 +293,32 @@
         defenseTarget: 0.975,
         confidence: 0.60,
         note: 'UEFA: only one loss in the last nine home matches against English visitors (W5 D3).'
+      })
+    }),
+    galatasaray: Object.freeze({
+      barcelona: Object.freeze({
+        sample: 2,
+        wins: 0,
+        draws: 1,
+        losses: 1,
+        goalsFor: 1,
+        goalsAgainst: 2,
+        attackTarget: 0.985,
+        defenseTarget: 1.015,
+        confidence: 0.36,
+        note: 'Most relevant recent H2H is the 2021/22 Europa League round of 16: 0-0 at Camp Nou and 1-2 in Istanbul. Older Champions League meetings are not allowed to dominate the current model.'
+      }),
+      psg: Object.freeze({
+        sample: 4,
+        wins: 1,
+        draws: 0,
+        losses: 3,
+        goalsFor: 1,
+        goalsAgainst: 8,
+        attackTarget: 0.980,
+        defenseTarget: 1.025,
+        confidence: 0.26,
+        note: 'UEFA all-time H2H is Galatasaray W1 L3 vs Paris; the most recent away meeting was a 0-5 loss in Paris in December 2019, so the signal is negative but age-discounted.'
       })
     }),
     fenerbahce: Object.freeze({
@@ -474,7 +521,7 @@
   });
 
   window.UCLDRAW_PREDICTION_CONTEXT_DATA = Object.freeze({
-    version: 10,
+    version: 11,
     reviewedAt: '2026-09-02',
     matches,
     historicalSignals,

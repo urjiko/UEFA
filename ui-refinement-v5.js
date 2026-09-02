@@ -180,6 +180,17 @@
     return true;
   }
 
+  function installShareFidelityPatch() {
+    if (window.UCLDRAW_PREDICTION_SHARE_FIDELITY_PATCH) return true;
+    if (document.querySelector('script[data-prediction-share-fidelity]')) return true;
+    const script = document.createElement('script');
+    script.src = 'prediction-share-fidelity-patch.js?v=20260902a';
+    script.async = false;
+    script.dataset.predictionShareFidelity = 'true';
+    document.body.appendChild(script);
+    return true;
+  }
+
   document.addEventListener('click', (event) => {
     const lockedButton = event.target.closest?.('.prediction-score-apply.is-match-locked');
     if (lockedButton) {
@@ -231,6 +242,7 @@
   }
 
   refresh();
+  installShareFidelityPatch();
   const rendererTimer = window.setInterval(() => {
     installShareRendererV7();
     if (installShareRendererV8()) window.clearInterval(rendererTimer);

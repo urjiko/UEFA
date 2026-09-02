@@ -217,6 +217,31 @@
     ['2026-02-18','bodo','inter','ITA','home',3,1],
     ['2026-02-24','bodo','inter','ITA','away',2,1],
     ['2026-03-11','bodo','sporting','POR','home',3,0]
+
+
+    // Shakhtar: recent UCL + Conference sample. The 2025 Besiktas tie is a deliberately retained Turkish-association analogue for the 2026/27 Fenerbahce fixture.
+    ['2024-09-18','shakhtar','bologna','ITA','away',0,0],
+    ['2024-10-02','shakhtar','atalanta','ITA','home',0,3],
+    ['2024-10-22','shakhtar','arsenal','ENG','away',0,1],
+    ['2024-11-06','shakhtar','youngboys','SUI','home',2,1],
+    ['2024-11-27','shakhtar','psv','NED','away',2,3],
+    ['2024-12-10','shakhtar','bayern','GER','home',1,5],
+    ['2025-01-22','shakhtar','brest','FRA','home',2,0],
+    ['2025-01-29','shakhtar','bvb','GER','away',1,3],
+    ['2025-07-24','shakhtar','besiktas','TUR','away',4,2],
+    ['2025-07-31','shakhtar','besiktas','TUR','home',2,0],
+    ['2025-10-02','shakhtar','aberdeen','SCO','away',3,2],
+    ['2025-10-23','shakhtar','legia','POL','home',1,2],
+    ['2025-11-06','shakhtar','breidablik','ISL','home',2,0],
+    ['2025-11-27','shakhtar','shamrock','IRL','away',2,1],
+    ['2025-12-11','shakhtar','hamrun','MLT','away',2,0],
+    ['2025-12-18','shakhtar','rijeka','CRO','home',0,0],
+    ['2026-03-12','shakhtar','poznan','POL','away',3,1],
+    ['2026-03-19','shakhtar','poznan','POL','home',1,2],
+    ['2026-04-09','shakhtar','azalkmaar','NED','home',3,0],
+    ['2026-04-16','shakhtar','azalkmaar','NED','away',2,2],
+    ['2026-04-30','shakhtar','crystalpalace','ENG','home',1,3],
+    ['2026-05-07','shakhtar','crystalpalace','ENG','away',1,2]
   ].map(([date, teamSlug, opponentSlug, opponentCountry, venue, goalsFor, goalsAgainst]) => Object.freeze({
     date, teamSlug, opponentSlug, opponentCountry, venue, goalsFor, goalsAgainst
   })));
@@ -316,7 +341,7 @@
         confidence: 0.16,
         note: '2012/13 Champions League: Bayern won both meetings; age of the tie keeps the model weight very low.'
       }),
-      slovan: Object.freeze({
+      slovanbratislava: Object.freeze({
         sample: 2,
         wins: 1,
         draws: 1,
@@ -387,7 +412,7 @@
   });
 
   window.UCLDRAW_PREDICTION_CONTEXT_DATA = Object.freeze({
-    version: 7,
+    version: 8,
     reviewedAt: '2026-09-02',
     matches,
     historicalSignals,

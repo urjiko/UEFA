@@ -32,9 +32,9 @@ const model = context.UCLDRAW_PREDICTION_CONTEXT_MODEL;
 const coefficients = context.UCLDRAW_CLUB_COEFFICIENTS.clubs;
 const fixtures = context.UCLDRAW_CURRENT_FIXTURES.uclMatches;
 
-assert.equal(data.version, 30);
+assert.equal(data.version, 35);
 assert.equal(data.reviewedAt, '2026-09-02');
-assert.equal(data.matches.length, 683);
+assert.equal(data.matches.length, 803);
 assert.equal(model.methodology.recencyHalfLifeYears, 3);
 assert.equal(model.methodology.homePriorMatches, 8);
 assert.equal(model.methodology.awayPriorMatches, 8);
@@ -75,6 +75,15 @@ assert.equal(model.profiles.azalkmaar.overall.samples, 20);
 assert.equal(model.profiles.olympiacos.overall.samples, 16);
 assert.equal(model.profiles.realsociedad.overall.samples, 8);
 assert.equal(model.profiles.marseille.overall.samples, 8);
+assert.equal(model.profiles.ferencvarosi.overall.samples, 18);
+assert.equal(model.profiles.viktoriaplzen.overall.samples, 18);
+assert.equal(model.profiles.union.overall.samples, 10);
+assert.equal(model.profiles.dinamo.overall.samples, 16);
+assert.equal(model.profiles.salzburg.overall.samples, 16);
+assert.equal(model.profiles.celtic.overall.samples, 16);
+assert.equal(model.profiles.spartapraha.overall.samples, 8);
+assert.equal(model.profiles.rennais.overall.samples, 8);
+assert.equal(model.profiles.anderlecht.overall.samples, 10);
 assert.equal(model.profiles.galatasaray.associationMatchups.ENG.samples, 7);
 assert.equal(model.profiles.galatasaray.pairMatchups.liverpool.samples, 3);
 assert.equal(model.profiles.fenerbahce.associationMatchups.ENG.samples, 4);
@@ -138,6 +147,34 @@ assert.ok(reciprocalHistoricPairFixtures > 0);
 assert.ok(associationPlusHistoricFixtures > 0);
 assert.equal(capHits, 0, 'Overlapping context layers should not slam any 2026/27 UCL fixture into the 0.88/1.12 modifier caps.');
 
+
+for (const slug of ['city','psg','bayern','real','liverpool','inter','bodo','atleti']) {
+  assert.ok(data.historicalPairSignals[slug], `Historical pair tree lost top-level ${slug}`);
+}
+assert.deepEqual(
+  Object.keys(data.historicalPairSignals.bodo),
+  ['atleti'],
+  'Bodo historical pair branch should not swallow unrelated team branches.'
+);
+assert.ok(data.historicalPairSignals.city.psg);
+assert.ok(data.historicalPairSignals.liverpool.porto);
+assert.ok(data.historicalPairSignals.inter.bvb);
+
+const celticFerenc = model.teamModifiers(team('celtic'), team('ferencvarosi'), 'home');
+assert.ok(celticFerenc.details.historicalPairSignal, 'Celtic-Ferencvaros should use the 2020 Glasgow H2H.');
+
+const ferencJuve = model.teamModifiers(team('ferencvarosi'), team('juventus'), 'home');
+assert.ok(ferencJuve.details.historicalPairSignal, 'Ferencvaros-Juventus should retain the 2020 direct H2H.');
+
+const dinamoAnderlecht = model.teamModifiers(team('dinamo'), team('anderlecht'), 'home');
+assert.ok(dinamoAnderlecht.details.historicalPairSignal, 'Dinamo-Anderlecht should retain their UEFA H2H.');
+
+const anderlechtHoffenheim = model.teamModifiers(team('anderlecht'), team('hoffenheim'), 'home');
+assert.ok(anderlechtHoffenheim.details.historicalPairSignal, 'Anderlecht-Hoffenheim should use the January 2025 exact home repeat.');
+
+const viktoriaBenfica = model.teamModifiers(team('viktoriaplzen'), team('benfica'), 'home');
+assert.ok(viktoriaBenfica.details.analogueSignal, 'Viktoria-Benfica should use the recent Porto home analogue.');
+
 const lensCity = model.teamModifiers(team('lens'), team('city'), 'home');
 assert.ok(lensCity.details.analogueSignal, 'Lens-Man City should use the Arsenal home analogue.');
 
@@ -188,8 +225,8 @@ assert.ok(adjusted.awayExpected >= 0.15 && adjusted.awayExpected <= 4);
 assert.match(sources['prediction-context-model.js'], /reciprocalHistoricPair/);
 assert.match(sources['prediction-context-model.js'], /appliedConfidence/);
 assert.match(sources['prediction-context-model.js'], /analogueSignals/);
-assert.match(controller, /prediction-context-data\.js\?v=20260902uelpot1v30/);
-assert.match(controller, /prediction-context-model\.js\?v=20260902uelpot1v30/);
+assert.match(controller, /prediction-context-data\.js\?v=20260902uelpot2v35/);
+assert.match(controller, /prediction-context-model\.js\?v=20260902uelpot2v35/);
 assert.match(controller, /contextModel\(\)\?\.adjustExpectedGoals/);
 assert.match(controller, /__contextMatchupModel: true/);
 

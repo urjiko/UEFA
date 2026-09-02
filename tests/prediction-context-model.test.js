@@ -32,9 +32,9 @@ const model = context.UCLDRAW_PREDICTION_CONTEXT_MODEL;
 const coefficients = context.UCLDRAW_CLUB_COEFFICIENTS.clubs;
 const fixtures = context.UCLDRAW_CURRENT_FIXTURES.uclMatches;
 
-assert.equal(data.version, 44);
+assert.equal(data.version, 46);
 assert.equal(data.reviewedAt, '2026-09-02');
-assert.equal(data.matches.length, 1055);
+assert.equal(data.matches.length, 1139);
 assert.equal(model.methodology.recencyHalfLifeYears, 3);
 assert.equal(model.methodology.homePriorMatches, 8);
 assert.equal(model.methodology.awayPriorMatches, 8);
@@ -105,6 +105,12 @@ assert.equal(model.profiles.ajax.overall.samples, 16);
 assert.equal(model.profiles.freiburg.overall.samples, 15);
 assert.equal(model.profiles.monaco.overall.samples, 18);
 assert.equal(model.profiles.copenhagen.overall.samples, 18);
+assert.equal(model.profiles.midtjylland.overall.samples, 16);
+assert.equal(model.profiles.crvenazvezda.overall.samples, 16);
+assert.equal(model.profiles.gent.overall.samples, 8);
+assert.equal(model.profiles.panathinaikos.overall.samples, 18);
+assert.equal(model.profiles.pafos.overall.samples, 18);
+assert.equal(model.profiles.brighton.overall.samples, 8);
 assert.equal(model.profiles.bournemouth, undefined, 'Bournemouth has no recent UEFA sample before the 2026/27 league phase.');
 assert.equal(model.profiles.sunderland, undefined, 'Sunderland has no recent UEFA sample before the 2026/27 league phase.');
 assert.equal(model.profiles.galatasaray.associationMatchups.ENG.samples, 7);
@@ -205,7 +211,7 @@ for (const [homeSlug, awaySlug] of context.UCLDRAW_CURRENT_FIXTURES.ueclMatches)
   }
 }
 assert.equal(context.UCLDRAW_CURRENT_FIXTURES.ueclMatches.length, 108);
-assert.ok(ueclFixtureSpecificCoverage >= 12, `Only ${ueclFixtureSpecificCoverage}/108 UECL fixtures have matchup-specific evidence after Pot 1.`);
+assert.ok(ueclFixtureSpecificCoverage >= 22, `Only ${ueclFixtureSpecificCoverage}/108 UECL fixtures have matchup-specific evidence after Pot 1.`);
 assert.equal(ueclCapHits, 0, 'Conference League context should not hit safety caps.');
 
 
@@ -299,6 +305,28 @@ assert.ok(bragaCopenhagen.details.analogueSignal, 'Braga at Copenhagen should us
 const monacoBrighton = model.teamModifiers(team('monaco'), team('brighton'), 'away');
 assert.ok(monacoBrighton.details.analogueSignal, 'Monaco at Brighton should use the recent Arsenal away analogue.');
 
+
+const midtjyllandAjax = model.teamModifiers(team('midtjylland'), team('ajax'), 'home');
+assert.ok(midtjyllandAjax.details.historicalPairSignal, 'Midtjylland-Ajax should retain the 2020 direct H2H.');
+
+const crvenaGent = model.teamModifiers(team('crvenazvezda'), team('gent'), 'away');
+assert.ok(crvenaGent.details.historicalPairSignal, 'Crvena Zvezda at Gent should use the 2020 exact-away H2H.');
+
+const gentCrvena = model.teamModifiers(team('gent'), team('crvenazvezda'), 'home');
+assert.ok(gentCrvena.details.historicalPairSignal, 'Gent-Crvena Zvezda should use the 2020 exact-home H2H.');
+
+const crvenaTrabzon = model.teamModifiers(team('crvenazvezda'), team('trabzonspor'), 'home');
+assert.ok(crvenaTrabzon.details.historicalPairSignal, 'Crvena-Trabzonspor should use the 2022 Belgrade repeat.');
+
+const gentBraga = model.teamModifiers(team('gent'), team('braga'), 'away');
+assert.ok(gentBraga.details.historicalPairSignal, 'Gent at Braga should retain the balanced 2016 H2H.');
+
+const brightonPana = model.teamModifiers(team('brighton'), team('panathinaikos'), 'away');
+assert.ok(brightonPana.details.analogueSignal, 'Brighton at Panathinaikos should use the AEK Greek-away analogue.');
+
+const pafosAtalanta = model.teamModifiers(team('pafos'), team('atalanta'), 'away');
+assert.ok(pafosAtalanta.details.association, 'Pafos at Atalanta should use its recent Italian-away association sample.');
+
 const lensCity = model.teamModifiers(team('lens'), team('city'), 'home');
 assert.ok(lensCity.details.analogueSignal, 'Lens-Man City should use the Arsenal home analogue.');
 
@@ -349,8 +377,8 @@ assert.ok(adjusted.awayExpected >= 0.15 && adjusted.awayExpected <= 4);
 assert.match(sources['prediction-context-model.js'], /reciprocalHistoricPair/);
 assert.match(sources['prediction-context-model.js'], /appliedConfidence/);
 assert.match(sources['prediction-context-model.js'], /analogueSignals/);
-assert.match(controller, /prediction-context-data\.js\?v=20260902ueclpot1v44/);
-assert.match(controller, /prediction-context-model\.js\?v=20260902ueclpot1v44/);
+assert.match(controller, /prediction-context-data\.js\?v=20260902ueclpot2v46/);
+assert.match(controller, /prediction-context-model\.js\?v=20260902ueclpot2v46/);
 assert.match(controller, /contextModel\(\)\?\.adjustExpectedGoals/);
 assert.match(controller, /__contextMatchupModel: true/);
 

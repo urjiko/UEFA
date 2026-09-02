@@ -283,7 +283,7 @@
   });
 
   window.UCLDRAW_PREDICTION_CONTEXT_DATA = Object.freeze({
-    version: 3,
+    version: 4,
     reviewedAt: '2026-09-02',
     matches,
     historicalSignals,

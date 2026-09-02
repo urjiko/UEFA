@@ -1420,6 +1420,19 @@
       "confidence": 0.22,
       "note": "Greek-club analogue: Hapoel Beer-Sheva eliminated Olympiacos in 2016/17 qualifying with a 0-0 away draw and 1-0 home win. Used lightly for OFI Crete because of age and opponent-strength difference."
     }
+  },
+  "freiburg": {
+    "GRE": {
+      "venue": "home",
+      "sample": 2,
+      "wins": 1,
+      "draws": 1,
+      "losses": 0,
+      "attackTarget": 1.025,
+      "defenseTarget": 0.975,
+      "confidence": 0.44,
+      "note": "Greek-club home analogue: Freiburg drew 1-1 with Olympiacos at home in 2022/23 and won 5-0 at home in 2023/24. Used for Panathinaikos."
+    }
   }
 });
 
@@ -2854,6 +2867,105 @@
       "confidence": 0.1,
       "note": "2008/09 UEFA Cup: Dinamo Zagreb beat NEC 3-2 in Zagreb. Current fixture is again in Zagreb; age keeps the effect tiny."
     }
+  },
+  "ajax": {
+    "atalanta": {
+      "venue": "home",
+      "sample": 2,
+      "wins": 0,
+      "draws": 1,
+      "losses": 1,
+      "goalsFor": 2,
+      "goalsAgainst": 3,
+      "attackTarget": 0.985,
+      "defenseTarget": 1.015,
+      "confidence": 0.36,
+      "note": "2020/21 Champions League: Ajax drew 2-2 away to Atalanta and lost 1-0 at home. The 2026/27 meeting is again in Amsterdam."
+    },
+    "midtjylland": {
+      "venue": "away",
+      "sample": 2,
+      "wins": 2,
+      "draws": 0,
+      "losses": 0,
+      "goalsFor": 5,
+      "goalsAgainst": 2,
+      "attackTarget": 1.02,
+      "defenseTarget": 0.98,
+      "confidence": 0.34,
+      "note": "2020/21 Champions League: Ajax beat Midtjylland home and away, including 2-1 in Denmark. The new fixture is again at Midtjylland."
+    },
+    "getafe": {
+      "venue": "home",
+      "sample": 2,
+      "wins": 1,
+      "draws": 0,
+      "losses": 1,
+      "goalsFor": 2,
+      "goalsAgainst": 3,
+      "attackTarget": 0.995,
+      "defenseTarget": 1.005,
+      "confidence": 0.2,
+      "note": "2019/20 Europa League: Getafe won 2-0 in Spain and Ajax won 2-1 in Amsterdam. Current fixture is again at Ajax; the split tie and age keep the effect near neutral."
+    }
+  },
+  "atalanta": {
+    "ajax": {
+      "venue": "away",
+      "sample": 2,
+      "wins": 1,
+      "draws": 1,
+      "losses": 0,
+      "goalsFor": 3,
+      "goalsAgainst": 2,
+      "attackTarget": 1.015,
+      "defenseTarget": 0.985,
+      "confidence": 0.36,
+      "note": "2020/21 Champions League: Atalanta drew 2-2 at home and won 1-0 away to Ajax. The new match is again in Amsterdam."
+    }
+  },
+  "copenhagen": {
+    "crvenazvezda": {
+      "venue": "away",
+      "sample": 2,
+      "wins": 0,
+      "draws": 2,
+      "losses": 0,
+      "goalsFor": 2,
+      "goalsAgainst": 2,
+      "attackTarget": 1,
+      "defenseTarget": 1,
+      "confidence": 0.22,
+      "note": "2019/20 Champions League qualifying: both Copenhagen-Crvena Zvezda legs finished 1-1 before penalties. Current fixture is again in Belgrade."
+    },
+    "lugano": {
+      "venue": "home",
+      "sample": 2,
+      "wins": 2,
+      "draws": 0,
+      "losses": 0,
+      "goalsFor": 2,
+      "goalsAgainst": 0,
+      "attackTarget": 1.015,
+      "defenseTarget": 0.985,
+      "confidence": 0.3,
+      "note": "2019/20 Europa League: Copenhagen beat Lugano 1-0 home and away. The 2026/27 match is again in Copenhagen."
+    }
+  },
+  "braga": {
+    "gent": {
+      "venue": "home",
+      "sample": 2,
+      "wins": 0,
+      "draws": 2,
+      "losses": 0,
+      "goalsFor": 3,
+      "goalsAgainst": 3,
+      "attackTarget": 1,
+      "defenseTarget": 1,
+      "confidence": 0.16,
+      "note": "2016/17 Europa League: Braga and Gent drew both meetings, 1-1 in Braga and 2-2 in Gent. Retained as a small direct H2H layer."
+    }
   }
 });
 
@@ -3165,6 +3277,31 @@
       "confidence": 0.44,
       "note": "Fresh Italian-club home analogue: Celta lost 2-1 at home to Bologna in December 2025. Used for Juventus."
     }
+  },
+  "braga": {
+    "copenhagen": {
+      "venue": "away",
+      "attackTarget": 0.99,
+      "defenseTarget": 1.015,
+      "confidence": 0.26,
+      "note": "Danish away analogue: Braga lost 3-2 at Midtjylland in the 2021/22 Europa League. Used lightly for Copenhagen because of age and different opponent profile."
+    },
+    "aarhus": {
+      "venue": "away",
+      "attackTarget": 0.99,
+      "defenseTarget": 1.015,
+      "confidence": 0.24,
+      "note": "Danish away analogue: Braga lost 3-2 at Midtjylland in the 2021/22 Europa League. Used lightly for Aarhus."
+    }
+  },
+  "monaco": {
+    "brighton": {
+      "venue": "away",
+      "attackTarget": 0.98,
+      "defenseTarget": 1.02,
+      "confidence": 0.28,
+      "note": "English away analogue: Monaco lost 3-0 at Arsenal in December 2024. Used cautiously for Brighton because the English opponent strength is different."
+    }
   }
 });
 
@@ -3224,7 +3361,7 @@
   });
 
   window.UCLDRAW_PREDICTION_CONTEXT_DATA = Object.freeze({
-    version: 43,
+    version: 44,
     reviewedAt: '2026-09-02',
     matches,
     historicalSignals,

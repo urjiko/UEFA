@@ -32,7 +32,7 @@ const model = context.UCLDRAW_PREDICTION_CONTEXT_MODEL;
 const coefficients = context.UCLDRAW_CLUB_COEFFICIENTS.clubs;
 const fixtures = context.UCLDRAW_CURRENT_FIXTURES.uclMatches;
 
-assert.equal(data.version, 23);
+assert.equal(data.version, 25);
 assert.equal(data.reviewedAt, '2026-09-02');
 assert.equal(data.matches.length, 559);
 assert.equal(model.methodology.recencyHalfLifeYears, 3);
@@ -124,7 +124,7 @@ for (const [homeSlug, awaySlug] of fixtures) {
 }
 
 assert.equal(fixtures.length, 144);
-assert.ok(fixtureSpecificCoverage >= 108, `Only ${fixtureSpecificCoverage}/144 UCL fixtures have matchup-specific evidence.`);
+assert.ok(fixtureSpecificCoverage >= 119, `Only ${fixtureSpecificCoverage}/144 UCL fixtures have matchup-specific evidence.`);
 assert.ok(reciprocalHistoricPairFixtures > 0);
 assert.ok(associationPlusHistoricFixtures > 0);
 assert.equal(capHits, 0, 'Overlapping context layers should not slam any 2026/27 UCL fixture into the 0.88/1.12 modifier caps.');
@@ -163,8 +163,8 @@ assert.ok(adjusted.awayExpected >= 0.15 && adjusted.awayExpected <= 4);
 assert.match(sources['prediction-context-model.js'], /reciprocalHistoricPair/);
 assert.match(sources['prediction-context-model.js'], /appliedConfidence/);
 assert.match(sources['prediction-context-model.js'], /analogueSignals/);
-assert.match(controller, /prediction-context-data\.js\?v=20260902auditv23/);
-assert.match(controller, /prediction-context-model\.js\?v=20260902auditv23/);
+assert.match(controller, /prediction-context-data\.js\?v=20260902auditv25/);
+assert.match(controller, /prediction-context-model\.js\?v=20260902auditv25/);
 assert.match(controller, /contextModel\(\)\?\.adjustExpectedGoals/);
 assert.match(controller, /__contextMatchupModel: true/);
 

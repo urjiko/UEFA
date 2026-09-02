@@ -6,7 +6,7 @@
 
   const REVIEW_DATE = DATA.reviewedAt || '2026-09-01';
   const HALF_LIFE_YEARS = 3;
-  const ASSOCIATION_MIN_SAMPLE = 3;
+  const ASSOCIATION_MIN_SAMPLE = 2;
   const PAIR_MIN_SAMPLE = 2;
   const FALLBACK_COEFFICIENT = 12;
   const ASSOCIATION_FLOORS = Object.freeze({

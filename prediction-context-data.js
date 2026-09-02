@@ -1101,6 +1101,9 @@
     // Europa League Pot 4: OFI Crete, 2026/27 Europa League play-off.
     ['2026-08-20','crete','cskasofia','BUL','home',3,0],
     ['2026-08-27','crete','cskasofia','BUL','away',2,0]
+
+    ['2022-08-04','lillestrom','antwerp','BEL','home',1,3],
+    ['2022-08-11','lillestrom','antwerp','BEL','away',0,2],
   ].map(([date, teamSlug, opponentSlug, opponentCountry, venue, goalsFor, goalsAgainst]) => Object.freeze({
     date, teamSlug, opponentSlug, opponentCountry, venue, goalsFor, goalsAgainst
   })));
@@ -1284,6 +1287,16 @@
       "defenseTarget": 0.992,
       "confidence": 0.18,
       "note": "English-club analogue: Hapoel Beer-Sheva drew both 2016/17 Europa League meetings with Southampton (0-0 home, 1-1 away). Used only as a faint Bournemouth analogue."
+    },
+    "GRE": {
+      "sample": 2,
+      "wins": 1,
+      "draws": 1,
+      "losses": 0,
+      "attackTarget": 1.012,
+      "defenseTarget": 0.985,
+      "confidence": 0.22,
+      "note": "Greek-club analogue: Hapoel Beer-Sheva eliminated Olympiacos in 2016/17 qualifying with a 0-0 away draw and 1-0 home win. Used lightly for OFI Crete because of age and opponent-strength difference."
     }
   }
 });
@@ -2678,16 +2691,16 @@
       "note": "2009/10 Europa League: Salzburg won both meetings with Levski 1-0. Retained only as a small historical H2H layer."
     },
     "milan": {
-      "sample": 2,
+      "sample": 4,
       "wins": 0,
-      "draws": 0,
-      "losses": 2,
-      "goalsFor": 2,
-      "goalsAgainst": 7,
+      "draws": 1,
+      "losses": 3,
+      "goalsFor": 3,
+      "goalsAgainst": 11,
       "attackTarget": 0.985,
       "defenseTarget": 1.015,
-      "confidence": 0.08,
-      "note": "1988/89 European Cup: Milan won both meetings against Levski, 7-2 on aggregate. The age makes this almost trace-level."
+      "confidence": 0.1,
+      "note": "Across the 1978/79 UEFA Cup and 1988/89 European Cup, Levski are W0 D1 L3 against Milan, 3-11 on goals. The history is very old, so the signal remains trace-level."
     }
   },
   "ararat": {
@@ -3089,7 +3102,7 @@
   });
 
   window.UCLDRAW_PREDICTION_CONTEXT_DATA = Object.freeze({
-    version: 39,
+    version: 40,
     reviewedAt: '2026-09-02',
     matches,
     historicalSignals,

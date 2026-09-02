@@ -1100,1093 +1100,1256 @@
   // Direct H2H and exact/same-venue repeats are kept separate from broad form.
   // Confidence is deliberately capped so one matchup never overwhelms coefficient strength.
   const historicalPairSignals = Object.freeze({
-    ferencvarosi: Object.freeze({
-      juventus: Object.freeze({
-        venue: 'home',
-        sample: 2,
-        wins: 0,
-        draws: 0,
-        losses: 2,
-        goalsFor: 2,
-        goalsAgainst: 6,
-        attackTarget: 0.975,
-        defenseTarget: 1.025,
-        confidence: 0.42,
-        note: '2020/21 Champions League: Juventus beat Ferencvaros 4-1 in Budapest and 2-1 in Turin. The 2026/27 fixture is again in Budapest.'
-      })
-    }),
-    celtic: Object.freeze({
-      benfica: Object.freeze({
-        venue: 'away',
-        sample: 8,
-        wins: 4,
-        draws: 1,
-        losses: 3,
-        goalsFor: 8,
-        goalsAgainst: 9,
-        attackTarget: 0.995,
-        defenseTarget: 1.005,
-        confidence: 0.16,
-        note: 'UEFA H2H is Celtic W4 D1 L3 vs Benfica across eight meetings. The last series was in 2012/13, so this only supplies a faint historical layer for Lisbon.'
-      }),
-      ferencvarosi: Object.freeze({
-        venue: 'home',
-        sample: 1,
-        wins: 0,
-        draws: 0,
-        losses: 1,
-        goalsFor: 1,
-        goalsAgainst: 2,
-        attackTarget: 0.985,
-        defenseTarget: 1.018,
-        confidence: 0.36,
-        note: 'Exact venue history: Ferencvaros won 2-1 away to Celtic in the 2020/21 Champions League second qualifying round.'
-      })
-    }),
-    dinamo: Object.freeze({
-      anderlecht: Object.freeze({
-        venue: 'home',
-        sample: 4,
-        wins: 2,
-        draws: 1,
-        losses: 1,
-        goalsFor: 3,
-        goalsAgainst: 2,
-        attackTarget: 1.010,
-        defenseTarget: 0.990,
-        confidence: 0.22,
-        note: 'UEFA H2H: Dinamo lead Anderlecht W2 D1 L1 across four Europa League meetings. The newest Zagreb meeting was 0-0 in December 2018, so the weight stays low.'
-      })
-    }),
-    salzburg: Object.freeze({
-      spartapraha: Object.freeze({
-        sample: 1,
-        wins: 0,
-        draws: 0,
-        losses: 1,
-        goalsFor: 0,
-        goalsAgainst: 3,
-        attackTarget: 0.980,
-        defenseTarget: 1.020,
-        confidence: 0.44,
-        note: 'Very recent direct H2H: Sparta Praha beat Salzburg 3-0 in September 2024. Venue flips to Salzburg in 2026/27.'
-      })
-    }),
-    anderlecht: Object.freeze({
-      hoffenheim: Object.freeze({
-        venue: 'home',
-        sample: 1,
-        wins: 0,
-        draws: 0,
-        losses: 1,
-        goalsFor: 3,
-        goalsAgainst: 4,
-        attackTarget: 1.005,
-        defenseTarget: 1.025,
-        confidence: 0.66,
-        note: 'Exact recent repeat: Hoffenheim won 4-3 away to Anderlecht in January 2025; the 2026/27 fixture is again in Brussels.'
-      })
-    }),    bayerleverkusen: Object.freeze({
-      salzburg: Object.freeze({
-        venue: 'home',
-        sample: 1,
-        wins: 1,
-        draws: 0,
-        losses: 0,
-        goalsFor: 5,
-        goalsAgainst: 0,
-        attackTarget: 1.030,
-        defenseTarget: 0.970,
-        confidence: 0.68,
-        note: 'Exact recent repeat: Leverkusen beat Salzburg 5-0 at home in November 2024; the 2026/27 fixture is again in Leverkusen.'
-      })
-    }),
-    benfica: Object.freeze({
-      azalkmaar: Object.freeze({
-        venue: 'home',
-        sample: 2,
-        wins: 2,
-        draws: 0,
-        losses: 0,
-        goalsFor: 3,
-        goalsAgainst: 0,
-        attackTarget: 1.018,
-        defenseTarget: 0.982,
-        confidence: 0.28,
-        note: '2013/14 Europa League quarter-final: Benfica beat AZ in both legs, including 2-0 in Lisbon. Age keeps the signal low.'
-      })
-    }),
-    juventus: Object.freeze({
-      realsociedad: Object.freeze({
-        venue: 'home',
-        sample: 2,
-        wins: 1,
-        draws: 1,
-        losses: 0,
-        goalsFor: 4,
-        goalsAgainst: 2,
-        attackTarget: 1.012,
-        defenseTarget: 0.990,
-        confidence: 0.16,
-        note: '2003/04 Champions League: Juventus beat Real Sociedad at home and drew away. Retained only as a small historical signal because the meetings are old.'
-      })
-    }),
-    milan: Object.freeze({
-      olympiacos: Object.freeze({
-        venue: 'away',
-        sample: 2,
-        wins: 1,
-        draws: 0,
-        losses: 1,
-        goalsFor: 4,
-        goalsAgainst: 4,
-        attackTarget: 0.985,
-        defenseTarget: 1.020,
-        confidence: 0.34,
-        note: '2018/19 Europa League: Milan won 3-1 at home but lost 3-1 at Olympiacos. The 2026/27 fixture is again in Piraeus, making the venue-specific loss relevant despite its age.'
-      }),
-      salzburg: Object.freeze({
-        venue: 'away',
-        sample: 1,
-        wins: 0,
-        draws: 1,
-        losses: 0,
-        goalsFor: 1,
-        goalsAgainst: 1,
-        attackTarget: 1.000,
-        defenseTarget: 1.000,
-        confidence: 0.30,
-        note: 'Same-venue H2H: Milan drew 1-1 away to Salzburg in the 2022/23 Champions League group stage.'
-      })
-    }),
-    lyon: Object.freeze({
-      hoffenheim: Object.freeze({
-        venue: 'away',
-        sample: 1,
-        wins: 0,
-        draws: 1,
-        losses: 0,
-        goalsFor: 2,
-        goalsAgainst: 2,
-        attackTarget: 1.005,
-        defenseTarget: 1.005,
-        confidence: 0.60,
-        note: 'Exact recent repeat: Hoffenheim and Lyon drew 2-2 in Germany in November 2024; the 2026/27 fixture is again at Hoffenheim.'
-      }),
-      realsociedad: Object.freeze({
-        venue: 'away',
-        sample: 4,
-        wins: 2,
-        draws: 0,
-        losses: 2,
-        goalsFor: 2,
-        goalsAgainst: 4,
-        attackTarget: 0.990,
-        defenseTarget: 1.010,
-        confidence: 0.16,
-        note: 'Champions League H2H is split 2-2 across four meetings in 2003/04 and 2013/14. The age of the series keeps it only marginally active.'
-      })
-    }),
-    olympiacos: Object.freeze({
-      marseille: Object.freeze({
-        venue: 'away',
-        sample: 4,
-        wins: 2,
-        draws: 0,
-        losses: 2,
-        goalsFor: 3,
-        goalsAgainst: 3,
-        attackTarget: 0.995,
-        defenseTarget: 1.005,
-        confidence: 0.24,
-        note: 'Champions League H2H is perfectly split at W2-L2, including Marseille 2-1 Olympiacos and Olympiacos 1-0 Marseille in 2020/21.'
-      }),
-      milan: Object.freeze({
-        venue: 'home',
-        sample: 2,
-        wins: 1,
-        draws: 0,
-        losses: 1,
-        goalsFor: 4,
-        goalsAgainst: 4,
-        attackTarget: 1.020,
-        defenseTarget: 0.985,
-        confidence: 0.34,
-        note: '2018/19 Europa League: Olympiacos lost 3-1 in Milan then won 3-1 at home. The current meeting is again in Piraeus.'
-      })
-    }),
-    realsociedad: Object.freeze({
-      viktoriaplzen: Object.freeze({
-        sample: 1,
-        wins: 0,
-        draws: 0,
-        losses: 1,
-        goalsFor: 1,
-        goalsAgainst: 2,
-        attackTarget: 0.985,
-        defenseTarget: 1.015,
-        confidence: 0.44,
-        note: 'Very recent direct H2H: Viktoria Plzen beat Real Sociedad 2-1 in November 2024. Venue flips to San Sebastian in 2026/27.'
-      }),
-      lyon: Object.freeze({
-        venue: 'home',
-        sample: 4,
-        wins: 2,
-        draws: 0,
-        losses: 2,
-        goalsFor: 4,
-        goalsAgainst: 2,
-        attackTarget: 1.010,
-        defenseTarget: 0.990,
-        confidence: 0.16,
-        note: 'Champions League H2H is split 2-2 across four old meetings. Current fixture is in San Sebastian, so only a tiny historical layer is applied.'
-      }),
-      juventus: Object.freeze({
-        venue: 'away',
-        sample: 2,
-        wins: 0,
-        draws: 1,
-        losses: 1,
-        goalsFor: 2,
-        goalsAgainst: 4,
-        attackTarget: 0.990,
-        defenseTarget: 1.012,
-        confidence: 0.16,
-        note: '2003/04 Champions League: Real Sociedad drew at home and lost in Turin. The new match is in Turin and the age keeps the signal small.'
-      })
-    }),
-    marseille: Object.freeze({
-      besiktas: Object.freeze({
-        venue: 'away',
-        sample: 2,
-        wins: 1,
-        draws: 0,
-        losses: 1,
-        goalsFor: 3,
-        goalsAgainst: 2,
-        attackTarget: 0.990,
-        defenseTarget: 1.010,
-        confidence: 0.18,
-        note: '2007/08 Champions League: each side won its home game; Besiktas beat Marseille 2-1 in Istanbul. Current fixture is again in Istanbul.'
-      }),
-      olympiacos: Object.freeze({
-        venue: 'home',
-        sample: 4,
-        wins: 2,
-        draws: 0,
-        losses: 2,
-        goalsFor: 3,
-        goalsAgainst: 3,
-        attackTarget: 1.005,
-        defenseTarget: 0.995,
-        confidence: 0.24,
-        note: 'Champions League H2H is W2-L2 overall. Marseille won the latest home meeting 2-1 in December 2020.'
-      })
-    }),
-    slavia: Object.freeze({
-      arsenal: Object.freeze({
-        venue: 'home',
-        sample: 1,
-        wins: 0,
-        draws: 0,
-        losses: 1,
-        goalsFor: 0,
-        goalsAgainst: 3,
-        attackTarget: 0.970,
-        defenseTarget: 1.030,
-        confidence: 0.72,
-        note: 'Exact very recent repeat: Arsenal won 3-0 away to Slavia Praha in November 2025; the 2026/27 match is again in Prague.'
-      }),
-      fenerbahce: Object.freeze({
-        venue: 'away',
-        sample: 3,
-        wins: 2,
-        draws: 0,
-        losses: 1,
-        goalsFor: 7,
-        goalsAgainst: 6,
-        attackTarget: 0.995,
-        defenseTarget: 1.005,
-        confidence: 0.34,
-        note: 'Slavia won both 2022 Conference League meetings with Fenerbahce, but lost the much newer 2024 Europa League meeting in Prague 1-2. Current match is in Istanbul, so the signal is deliberately modest.'
-      })
-    }),
-    slovanbratislava: Object.freeze({
-      stuttgart: Object.freeze({
-        venue: 'home',
-        sample: 1,
-        wins: 0,
-        draws: 0,
-        losses: 1,
-        goalsFor: 1,
-        goalsAgainst: 3,
-        attackTarget: 0.975,
-        defenseTarget: 1.025,
-        confidence: 0.66,
-        note: 'Exact venue repeat: Stuttgart won 3-1 away to Slovan Bratislava in January 2025; Slovan host Stuttgart again in 2026/27.'
-      }),
-      lille: Object.freeze({
-        venue: 'away',
-        sample: 2,
-        wins: 0,
-        draws: 1,
-        losses: 1,
-        goalsFor: 2,
-        goalsAgainst: 3,
-        attackTarget: 0.985,
-        defenseTarget: 1.015,
-        confidence: 0.34,
-        note: '2023/24 Conference League: Slovan lost 2-1 at Lille and drew 1-1 at home. The 2026/27 match is again in Lille.'
-      })
-    }),
-    stuttgart: Object.freeze({
-      slovanbratislava: Object.freeze({
-        venue: 'away',
-        sample: 1,
-        wins: 1,
-        draws: 0,
-        losses: 0,
-        goalsFor: 3,
-        goalsAgainst: 1,
-        attackTarget: 1.025,
-        defenseTarget: 0.975,
-        confidence: 0.66,
-        note: 'Exact venue repeat: Stuttgart won 3-1 away to Slovan Bratislava in January 2025.'
-      })
-    }),
-    aek: Object.freeze({
-      real: Object.freeze({
-        venue: 'home',
-        sample: 2,
-        wins: 0,
-        draws: 2,
-        losses: 0,
-        goalsFor: 5,
-        goalsAgainst: 5,
-        attackTarget: 1.005,
-        defenseTarget: 1.005,
-        confidence: 0.12,
-        note: '2002/03 Champions League: AEK and Real Madrid drew both meetings, 5-5 on aggregate. The age of the matchup keeps this almost neutral.'
-      })
-    }),
-    lask: Object.freeze({
-      liverpool: Object.freeze({
-        venue: 'home',
-        sample: 2,
-        wins: 0,
-        draws: 0,
-        losses: 2,
-        goalsFor: 1,
-        goalsAgainst: 7,
-        attackTarget: 0.970,
-        defenseTarget: 1.030,
-        confidence: 0.58,
-        note: '2023/24 Europa League: Liverpool beat LASK 3-1 in Linz and 4-0 at Anfield. The 2026/27 match is again in Linz.'
-      }),
-      sporting: Object.freeze({
-        venue: 'away',
-        sample: 3,
-        wins: 2,
-        draws: 0,
-        losses: 1,
-        goalsFor: 8,
-        goalsAgainst: 3,
-        attackTarget: 1.010,
-        defenseTarget: 0.995,
-        confidence: 0.24,
-        note: 'LASK are W2 L1 in three Europa League meetings with Sporting, including a 4-1 away win in the 2020/21 play-off and a 1-2 away loss in 2019/20. Age keeps the effect small.'
-      })
-    }),
-    bodo: Object.freeze({
-      atleti: Object.freeze({
-      liverpool: Object.freeze({
-        venue: 'away',
-        sample: 1,
-        wins: 0,
-        draws: 0,
-        losses: 1,
-        goalsFor: 2,
-        goalsAgainst: 3,
-        attackTarget: 1.005,
-        defenseTarget: 1.020,
-        confidence: 0.66,
-        note: 'Exact very recent repeat: Atletico lost 3-2 at Liverpool in September 2025.'
-      }),
-      manu: Object.freeze({
-        venue: 'home',
-        sample: 1,
-        wins: 0,
-        draws: 1,
-        losses: 0,
-        goalsFor: 1,
-        goalsAgainst: 1,
-        attackTarget: 1.000,
-        defenseTarget: 1.000,
-        confidence: 0.38,
-        note: 'Same-venue H2H: Atletico drew 1-1 at home to Manchester United in February 2022.'
-      }),
-      psv: Object.freeze({
-        venue: 'away',
-        sample: 1,
-        wins: 1,
-        draws: 0,
-        losses: 0,
-        goalsFor: 3,
-        goalsAgainst: 2,
-        attackTarget: 1.020,
-        defenseTarget: 1.005,
-        confidence: 0.68,
-        note: 'Exact very recent repeat: Atletico won 3-2 away to PSV in December 2025.'
-      })
-    }),
-    bvb: Object.freeze({
-        venue: 'away',
-        sample: 1,
-        wins: 1,
-        draws: 0,
-        losses: 0,
-        goalsFor: 2,
-        goalsAgainst: 0,
-        attackTarget: 1.020,
-        defenseTarget: 0.980,
-        confidence: 0.66,
-        note: 'Exact very recent repeat: Inter won 2-0 in Dortmund in January 2026.'
-      })
-    }),
-    arsenal: Object.freeze({
-      real: Object.freeze({
-        venue: 'home',
-        sample: 1,
-        wins: 1,
-        draws: 0,
-        losses: 0,
-        goalsFor: 3,
-        goalsAgainst: 0,
-        attackTarget: 1.030,
-        defenseTarget: 0.970,
-        confidence: 0.68,
-        note: 'Exact recent repeat: Arsenal beat Real Madrid 3-0 in London in April 2025.'
-      }),
-      slavia: Object.freeze({
-        venue: 'away',
-        sample: 1,
-        wins: 1,
-        draws: 0,
-        losses: 0,
-        goalsFor: 3,
-        goalsAgainst: 0,
-        attackTarget: 1.030,
-        defenseTarget: 0.970,
-        confidence: 0.72,
-        note: 'Exact very recent repeat: Arsenal won 3-0 away to Slavia Praha in November 2025.'
-      }),
-      bayern: Object.freeze({
-        venue: 'away',
-        sample: 1,
-        wins: 0,
-        draws: 0,
-        losses: 1,
-        goalsFor: 0,
-        goalsAgainst: 1,
-        attackTarget: 0.985,
-        defenseTarget: 1.015,
-        confidence: 0.52,
-        note: 'Exact venue repeat: Arsenal lost 1-0 away to Bayern in April 2024; the newer 3-1 home win over Bayern remains in the recent sample.'
-      })
-    }),
-    barcelona: Object.freeze({
-      galatasaray: Object.freeze({
-        venue: 'away',
-        sample: 2,
-        wins: 1,
-        draws: 1,
-        losses: 0,
-        goalsFor: 2,
-        goalsAgainst: 1,
-        attackTarget: 1.018,
-        defenseTarget: 0.985,
-        confidence: 0.44,
-        note: 'Recent Europa League H2H in 2022: 0-0 in Barcelona and a 2-1 Barcelona win in Istanbul. The 2026/27 fixture is again in Istanbul.'
-      }),
-      psg: Object.freeze({
-        venue: 'away',
-        sample: 1,
-        wins: 1,
-        draws: 0,
-        losses: 0,
-        goalsFor: 3,
-        goalsAgainst: 2,
-        attackTarget: 1.020,
-        defenseTarget: 1.005,
-        confidence: 0.46,
-        note: 'Exact venue H2H: Barcelona won 3-2 away to Paris in April 2024; the newer 2025/26 home defeat to Paris is in the recent form sample.'
-      })
-    }),
-    atleti: Object.freeze({
-      liverpool: Object.freeze({
-        venue: 'away',
-        sample: 1,
-        wins: 0,
-        draws: 0,
-        losses: 1,
-        goalsFor: 2,
-        goalsAgainst: 3,
-        attackTarget: 1.005,
-        defenseTarget: 1.020,
-        confidence: 0.66,
-        note: 'Exact very recent repeat: Atletico lost 3-2 at Liverpool in September 2025.'
-      }),
-      manu: Object.freeze({
-        venue: 'home',
-        sample: 1,
-        wins: 0,
-        draws: 1,
-        losses: 0,
-        goalsFor: 1,
-        goalsAgainst: 1,
-        attackTarget: 1.000,
-        defenseTarget: 1.000,
-        confidence: 0.38,
-        note: 'Same-venue H2H: Atletico drew 1-1 at home to Manchester United in February 2022.'
-      }),
-      union: Object.freeze({
-      besiktas: Object.freeze({
-        venue: 'away',
-        attackTarget: 0.985,
-        defenseTarget: 1.015,
-        confidence: 0.42,
-        note: 'Fresh Turkish-club away analogue: Union SG lost 2-1 away to Fenerbahce in September 2024. Used for the Besiktas trip.'
-      }),
-      lyon: Object.freeze({
-        venue: 'away',
-        attackTarget: 1.005,
-        defenseTarget: 0.995,
-        confidence: 0.24,
-        note: 'Recent French-club analogue: Union SG beat Nice 2-1 at home in December 2024. Venue mismatch makes the Lyon-away effect deliberately small.'
-      })
-    }),
-    dinamo: Object.freeze({
-      sunderland: Object.freeze({
-        venue: 'away',
-        attackTarget: 0.975,
-        defenseTarget: 1.025,
-        confidence: 0.40,
-        note: 'Recent English-club away analogue: Dinamo lost 3-0 away to Arsenal in January 2025. Used for Sunderland with reduced confidence because Arsenal are a much stronger reference.'
-      }),
-      strumgraz: Object.freeze({
-        venue: 'home',
-        attackTarget: 1.015,
-        defenseTarget: 0.990,
-        confidence: 0.30,
-        note: 'Austrian-club analogue: Dinamo won 2-0 away to Salzburg in October 2024. Venue flips for Sturm Graz, so the effect remains modest.'
-      })
-    }),
-    celtic: Object.freeze({
-      besiktas: Object.freeze({
-        venue: 'home',
-        attackTarget: 1.000,
-        defenseTarget: 1.000,
-        confidence: 0.28,
-        note: 'Turkish-club home analogue: Celtic drew 2-2 at home to Fenerbahce in October 2015. Used lightly for Besiktas because of age and different opponent profile.'
-      })
-    }),
-    psv: Object.freeze({
-        venue: 'away',
-        sample: 1,
-        wins: 1,
-        draws: 0,
-        losses: 0,
-        goalsFor: 3,
-        goalsAgainst: 2,
-        attackTarget: 1.020,
-        defenseTarget: 1.005,
-        confidence: 0.68,
-        note: 'Exact very recent repeat: Atletico won 3-2 away to PSV in December 2025.'
-      })
-    }),
-    bvb: Object.freeze({
-      villareal: Object.freeze({
-        venue: 'home',
-        sample: 1,
-        wins: 1,
-        draws: 0,
-        losses: 0,
-        goalsFor: 4,
-        goalsAgainst: 0,
-        attackTarget: 1.045,
-        defenseTarget: 0.965,
-        confidence: 0.64,
-        note: 'Exact recent repeat: Dortmund beat Villarreal 4-0 at home in the 2025/26 Champions League; the 2026/27 fixture is again in Dortmund.'
-      }),
-      inter: Object.freeze({
-        venue: 'home',
-        sample: 1,
-        wins: 0,
-        draws: 0,
-        losses: 1,
-        goalsFor: 0,
-        goalsAgainst: 2,
-        attackTarget: 0.970,
-        defenseTarget: 1.030,
-        confidence: 0.58,
-        note: 'Exact recent repeat: Inter won 2-0 in Dortmund in January 2026; the 2026/27 meeting is again at Dortmund.'
-      }),
-      bodo: Object.freeze({
-        sample: 1,
-        wins: 0,
-        draws: 1,
-        losses: 0,
-        goalsFor: 2,
-        goalsAgainst: 2,
-        attackTarget: 1.005,
-        defenseTarget: 1.005,
-        confidence: 0.38,
-        note: 'Very recent H2H: Dortmund and Bodo/Glimt drew 2-2 in Dortmund in December 2025. Venue flips in 2026/27, so the weight is moderate.'
-      })
-    }),
-    roma: Object.freeze({
-      slovanbratislava: Object.freeze({
-        venue: 'home',
-        sample: 2,
-        wins: 0,
-        draws: 1,
-        losses: 1,
-        goalsFor: 1,
-        goalsAgainst: 2,
-        attackTarget: 0.995,
-        defenseTarget: 1.005,
-        confidence: 0.12,
-        note: '2011/12 Europa League play-off: Roma drew 1-1 at home to Slovan Bratislava after a 0-1 away loss. The exact home venue repeats in 2026/27, but age keeps the effect tiny.'
-      }),
-      lille: Object.freeze({
-        venue: 'home',
-        sample: 1,
-        wins: 0,
-        draws: 0,
-        losses: 1,
-        goalsFor: 0,
-        goalsAgainst: 1,
-        attackTarget: 0.975,
-        defenseTarget: 1.020,
-        confidence: 0.60,
-        note: 'Exact recent repeat: Lille won 1-0 away to Roma in October 2025; Roma host Lille again in 2026/27.'
-      }),
-      manu: Object.freeze({
-        venue: 'away',
-        sample: 2,
-        wins: 1,
-        draws: 0,
-        losses: 1,
-        goalsFor: 5,
-        goalsAgainst: 8,
-        attackTarget: 0.985,
-        defenseTarget: 1.020,
-        confidence: 0.20,
-        note: '2020/21 Europa League semi-final: Manchester United won 6-2 at Old Trafford and Roma won the return 3-2. Current fixture is again at Old Trafford, but age keeps the signal small.'
-      })
-    }),
-    astonvilla: Object.freeze({
-      brugge: Object.freeze({
-        venue: 'away',
-        sample: 1,
-        wins: 0,
-        draws: 0,
-        losses: 1,
-        goalsFor: 0,
-        goalsAgainst: 1,
-        attackTarget: 0.975,
-        defenseTarget: 1.020,
-        confidence: 0.60,
-        note: 'Exact venue repeat: Club Brugge beat Aston Villa 1-0 in Bruges in November 2024; Villa return to Bruges in 2026/27.'
-      }),
-      psg: Object.freeze({
-        venue: 'home',
-        sample: 1,
-        wins: 1,
-        draws: 0,
-        losses: 0,
-        goalsFor: 3,
-        goalsAgainst: 2,
-        attackTarget: 1.025,
-        defenseTarget: 1.005,
-        confidence: 0.54,
-        note: 'Exact venue repeat: Aston Villa beat Paris 3-2 at Villa Park in the April 2025 Champions League quarter-final second leg.'
-      }),
-      fenerbahce: Object.freeze({
-        sample: 1,
-        wins: 1,
-        draws: 0,
-        losses: 0,
-        goalsFor: 1,
-        goalsAgainst: 0,
-        attackTarget: 1.020,
-        defenseTarget: 0.980,
-        confidence: 0.52,
-        note: 'Very recent direct H2H: Aston Villa won 1-0 away to Fenerbahce in January 2026. Venue flips to Villa Park in 2026/27.'
-      })
-    }),
-    porto: Object.freeze({
-      psv: Object.freeze({
-        sample: 4,
-        wins: 2,
-        draws: 1,
-        losses: 1,
-        goalsFor: 5,
-        goalsAgainst: 7,
-        attackTarget: 0.995,
-        defenseTarget: 1.005,
-        confidence: 0.10,
-        note: 'UEFA H2H: Porto lead PSV W2 D1 L1 across four meetings, but all are from 1988/89 and 1992/93. Retained only as a tiny historical pair signal.'
-      }),
-      liverpool: Object.freeze({
-        venue: 'away',
-        sample: 8,
-        wins: 0,
-        draws: 2,
-        losses: 6,
-        goalsFor: 4,
-        goalsAgainst: 23,
-        attackTarget: 0.965,
-        defenseTarget: 1.040,
-        confidence: 0.58,
-        note: 'UEFA Champions League H2H before 2026/27: Porto are W0 D2 L6 against Liverpool, 4-23 on goals. The new fixture is at Anfield, where Porto have never won.'
-      }),
-      city: Object.freeze({
-        venue: 'home',
-        sample: 2,
-        wins: 0,
-        draws: 1,
-        losses: 1,
-        goalsFor: 1,
-        goalsAgainst: 3,
-        attackTarget: 0.990,
-        defenseTarget: 1.010,
-        confidence: 0.18,
-        note: '2020/21 Champions League group: Porto lost 3-1 in Manchester and drew 0-0 at home. Current match is again in Porto; age keeps the signal light.'
-      })
-    }),
-    manu: Object.freeze({
-      atleti: Object.freeze({
-        venue: 'away',
-        sample: 1,
-        wins: 0,
-        draws: 1,
-        losses: 0,
-        goalsFor: 1,
-        goalsAgainst: 1,
-        attackTarget: 1.000,
-        defenseTarget: 1.000,
-        confidence: 0.38,
-        note: 'Same-venue H2H: Manchester United drew 1-1 at Atletico in the 2021/22 Champions League round of 16.'
-      }),
-      villareal: Object.freeze({
-        venue: 'away',
-        sample: 1,
-        wins: 1,
-        draws: 0,
-        losses: 0,
-        goalsFor: 2,
-        goalsAgainst: 0,
-        attackTarget: 1.020,
-        defenseTarget: 0.980,
-        confidence: 0.36,
-        note: 'Same-venue recent H2H: Manchester United won 2-0 away to Villarreal in November 2021.'
-      }),
-      bayern: Object.freeze({
-        venue: 'home',
-        sample: 1,
-        wins: 0,
-        draws: 0,
-        losses: 1,
-        goalsFor: 0,
-        goalsAgainst: 1,
-        attackTarget: 0.985,
-        defenseTarget: 1.015,
-        confidence: 0.42,
-        note: 'Same-venue recent H2H: Bayern won 1-0 at Old Trafford in December 2023.'
-      })
-    }),
-    brugge: Object.freeze({
-      bodo: Object.freeze({
-        venue: 'home',
-        sample: 2,
-        wins: 2,
-        draws: 0,
-        losses: 0,
-        goalsFor: 4,
-        goalsAgainst: 1,
-        attackTarget: 1.025,
-        defenseTarget: 0.980,
-        confidence: 0.58,
-        note: '2023/24 Conference League: Club Brugge beat Bodo/Glimt 1-0 away and 3-1 at home. The 2026/27 fixture is again in Bruges.'
-      }),
-      astonvilla: Object.freeze({
-        venue: 'home',
-        sample: 1,
-        wins: 1,
-        draws: 0,
-        losses: 0,
-        goalsFor: 1,
-        goalsAgainst: 0,
-        attackTarget: 1.020,
-        defenseTarget: 0.980,
-        confidence: 0.60,
-        note: 'Exact venue repeat: Club Brugge beat Aston Villa 1-0 at home in November 2024.'
-      })
-    }),
-    realbetis: Object.freeze({
-      feyenoord: Object.freeze({
-        venue: 'home',
-        sample: 1,
-        wins: 1,
-        draws: 0,
-        losses: 0,
-        goalsFor: 2,
-        goalsAgainst: 1,
-        attackTarget: 1.025,
-        defenseTarget: 0.990,
-        confidence: 0.66,
-        note: 'Exact very recent repeat: Real Betis beat Feyenoord 2-1 at home in January 2026 and host Feyenoord again in 2026/27.'
-      })
-    }),
-    psv: Object.freeze({
-      shakhtar: Object.freeze({
-        venue: 'home',
-        sample: 1,
-        wins: 1,
-        draws: 0,
-        losses: 0,
-        goalsFor: 3,
-        goalsAgainst: 2,
-        attackTarget: 1.025,
-        defenseTarget: 1.000,
-        confidence: 0.62,
-        note: 'Exact venue repeat: PSV beat Shakhtar 3-2 in Eindhoven in November 2024; the 2026/27 fixture is again at PSV.'
-      }),
-      atleti: Object.freeze({
-        venue: 'home',
-        sample: 1,
-        wins: 0,
-        draws: 0,
-        losses: 1,
-        goalsFor: 2,
-        goalsAgainst: 3,
-        attackTarget: 1.005,
-        defenseTarget: 1.025,
-        confidence: 0.68,
-        note: 'Exact very recent repeat: Atletico won 3-2 at PSV in December 2025; the 2026/27 meeting is again in Eindhoven.'
-      })
-    }),
-    besiktas: Object.freeze({
-      hapoelbeersheva: Object.freeze({
-        sample: 2,
-        wins: 2,
-        draws: 0,
-        losses: 0,
-        goalsFor: 5,
-        goalsAgainst: 2,
-        attackTarget: 1.020,
-        defenseTarget: 0.980,
-        confidence: 0.28,
-        note: '2016/17 UEFA Europa League round of 32: Besiktas won both legs against Hapoel Beer-Sheva.'
-      })
-    }),
-    shakhtar: Object.freeze({
-      psv: Object.freeze({
-        venue: 'away',
-        sample: 1,
-        wins: 0,
-        draws: 0,
-        losses: 1,
-        goalsFor: 2,
-        goalsAgainst: 3,
-        attackTarget: 1.020,
-        defenseTarget: 1.020,
-        confidence: 0.46,
-        note: 'Exact recent venue analogue: PSV beat Shakhtar 3-2 in Eindhoven in the 2024/25 Champions League.'
-      }),
-      fenerbahce: Object.freeze({
-        sample: 2,
-        wins: 1,
-        draws: 1,
-        losses: 0,
-        goalsFor: 3,
-        goalsAgainst: 0,
-        attackTarget: 1.018,
-        defenseTarget: 0.982,
-        confidence: 0.24,
-        note: '2015/16 Champions League qualifying: 0-0 in Istanbul and 3-0 to Shakhtar in the return. Kept low because of age; the much newer Besiktas tie supplies the Turkish-association analogue.'
-      }),
-      leipzig: Object.freeze({
-        venue: 'away',
-        sample: 1,
-        wins: 1,
-        draws: 0,
-        losses: 0,
-        goalsFor: 4,
-        goalsAgainst: 1,
-        attackTarget: 1.030,
-        defenseTarget: 0.975,
-        confidence: 0.28,
-        note: 'Same-venue history: Shakhtar won 4-1 at Leipzig in the 2022/23 Champions League; the reverse fixture went 0-4, so the weight stays modest.'
-      }),
-      real: Object.freeze({
-        sample: 8,
-        wins: 2,
-        draws: 1,
-        losses: 5,
-        goalsFor: 11,
-        goalsAgainst: 20,
-        attackTarget: 0.985,
-        defenseTarget: 1.020,
-        confidence: 0.24,
-        note: 'UEFA all-time Champions League H2H through 2022/23: Shakhtar W2 D1 L5 vs Real Madrid. Recency is mixed, so this is only a small negative layer.'
-      }),
-      sporting: Object.freeze({
-        sample: 2,
-        wins: 0,
-        draws: 0,
-        losses: 2,
-        goalsFor: 0,
-        goalsAgainst: 2,
-        attackTarget: 0.990,
-        defenseTarget: 1.010,
-        confidence: 0.10,
-        note: 'Sporting won both 2008/09 group meetings 1-0; retained only as a tiny historical signal.'
-      })
-    }),
-    villareal: Object.freeze({
-      bvb: Object.freeze({
-        venue: 'away',
-        sample: 1,
-        wins: 0,
-        draws: 0,
-        losses: 1,
-        goalsFor: 0,
-        goalsAgainst: 4,
-        attackTarget: 0.965,
-        defenseTarget: 1.035,
-        confidence: 0.32,
-        note: 'Very recent same-venue repeat: Borussia Dortmund beat Villarreal 4-0 in Dortmund in the 2025/26 Champions League.'
-      }),
-      liverpool: Object.freeze({
-        venue: 'away',
-        sample: 2,
-        wins: 0,
-        draws: 0,
-        losses: 2,
-        goalsFor: 2,
-        goalsAgainst: 5,
-        attackTarget: 0.980,
-        defenseTarget: 1.020,
-        confidence: 0.24,
-        note: '2021/22 Champions League semi-final: Villarreal lost both legs to Liverpool; age keeps the weight low.'
-      }),
-      manu: Object.freeze({
-        venue: 'home',
-        sample: 3,
-        wins: 0,
-        draws: 2,
-        losses: 1,
-        goalsFor: 0,
-        goalsAgainst: 2,
-        attackTarget: 0.985,
-        defenseTarget: 1.010,
-        confidence: 0.20,
-        note: 'Champions League home meetings with Manchester United: two 0-0 draws followed by a 0-2 defeat in 2021.'
-      })
-    }),
-    lille: Object.freeze({
-      bayern: Object.freeze({
-        sample: 2,
-        wins: 0,
-        draws: 0,
-        losses: 2,
-        goalsFor: 1,
-        goalsAgainst: 7,
-        attackTarget: 0.985,
-        defenseTarget: 1.015,
-        confidence: 0.16,
-        note: '2012/13 Champions League: Bayern won both meetings; age of the tie keeps the model weight very low.'
-      }),
-      slovanbratislava: Object.freeze({
-        sample: 2,
-        wins: 1,
-        draws: 1,
-        losses: 0,
-        goalsFor: 3,
-        goalsAgainst: 2,
-        attackTarget: 1.015,
-        defenseTarget: 0.985,
-        confidence: 0.36,
-        note: '2023/24 Conference League: Lille beat Slovan Bratislava at home and drew away.'
-      })
-    }),
-    galatasaray: Object.freeze({
-      barcelona: Object.freeze({
-        sample: 2,
-        wins: 0,
-        draws: 1,
-        losses: 1,
-        goalsFor: 1,
-        goalsAgainst: 2,
-        attackTarget: 0.985,
-        defenseTarget: 1.015,
-        confidence: 0.36,
-        note: 'Most relevant recent H2H is the 2021/22 Europa League round of 16: 0-0 at Camp Nou and 1-2 in Istanbul. Older Champions League meetings are not allowed to dominate the current model.'
-      }),
-      psg: Object.freeze({
-        sample: 4,
-        wins: 1,
-        draws: 0,
-        losses: 3,
-        goalsFor: 1,
-        goalsAgainst: 8,
-        attackTarget: 0.980,
-        defenseTarget: 1.025,
-        confidence: 0.26,
-        note: 'UEFA all-time H2H is Galatasaray W1 L3 vs Paris; the most recent away meeting was a 0-5 loss in Paris in December 2019, so the signal is negative but age-discounted.'
-      })
-    }),
-    fenerbahce: Object.freeze({
-      astonvilla: Object.freeze({
-        sample: 3,
-        wins: 0,
-        draws: 0,
-        losses: 3,
-        goalsFor: 0,
-        goalsAgainst: 7,
-        attackTarget: 0.975,
-        defenseTarget: 1.025,
-        confidence: 0.34,
-        note: 'UEFA H2H: Fenerbahce have lost all three competitive meetings with Aston Villa without scoring; the freshest is the 0-1 home loss in January 2026, while the two 1977 games are heavily age-discounted.'
-      }),
-      slavia: Object.freeze({
-        sample: 3,
-        wins: 1,
-        draws: 0,
-        losses: 2,
-        goalsFor: 6,
-        goalsAgainst: 7,
-        attackTarget: 0.995,
-        defenseTarget: 1.008,
-        confidence: 0.27,
-        note: 'UEFA H2H: Slavia won both 2022 Conference League meetings, but Fenerbahce won the much newer 2024 Europa League trip to Prague 2-1.'
-      }),
-      shakhtar: Object.freeze({
-        sample: 2,
-        wins: 0,
-        draws: 1,
-        losses: 1,
-        goalsFor: 0,
-        goalsAgainst: 3,
-        attackTarget: 0.985,
-        defenseTarget: 1.015,
-        confidence: 0.18,
-        note: '2015/16 Champions League qualifying: Fenerbahce drew 0-0 at home and lost 3-0 away to Shakhtar. Low weight because the tie is old.'
-      })
-    })
-  });
+  "ferencvarosi": {
+    "juventus": {
+      "venue": "home",
+      "sample": 2,
+      "wins": 0,
+      "draws": 0,
+      "losses": 2,
+      "goalsFor": 2,
+      "goalsAgainst": 6,
+      "attackTarget": 0.975,
+      "defenseTarget": 1.025,
+      "confidence": 0.42,
+      "note": "2020/21 Champions League: Juventus beat Ferencvaros 4-1 in Budapest and 2-1 in Turin. The 2026/27 fixture is again in Budapest."
+    }
+  },
+  "celtic": {
+    "benfica": {
+      "venue": "away",
+      "sample": 8,
+      "wins": 4,
+      "draws": 1,
+      "losses": 3,
+      "goalsFor": 8,
+      "goalsAgainst": 9,
+      "attackTarget": 0.995,
+      "defenseTarget": 1.005,
+      "confidence": 0.16,
+      "note": "UEFA H2H is Celtic W4 D1 L3 vs Benfica across eight meetings. The last series was in 2012/13, so this only supplies a faint historical layer for Lisbon."
+    },
+    "ferencvarosi": {
+      "venue": "home",
+      "sample": 1,
+      "wins": 0,
+      "draws": 0,
+      "losses": 1,
+      "goalsFor": 1,
+      "goalsAgainst": 2,
+      "attackTarget": 0.985,
+      "defenseTarget": 1.018,
+      "confidence": 0.36,
+      "note": "Exact venue history: Ferencvaros won 2-1 away to Celtic in the 2020/21 Champions League second qualifying round."
+    }
+  },
+  "dinamo": {
+    "anderlecht": {
+      "venue": "home",
+      "sample": 4,
+      "wins": 2,
+      "draws": 1,
+      "losses": 1,
+      "goalsFor": 3,
+      "goalsAgainst": 2,
+      "attackTarget": 1.01,
+      "defenseTarget": 0.99,
+      "confidence": 0.22,
+      "note": "UEFA H2H: Dinamo lead Anderlecht W2 D1 L1 across four Europa League meetings. The newest Zagreb meeting was 0-0 in December 2018, so the weight stays low."
+    }
+  },
+  "salzburg": {
+    "spartapraha": {
+      "sample": 1,
+      "wins": 0,
+      "draws": 0,
+      "losses": 1,
+      "goalsFor": 0,
+      "goalsAgainst": 3,
+      "attackTarget": 0.98,
+      "defenseTarget": 1.02,
+      "confidence": 0.44,
+      "note": "Very recent direct H2H: Sparta Praha beat Salzburg 3-0 in September 2024. Venue flips to Salzburg in 2026/27."
+    }
+  },
+  "anderlecht": {
+    "hoffenheim": {
+      "venue": "home",
+      "sample": 1,
+      "wins": 0,
+      "draws": 0,
+      "losses": 1,
+      "goalsFor": 3,
+      "goalsAgainst": 4,
+      "attackTarget": 1.005,
+      "defenseTarget": 1.025,
+      "confidence": 0.66,
+      "note": "Exact recent repeat: Hoffenheim won 4-3 away to Anderlecht in January 2025; the 2026/27 fixture is again in Brussels."
+    }
+  },
+  "bayerleverkusen": {
+    "salzburg": {
+      "venue": "home",
+      "sample": 1,
+      "wins": 1,
+      "draws": 0,
+      "losses": 0,
+      "goalsFor": 5,
+      "goalsAgainst": 0,
+      "attackTarget": 1.03,
+      "defenseTarget": 0.97,
+      "confidence": 0.68,
+      "note": "Exact recent repeat: Leverkusen beat Salzburg 5-0 at home in November 2024; the 2026/27 fixture is again in Leverkusen."
+    }
+  },
+  "benfica": {
+    "azalkmaar": {
+      "venue": "home",
+      "sample": 2,
+      "wins": 2,
+      "draws": 0,
+      "losses": 0,
+      "goalsFor": 3,
+      "goalsAgainst": 0,
+      "attackTarget": 1.018,
+      "defenseTarget": 0.982,
+      "confidence": 0.28,
+      "note": "2013/14 Europa League quarter-final: Benfica beat AZ in both legs, including 2-0 in Lisbon. Age keeps the signal low."
+    }
+  },
+  "juventus": {
+    "realsociedad": {
+      "venue": "home",
+      "sample": 2,
+      "wins": 1,
+      "draws": 1,
+      "losses": 0,
+      "goalsFor": 4,
+      "goalsAgainst": 2,
+      "attackTarget": 1.012,
+      "defenseTarget": 0.99,
+      "confidence": 0.16,
+      "note": "2003/04 Champions League: Juventus beat Real Sociedad at home and drew away. Retained only as a small historical signal because the meetings are old."
+    }
+  },
+  "milan": {
+    "olympiacos": {
+      "venue": "away",
+      "sample": 2,
+      "wins": 1,
+      "draws": 0,
+      "losses": 1,
+      "goalsFor": 4,
+      "goalsAgainst": 4,
+      "attackTarget": 0.985,
+      "defenseTarget": 1.02,
+      "confidence": 0.34,
+      "note": "2018/19 Europa League: Milan won 3-1 at home but lost 3-1 at Olympiacos. The 2026/27 fixture is again in Piraeus, making the venue-specific loss relevant despite its age."
+    },
+    "salzburg": {
+      "venue": "away",
+      "sample": 1,
+      "wins": 0,
+      "draws": 1,
+      "losses": 0,
+      "goalsFor": 1,
+      "goalsAgainst": 1,
+      "attackTarget": 1,
+      "defenseTarget": 1,
+      "confidence": 0.3,
+      "note": "Same-venue H2H: Milan drew 1-1 away to Salzburg in the 2022/23 Champions League group stage."
+    }
+  },
+  "lyon": {
+    "hoffenheim": {
+      "venue": "away",
+      "sample": 1,
+      "wins": 0,
+      "draws": 1,
+      "losses": 0,
+      "goalsFor": 2,
+      "goalsAgainst": 2,
+      "attackTarget": 1.005,
+      "defenseTarget": 1.005,
+      "confidence": 0.6,
+      "note": "Exact recent repeat: Hoffenheim and Lyon drew 2-2 in Germany in November 2024; the 2026/27 fixture is again at Hoffenheim."
+    },
+    "realsociedad": {
+      "venue": "away",
+      "sample": 4,
+      "wins": 2,
+      "draws": 0,
+      "losses": 2,
+      "goalsFor": 2,
+      "goalsAgainst": 4,
+      "attackTarget": 0.99,
+      "defenseTarget": 1.01,
+      "confidence": 0.16,
+      "note": "Champions League H2H is split 2-2 across four meetings in 2003/04 and 2013/14. The age of the series keeps it only marginally active."
+    }
+  },
+  "olympiacos": {
+    "marseille": {
+      "venue": "away",
+      "sample": 4,
+      "wins": 2,
+      "draws": 0,
+      "losses": 2,
+      "goalsFor": 3,
+      "goalsAgainst": 3,
+      "attackTarget": 0.995,
+      "defenseTarget": 1.005,
+      "confidence": 0.24,
+      "note": "Champions League H2H is perfectly split at W2-L2, including Marseille 2-1 Olympiacos and Olympiacos 1-0 Marseille in 2020/21."
+    },
+    "milan": {
+      "venue": "home",
+      "sample": 2,
+      "wins": 1,
+      "draws": 0,
+      "losses": 1,
+      "goalsFor": 4,
+      "goalsAgainst": 4,
+      "attackTarget": 1.02,
+      "defenseTarget": 0.985,
+      "confidence": 0.34,
+      "note": "2018/19 Europa League: Olympiacos lost 3-1 in Milan then won 3-1 at home. The current meeting is again in Piraeus."
+    }
+  },
+  "realsociedad": {
+    "viktoriaplzen": {
+      "sample": 1,
+      "wins": 0,
+      "draws": 0,
+      "losses": 1,
+      "goalsFor": 1,
+      "goalsAgainst": 2,
+      "attackTarget": 0.985,
+      "defenseTarget": 1.015,
+      "confidence": 0.44,
+      "note": "Very recent direct H2H: Viktoria Plzen beat Real Sociedad 2-1 in November 2024. Venue flips to San Sebastian in 2026/27."
+    },
+    "lyon": {
+      "venue": "home",
+      "sample": 4,
+      "wins": 2,
+      "draws": 0,
+      "losses": 2,
+      "goalsFor": 4,
+      "goalsAgainst": 2,
+      "attackTarget": 1.01,
+      "defenseTarget": 0.99,
+      "confidence": 0.16,
+      "note": "Champions League H2H is split 2-2 across four old meetings. Current fixture is in San Sebastian, so only a tiny historical layer is applied."
+    },
+    "juventus": {
+      "venue": "away",
+      "sample": 2,
+      "wins": 0,
+      "draws": 1,
+      "losses": 1,
+      "goalsFor": 2,
+      "goalsAgainst": 4,
+      "attackTarget": 0.99,
+      "defenseTarget": 1.012,
+      "confidence": 0.16,
+      "note": "2003/04 Champions League: Real Sociedad drew at home and lost in Turin. The new match is in Turin and the age keeps the signal small."
+    }
+  },
+  "marseille": {
+    "besiktas": {
+      "venue": "away",
+      "sample": 2,
+      "wins": 1,
+      "draws": 0,
+      "losses": 1,
+      "goalsFor": 3,
+      "goalsAgainst": 2,
+      "attackTarget": 0.99,
+      "defenseTarget": 1.01,
+      "confidence": 0.18,
+      "note": "2007/08 Champions League: each side won its home game; Besiktas beat Marseille 2-1 in Istanbul. Current fixture is again in Istanbul."
+    },
+    "olympiacos": {
+      "venue": "home",
+      "sample": 4,
+      "wins": 2,
+      "draws": 0,
+      "losses": 2,
+      "goalsFor": 3,
+      "goalsAgainst": 3,
+      "attackTarget": 1.005,
+      "defenseTarget": 0.995,
+      "confidence": 0.24,
+      "note": "Champions League H2H is W2-L2 overall. Marseille won the latest home meeting 2-1 in December 2020."
+    }
+  },
+  "slavia": {
+    "arsenal": {
+      "venue": "home",
+      "sample": 1,
+      "wins": 0,
+      "draws": 0,
+      "losses": 1,
+      "goalsFor": 0,
+      "goalsAgainst": 3,
+      "attackTarget": 0.97,
+      "defenseTarget": 1.03,
+      "confidence": 0.72,
+      "note": "Exact very recent repeat: Arsenal won 3-0 away to Slavia Praha in November 2025; the 2026/27 match is again in Prague."
+    },
+    "fenerbahce": {
+      "venue": "away",
+      "sample": 3,
+      "wins": 2,
+      "draws": 0,
+      "losses": 1,
+      "goalsFor": 7,
+      "goalsAgainst": 6,
+      "attackTarget": 0.995,
+      "defenseTarget": 1.005,
+      "confidence": 0.34,
+      "note": "Slavia won both 2022 Conference League meetings with Fenerbahce, but lost the much newer 2024 Europa League meeting in Prague 1-2. Current match is in Istanbul, so the signal is deliberately modest."
+    }
+  },
+  "slovanbratislava": {
+    "stuttgart": {
+      "venue": "home",
+      "sample": 1,
+      "wins": 0,
+      "draws": 0,
+      "losses": 1,
+      "goalsFor": 1,
+      "goalsAgainst": 3,
+      "attackTarget": 0.975,
+      "defenseTarget": 1.025,
+      "confidence": 0.66,
+      "note": "Exact venue repeat: Stuttgart won 3-1 away to Slovan Bratislava in January 2025; Slovan host Stuttgart again in 2026/27."
+    },
+    "lille": {
+      "venue": "away",
+      "sample": 2,
+      "wins": 0,
+      "draws": 1,
+      "losses": 1,
+      "goalsFor": 2,
+      "goalsAgainst": 3,
+      "attackTarget": 0.985,
+      "defenseTarget": 1.015,
+      "confidence": 0.34,
+      "note": "2023/24 Conference League: Slovan lost 2-1 at Lille and drew 1-1 at home. The 2026/27 match is again in Lille."
+    }
+  },
+  "stuttgart": {
+    "slovanbratislava": {
+      "venue": "away",
+      "sample": 1,
+      "wins": 1,
+      "draws": 0,
+      "losses": 0,
+      "goalsFor": 3,
+      "goalsAgainst": 1,
+      "attackTarget": 1.025,
+      "defenseTarget": 0.975,
+      "confidence": 0.66,
+      "note": "Exact venue repeat: Stuttgart won 3-1 away to Slovan Bratislava in January 2025."
+    }
+  },
+  "aek": {
+    "real": {
+      "venue": "home",
+      "sample": 2,
+      "wins": 0,
+      "draws": 2,
+      "losses": 0,
+      "goalsFor": 5,
+      "goalsAgainst": 5,
+      "attackTarget": 1.005,
+      "defenseTarget": 1.005,
+      "confidence": 0.12,
+      "note": "2002/03 Champions League: AEK and Real Madrid drew both meetings, 5-5 on aggregate. The age of the matchup keeps this almost neutral."
+    }
+  },
+  "lask": {
+    "liverpool": {
+      "venue": "home",
+      "sample": 2,
+      "wins": 0,
+      "draws": 0,
+      "losses": 2,
+      "goalsFor": 1,
+      "goalsAgainst": 7,
+      "attackTarget": 0.97,
+      "defenseTarget": 1.03,
+      "confidence": 0.58,
+      "note": "2023/24 Europa League: Liverpool beat LASK 3-1 in Linz and 4-0 at Anfield. The 2026/27 match is again in Linz."
+    },
+    "sporting": {
+      "venue": "away",
+      "sample": 3,
+      "wins": 2,
+      "draws": 0,
+      "losses": 1,
+      "goalsFor": 8,
+      "goalsAgainst": 3,
+      "attackTarget": 1.01,
+      "defenseTarget": 0.995,
+      "confidence": 0.24,
+      "note": "LASK are W2 L1 in three Europa League meetings with Sporting, including a 4-1 away win in the 2020/21 play-off and a 1-2 away loss in 2019/20. Age keeps the effect small."
+    }
+  },
+  "bodo": {
+    "atleti": {
+      "sample": 1,
+      "wins": 1,
+      "draws": 0,
+      "losses": 0,
+      "goalsFor": 2,
+      "goalsAgainst": 1,
+      "attackTarget": 1.022,
+      "defenseTarget": 0.982,
+      "confidence": 0.56,
+      "note": "Very recent direct H2H: Bodo/Glimt won 2-1 away to Atletico in January 2026. Venue flips to Bodo in 2026/27, so the signal is strong but not treated as an exact-venue repeat."
+    }
+  },
+  "arsenal": {
+    "real": {
+      "venue": "home",
+      "sample": 1,
+      "wins": 1,
+      "draws": 0,
+      "losses": 0,
+      "goalsFor": 3,
+      "goalsAgainst": 0,
+      "attackTarget": 1.03,
+      "defenseTarget": 0.97,
+      "confidence": 0.68,
+      "note": "Exact recent repeat: Arsenal beat Real Madrid 3-0 in London in April 2025."
+    },
+    "slavia": {
+      "venue": "away",
+      "sample": 1,
+      "wins": 1,
+      "draws": 0,
+      "losses": 0,
+      "goalsFor": 3,
+      "goalsAgainst": 0,
+      "attackTarget": 1.03,
+      "defenseTarget": 0.97,
+      "confidence": 0.72,
+      "note": "Exact very recent repeat: Arsenal won 3-0 away to Slavia Praha in November 2025."
+    },
+    "bayern": {
+      "venue": "away",
+      "sample": 1,
+      "wins": 0,
+      "draws": 0,
+      "losses": 1,
+      "goalsFor": 0,
+      "goalsAgainst": 1,
+      "attackTarget": 0.985,
+      "defenseTarget": 1.015,
+      "confidence": 0.52,
+      "note": "Exact venue repeat: Arsenal lost 1-0 away to Bayern in April 2024; the newer 3-1 home win over Bayern remains in the recent sample."
+    }
+  },
+  "barcelona": {
+    "galatasaray": {
+      "venue": "away",
+      "sample": 2,
+      "wins": 1,
+      "draws": 1,
+      "losses": 0,
+      "goalsFor": 2,
+      "goalsAgainst": 1,
+      "attackTarget": 1.018,
+      "defenseTarget": 0.985,
+      "confidence": 0.44,
+      "note": "Recent Europa League H2H in 2022: 0-0 in Barcelona and a 2-1 Barcelona win in Istanbul. The 2026/27 fixture is again in Istanbul."
+    },
+    "psg": {
+      "venue": "away",
+      "sample": 1,
+      "wins": 1,
+      "draws": 0,
+      "losses": 0,
+      "goalsFor": 3,
+      "goalsAgainst": 2,
+      "attackTarget": 1.02,
+      "defenseTarget": 1.005,
+      "confidence": 0.46,
+      "note": "Exact venue H2H: Barcelona won 3-2 away to Paris in April 2024; the newer 2025/26 home defeat to Paris is in the recent form sample."
+    }
+  },
+  "atleti": {
+    "liverpool": {
+      "venue": "away",
+      "sample": 1,
+      "wins": 0,
+      "draws": 0,
+      "losses": 1,
+      "goalsFor": 2,
+      "goalsAgainst": 3,
+      "attackTarget": 1.005,
+      "defenseTarget": 1.02,
+      "confidence": 0.66,
+      "note": "Exact very recent repeat: Atletico lost 3-2 at Liverpool in September 2025."
+    },
+    "manu": {
+      "venue": "home",
+      "sample": 1,
+      "wins": 0,
+      "draws": 1,
+      "losses": 0,
+      "goalsFor": 1,
+      "goalsAgainst": 1,
+      "attackTarget": 1,
+      "defenseTarget": 1,
+      "confidence": 0.38,
+      "note": "Same-venue H2H: Atletico drew 1-1 at home to Manchester United in February 2022."
+    },
+    "psv": {
+      "venue": "away",
+      "sample": 1,
+      "wins": 1,
+      "draws": 0,
+      "losses": 0,
+      "goalsFor": 3,
+      "goalsAgainst": 2,
+      "attackTarget": 1.02,
+      "defenseTarget": 1.005,
+      "confidence": 0.68,
+      "note": "Exact very recent repeat: Atletico won 3-2 away to PSV in December 2025."
+    }
+  },
+  "bvb": {
+    "villareal": {
+      "venue": "home",
+      "sample": 1,
+      "wins": 1,
+      "draws": 0,
+      "losses": 0,
+      "goalsFor": 4,
+      "goalsAgainst": 0,
+      "attackTarget": 1.045,
+      "defenseTarget": 0.965,
+      "confidence": 0.64,
+      "note": "Exact recent repeat: Dortmund beat Villarreal 4-0 at home in the 2025/26 Champions League; the 2026/27 fixture is again in Dortmund."
+    },
+    "inter": {
+      "venue": "home",
+      "sample": 1,
+      "wins": 0,
+      "draws": 0,
+      "losses": 1,
+      "goalsFor": 0,
+      "goalsAgainst": 2,
+      "attackTarget": 0.97,
+      "defenseTarget": 1.03,
+      "confidence": 0.58,
+      "note": "Exact recent repeat: Inter won 2-0 in Dortmund in January 2026; the 2026/27 meeting is again at Dortmund."
+    },
+    "bodo": {
+      "sample": 1,
+      "wins": 0,
+      "draws": 1,
+      "losses": 0,
+      "goalsFor": 2,
+      "goalsAgainst": 2,
+      "attackTarget": 1.005,
+      "defenseTarget": 1.005,
+      "confidence": 0.38,
+      "note": "Very recent H2H: Dortmund and Bodo/Glimt drew 2-2 in Dortmund in December 2025. Venue flips in 2026/27, so the weight is moderate."
+    }
+  },
+  "roma": {
+    "slovanbratislava": {
+      "venue": "home",
+      "sample": 2,
+      "wins": 0,
+      "draws": 1,
+      "losses": 1,
+      "goalsFor": 1,
+      "goalsAgainst": 2,
+      "attackTarget": 0.995,
+      "defenseTarget": 1.005,
+      "confidence": 0.12,
+      "note": "2011/12 Europa League play-off: Roma drew 1-1 at home to Slovan Bratislava after a 0-1 away loss. The exact home venue repeats in 2026/27, but age keeps the effect tiny."
+    },
+    "lille": {
+      "venue": "home",
+      "sample": 1,
+      "wins": 0,
+      "draws": 0,
+      "losses": 1,
+      "goalsFor": 0,
+      "goalsAgainst": 1,
+      "attackTarget": 0.975,
+      "defenseTarget": 1.02,
+      "confidence": 0.6,
+      "note": "Exact recent repeat: Lille won 1-0 away to Roma in October 2025; Roma host Lille again in 2026/27."
+    },
+    "manu": {
+      "venue": "away",
+      "sample": 2,
+      "wins": 1,
+      "draws": 0,
+      "losses": 1,
+      "goalsFor": 5,
+      "goalsAgainst": 8,
+      "attackTarget": 0.985,
+      "defenseTarget": 1.02,
+      "confidence": 0.2,
+      "note": "2020/21 Europa League semi-final: Manchester United won 6-2 at Old Trafford and Roma won the return 3-2. Current fixture is again at Old Trafford, but age keeps the signal small."
+    }
+  },
+  "astonvilla": {
+    "brugge": {
+      "venue": "away",
+      "sample": 1,
+      "wins": 0,
+      "draws": 0,
+      "losses": 1,
+      "goalsFor": 0,
+      "goalsAgainst": 1,
+      "attackTarget": 0.975,
+      "defenseTarget": 1.02,
+      "confidence": 0.6,
+      "note": "Exact venue repeat: Club Brugge beat Aston Villa 1-0 in Bruges in November 2024; Villa return to Bruges in 2026/27."
+    },
+    "psg": {
+      "venue": "home",
+      "sample": 1,
+      "wins": 1,
+      "draws": 0,
+      "losses": 0,
+      "goalsFor": 3,
+      "goalsAgainst": 2,
+      "attackTarget": 1.025,
+      "defenseTarget": 1.005,
+      "confidence": 0.54,
+      "note": "Exact venue repeat: Aston Villa beat Paris 3-2 at Villa Park in the April 2025 Champions League quarter-final second leg."
+    },
+    "fenerbahce": {
+      "sample": 1,
+      "wins": 1,
+      "draws": 0,
+      "losses": 0,
+      "goalsFor": 1,
+      "goalsAgainst": 0,
+      "attackTarget": 1.02,
+      "defenseTarget": 0.98,
+      "confidence": 0.52,
+      "note": "Very recent direct H2H: Aston Villa won 1-0 away to Fenerbahce in January 2026. Venue flips to Villa Park in 2026/27."
+    }
+  },
+  "porto": {
+    "psv": {
+      "sample": 4,
+      "wins": 2,
+      "draws": 1,
+      "losses": 1,
+      "goalsFor": 5,
+      "goalsAgainst": 7,
+      "attackTarget": 0.995,
+      "defenseTarget": 1.005,
+      "confidence": 0.1,
+      "note": "UEFA H2H: Porto lead PSV W2 D1 L1 across four meetings, but all are from 1988/89 and 1992/93. Retained only as a tiny historical pair signal."
+    },
+    "liverpool": {
+      "venue": "away",
+      "sample": 8,
+      "wins": 0,
+      "draws": 2,
+      "losses": 6,
+      "goalsFor": 4,
+      "goalsAgainst": 23,
+      "attackTarget": 0.965,
+      "defenseTarget": 1.04,
+      "confidence": 0.58,
+      "note": "UEFA Champions League H2H before 2026/27: Porto are W0 D2 L6 against Liverpool, 4-23 on goals. The new fixture is at Anfield, where Porto have never won."
+    },
+    "city": {
+      "venue": "home",
+      "sample": 2,
+      "wins": 0,
+      "draws": 1,
+      "losses": 1,
+      "goalsFor": 1,
+      "goalsAgainst": 3,
+      "attackTarget": 0.99,
+      "defenseTarget": 1.01,
+      "confidence": 0.18,
+      "note": "2020/21 Champions League group: Porto lost 3-1 in Manchester and drew 0-0 at home. Current match is again in Porto; age keeps the signal light."
+    }
+  },
+  "manu": {
+    "atleti": {
+      "venue": "away",
+      "sample": 1,
+      "wins": 0,
+      "draws": 1,
+      "losses": 0,
+      "goalsFor": 1,
+      "goalsAgainst": 1,
+      "attackTarget": 1,
+      "defenseTarget": 1,
+      "confidence": 0.38,
+      "note": "Same-venue H2H: Manchester United drew 1-1 at Atletico in the 2021/22 Champions League round of 16."
+    },
+    "villareal": {
+      "venue": "away",
+      "sample": 1,
+      "wins": 1,
+      "draws": 0,
+      "losses": 0,
+      "goalsFor": 2,
+      "goalsAgainst": 0,
+      "attackTarget": 1.02,
+      "defenseTarget": 0.98,
+      "confidence": 0.36,
+      "note": "Same-venue recent H2H: Manchester United won 2-0 away to Villarreal in November 2021."
+    },
+    "bayern": {
+      "venue": "home",
+      "sample": 1,
+      "wins": 0,
+      "draws": 0,
+      "losses": 1,
+      "goalsFor": 0,
+      "goalsAgainst": 1,
+      "attackTarget": 0.985,
+      "defenseTarget": 1.015,
+      "confidence": 0.42,
+      "note": "Same-venue recent H2H: Bayern won 1-0 at Old Trafford in December 2023."
+    }
+  },
+  "brugge": {
+    "bodo": {
+      "venue": "home",
+      "sample": 2,
+      "wins": 2,
+      "draws": 0,
+      "losses": 0,
+      "goalsFor": 4,
+      "goalsAgainst": 1,
+      "attackTarget": 1.025,
+      "defenseTarget": 0.98,
+      "confidence": 0.58,
+      "note": "2023/24 Conference League: Club Brugge beat Bodo/Glimt 1-0 away and 3-1 at home. The 2026/27 fixture is again in Bruges."
+    },
+    "astonvilla": {
+      "venue": "home",
+      "sample": 1,
+      "wins": 1,
+      "draws": 0,
+      "losses": 0,
+      "goalsFor": 1,
+      "goalsAgainst": 0,
+      "attackTarget": 1.02,
+      "defenseTarget": 0.98,
+      "confidence": 0.6,
+      "note": "Exact venue repeat: Club Brugge beat Aston Villa 1-0 at home in November 2024."
+    }
+  },
+  "realbetis": {
+    "feyenoord": {
+      "venue": "home",
+      "sample": 1,
+      "wins": 1,
+      "draws": 0,
+      "losses": 0,
+      "goalsFor": 2,
+      "goalsAgainst": 1,
+      "attackTarget": 1.025,
+      "defenseTarget": 0.99,
+      "confidence": 0.66,
+      "note": "Exact very recent repeat: Real Betis beat Feyenoord 2-1 at home in January 2026 and host Feyenoord again in 2026/27."
+    }
+  },
+  "psv": {
+    "shakhtar": {
+      "venue": "home",
+      "sample": 1,
+      "wins": 1,
+      "draws": 0,
+      "losses": 0,
+      "goalsFor": 3,
+      "goalsAgainst": 2,
+      "attackTarget": 1.025,
+      "defenseTarget": 1,
+      "confidence": 0.62,
+      "note": "Exact venue repeat: PSV beat Shakhtar 3-2 in Eindhoven in November 2024; the 2026/27 fixture is again at PSV."
+    },
+    "atleti": {
+      "venue": "home",
+      "sample": 1,
+      "wins": 0,
+      "draws": 0,
+      "losses": 1,
+      "goalsFor": 2,
+      "goalsAgainst": 3,
+      "attackTarget": 1.005,
+      "defenseTarget": 1.025,
+      "confidence": 0.68,
+      "note": "Exact very recent repeat: Atletico won 3-2 at PSV in December 2025; the 2026/27 meeting is again in Eindhoven."
+    }
+  },
+  "besiktas": {
+    "hapoelbeersheva": {
+      "sample": 2,
+      "wins": 2,
+      "draws": 0,
+      "losses": 0,
+      "goalsFor": 5,
+      "goalsAgainst": 2,
+      "attackTarget": 1.02,
+      "defenseTarget": 0.98,
+      "confidence": 0.28,
+      "note": "2016/17 UEFA Europa League round of 32: Besiktas won both legs against Hapoel Beer-Sheva."
+    }
+  },
+  "shakhtar": {
+    "psv": {
+      "venue": "away",
+      "sample": 1,
+      "wins": 0,
+      "draws": 0,
+      "losses": 1,
+      "goalsFor": 2,
+      "goalsAgainst": 3,
+      "attackTarget": 1.02,
+      "defenseTarget": 1.02,
+      "confidence": 0.46,
+      "note": "Exact recent venue analogue: PSV beat Shakhtar 3-2 in Eindhoven in the 2024/25 Champions League."
+    },
+    "fenerbahce": {
+      "sample": 2,
+      "wins": 1,
+      "draws": 1,
+      "losses": 0,
+      "goalsFor": 3,
+      "goalsAgainst": 0,
+      "attackTarget": 1.018,
+      "defenseTarget": 0.982,
+      "confidence": 0.24,
+      "note": "2015/16 Champions League qualifying: 0-0 in Istanbul and 3-0 to Shakhtar in the return. Kept low because of age; the much newer Besiktas tie supplies the Turkish-association analogue."
+    },
+    "leipzig": {
+      "venue": "away",
+      "sample": 1,
+      "wins": 1,
+      "draws": 0,
+      "losses": 0,
+      "goalsFor": 4,
+      "goalsAgainst": 1,
+      "attackTarget": 1.03,
+      "defenseTarget": 0.975,
+      "confidence": 0.28,
+      "note": "Same-venue history: Shakhtar won 4-1 at Leipzig in the 2022/23 Champions League; the reverse fixture went 0-4, so the weight stays modest."
+    },
+    "real": {
+      "sample": 8,
+      "wins": 2,
+      "draws": 1,
+      "losses": 5,
+      "goalsFor": 11,
+      "goalsAgainst": 20,
+      "attackTarget": 0.985,
+      "defenseTarget": 1.02,
+      "confidence": 0.24,
+      "note": "UEFA all-time Champions League H2H through 2022/23: Shakhtar W2 D1 L5 vs Real Madrid. Recency is mixed, so this is only a small negative layer."
+    },
+    "sporting": {
+      "sample": 2,
+      "wins": 0,
+      "draws": 0,
+      "losses": 2,
+      "goalsFor": 0,
+      "goalsAgainst": 2,
+      "attackTarget": 0.99,
+      "defenseTarget": 1.01,
+      "confidence": 0.1,
+      "note": "Sporting won both 2008/09 group meetings 1-0; retained only as a tiny historical signal."
+    }
+  },
+  "villareal": {
+    "bvb": {
+      "venue": "away",
+      "sample": 1,
+      "wins": 0,
+      "draws": 0,
+      "losses": 1,
+      "goalsFor": 0,
+      "goalsAgainst": 4,
+      "attackTarget": 0.965,
+      "defenseTarget": 1.035,
+      "confidence": 0.32,
+      "note": "Very recent same-venue repeat: Borussia Dortmund beat Villarreal 4-0 in Dortmund in the 2025/26 Champions League."
+    },
+    "liverpool": {
+      "venue": "away",
+      "sample": 2,
+      "wins": 0,
+      "draws": 0,
+      "losses": 2,
+      "goalsFor": 2,
+      "goalsAgainst": 5,
+      "attackTarget": 0.98,
+      "defenseTarget": 1.02,
+      "confidence": 0.24,
+      "note": "2021/22 Champions League semi-final: Villarreal lost both legs to Liverpool; age keeps the weight low."
+    },
+    "manu": {
+      "venue": "home",
+      "sample": 3,
+      "wins": 0,
+      "draws": 2,
+      "losses": 1,
+      "goalsFor": 0,
+      "goalsAgainst": 2,
+      "attackTarget": 0.985,
+      "defenseTarget": 1.01,
+      "confidence": 0.2,
+      "note": "Champions League home meetings with Manchester United: two 0-0 draws followed by a 0-2 defeat in 2021."
+    }
+  },
+  "lille": {
+    "bayern": {
+      "sample": 2,
+      "wins": 0,
+      "draws": 0,
+      "losses": 2,
+      "goalsFor": 1,
+      "goalsAgainst": 7,
+      "attackTarget": 0.985,
+      "defenseTarget": 1.015,
+      "confidence": 0.16,
+      "note": "2012/13 Champions League: Bayern won both meetings; age of the tie keeps the model weight very low."
+    },
+    "slovanbratislava": {
+      "sample": 2,
+      "wins": 1,
+      "draws": 1,
+      "losses": 0,
+      "goalsFor": 3,
+      "goalsAgainst": 2,
+      "attackTarget": 1.015,
+      "defenseTarget": 0.985,
+      "confidence": 0.36,
+      "note": "2023/24 Conference League: Lille beat Slovan Bratislava at home and drew away."
+    }
+  },
+  "galatasaray": {
+    "barcelona": {
+      "sample": 2,
+      "wins": 0,
+      "draws": 1,
+      "losses": 1,
+      "goalsFor": 1,
+      "goalsAgainst": 2,
+      "attackTarget": 0.985,
+      "defenseTarget": 1.015,
+      "confidence": 0.36,
+      "note": "Most relevant recent H2H is the 2021/22 Europa League round of 16: 0-0 at Camp Nou and 1-2 in Istanbul. Older Champions League meetings are not allowed to dominate the current model."
+    },
+    "psg": {
+      "sample": 4,
+      "wins": 1,
+      "draws": 0,
+      "losses": 3,
+      "goalsFor": 1,
+      "goalsAgainst": 8,
+      "attackTarget": 0.98,
+      "defenseTarget": 1.025,
+      "confidence": 0.26,
+      "note": "UEFA all-time H2H is Galatasaray W1 L3 vs Paris; the most recent away meeting was a 0-5 loss in Paris in December 2019, so the signal is negative but age-discounted."
+    }
+  },
+  "fenerbahce": {
+    "astonvilla": {
+      "sample": 3,
+      "wins": 0,
+      "draws": 0,
+      "losses": 3,
+      "goalsFor": 0,
+      "goalsAgainst": 7,
+      "attackTarget": 0.975,
+      "defenseTarget": 1.025,
+      "confidence": 0.34,
+      "note": "UEFA H2H: Fenerbahce have lost all three competitive meetings with Aston Villa without scoring; the freshest is the 0-1 home loss in January 2026, while the two 1977 games are heavily age-discounted."
+    },
+    "slavia": {
+      "sample": 3,
+      "wins": 1,
+      "draws": 0,
+      "losses": 2,
+      "goalsFor": 6,
+      "goalsAgainst": 7,
+      "attackTarget": 0.995,
+      "defenseTarget": 1.008,
+      "confidence": 0.27,
+      "note": "UEFA H2H: Slavia won both 2022 Conference League meetings, but Fenerbahce won the much newer 2024 Europa League trip to Prague 2-1."
+    },
+    "shakhtar": {
+      "sample": 2,
+      "wins": 0,
+      "draws": 1,
+      "losses": 1,
+      "goalsFor": 0,
+      "goalsAgainst": 3,
+      "attackTarget": 0.985,
+      "defenseTarget": 1.015,
+      "confidence": 0.18,
+      "note": "2015/16 Champions League qualifying: Fenerbahce drew 0-0 at home and lost 3-0 away to Shakhtar. Low weight because the tie is old."
+    }
+  },
+  "city": {
+    "psg": {
+      "sample": 1,
+      "wins": 0,
+      "draws": 0,
+      "losses": 1,
+      "goalsFor": 2,
+      "goalsAgainst": 4,
+      "attackTarget": 0.985,
+      "defenseTarget": 1.02,
+      "confidence": 0.44,
+      "note": "Very recent direct H2H: Paris beat Manchester City 4-2 in January 2025. The 2026/27 match is in Manchester, so venue reversal limits the weight."
+    },
+    "napoli": {
+      "venue": "home",
+      "sample": 1,
+      "wins": 1,
+      "draws": 0,
+      "losses": 0,
+      "goalsFor": 2,
+      "goalsAgainst": 0,
+      "attackTarget": 1.022,
+      "defenseTarget": 0.978,
+      "confidence": 0.68,
+      "note": "Exact very recent repeat: Manchester City beat Napoli 2-0 at home in September 2025."
+    },
+    "porto": {
+      "venue": "away",
+      "sample": 1,
+      "wins": 0,
+      "draws": 1,
+      "losses": 0,
+      "goalsFor": 0,
+      "goalsAgainst": 0,
+      "attackTarget": 0.995,
+      "defenseTarget": 0.985,
+      "confidence": 0.22,
+      "note": "Same-venue H2H: Porto and Manchester City drew 0-0 in Porto in December 2020. Age keeps the effect small."
+    },
+    "sporting": {
+      "venue": "home",
+      "sample": 1,
+      "wins": 0,
+      "draws": 1,
+      "losses": 0,
+      "goalsFor": 0,
+      "goalsAgainst": 0,
+      "attackTarget": 0.99,
+      "defenseTarget": 0.99,
+      "confidence": 0.22,
+      "note": "Same-venue H2H: Manchester City drew 0-0 at home to Sporting in March 2022; the much newer 1-4 loss in Lisbon is captured in recent form."
+    }
+  },
+  "psg": {
+    "astonvilla": {
+      "venue": "away",
+      "sample": 1,
+      "wins": 0,
+      "draws": 0,
+      "losses": 1,
+      "goalsFor": 2,
+      "goalsAgainst": 3,
+      "attackTarget": 1,
+      "defenseTarget": 1.025,
+      "confidence": 0.58,
+      "note": "Exact venue repeat: Aston Villa beat Paris 3-2 at Villa Park in April 2025; Paris return to Villa Park in 2026/27."
+    },
+    "barcelona": {
+      "venue": "home",
+      "sample": 1,
+      "wins": 0,
+      "draws": 0,
+      "losses": 1,
+      "goalsFor": 2,
+      "goalsAgainst": 3,
+      "attackTarget": 1.005,
+      "defenseTarget": 1.025,
+      "confidence": 0.46,
+      "note": "Same-venue recent H2H: Barcelona won 3-2 away to Paris in April 2024; the newer 2025/26 H2H remains in recent form."
+    },
+    "galatasaray": {
+      "venue": "home",
+      "sample": 4,
+      "wins": 3,
+      "draws": 0,
+      "losses": 1,
+      "goalsFor": 8,
+      "goalsAgainst": 1,
+      "attackTarget": 1.025,
+      "defenseTarget": 0.975,
+      "confidence": 0.3,
+      "note": "UEFA all-time H2H is Paris W3 L1 vs Galatasaray, including a 5-0 Paris home win in December 2019. Age keeps this below recent-form layers."
+    }
+  },
+  "bayern": {
+    "arsenal": {
+      "venue": "home",
+      "sample": 1,
+      "wins": 1,
+      "draws": 0,
+      "losses": 0,
+      "goalsFor": 1,
+      "goalsAgainst": 0,
+      "attackTarget": 1.02,
+      "defenseTarget": 0.98,
+      "confidence": 0.52,
+      "note": "Exact venue repeat: Bayern beat Arsenal 1-0 in Munich in April 2024."
+    },
+    "manu": {
+      "venue": "away",
+      "sample": 1,
+      "wins": 1,
+      "draws": 0,
+      "losses": 0,
+      "goalsFor": 1,
+      "goalsAgainst": 0,
+      "attackTarget": 1.018,
+      "defenseTarget": 0.982,
+      "confidence": 0.48,
+      "note": "Exact venue repeat: Bayern won 1-0 at Old Trafford in December 2023."
+    }
+  },
+  "real": {
+    "arsenal": {
+      "venue": "away",
+      "sample": 1,
+      "wins": 0,
+      "draws": 0,
+      "losses": 1,
+      "goalsFor": 0,
+      "goalsAgainst": 3,
+      "attackTarget": 0.97,
+      "defenseTarget": 1.035,
+      "confidence": 0.66,
+      "note": "Exact recent repeat: Arsenal beat Real Madrid 3-0 in London in April 2025."
+    },
+    "leipzig": {
+      "venue": "home",
+      "sample": 1,
+      "wins": 0,
+      "draws": 1,
+      "losses": 0,
+      "goalsFor": 1,
+      "goalsAgainst": 1,
+      "attackTarget": 1,
+      "defenseTarget": 1,
+      "confidence": 0.42,
+      "note": "Same-venue recent H2H: Real Madrid drew 1-1 with Leipzig at the Bernabeu in March 2024."
+    }
+  },
+  "liverpool": {
+    "atleti": {
+      "venue": "home",
+      "sample": 1,
+      "wins": 1,
+      "draws": 0,
+      "losses": 0,
+      "goalsFor": 3,
+      "goalsAgainst": 2,
+      "attackTarget": 1.02,
+      "defenseTarget": 1.005,
+      "confidence": 0.66,
+      "note": "Exact very recent repeat: Liverpool beat Atletico 3-2 at Anfield in September 2025."
+    },
+    "inter": {
+      "venue": "away",
+      "sample": 1,
+      "wins": 1,
+      "draws": 0,
+      "losses": 0,
+      "goalsFor": 1,
+      "goalsAgainst": 0,
+      "attackTarget": 1.02,
+      "defenseTarget": 0.98,
+      "confidence": 0.66,
+      "note": "Exact very recent repeat: Liverpool won 1-0 away to Inter in December 2025."
+    },
+    "porto": {
+      "venue": "home",
+      "sample": 8,
+      "wins": 6,
+      "draws": 2,
+      "losses": 0,
+      "goalsFor": 23,
+      "goalsAgainst": 4,
+      "attackTarget": 1.035,
+      "defenseTarget": 0.97,
+      "confidence": 0.58,
+      "note": "UEFA Champions League H2H: Liverpool are unbeaten in eight meetings with Porto (W6 D2), 23-4 on goals. The 2026/27 meeting is at Anfield."
+    },
+    "villareal": {
+      "venue": "home",
+      "sample": 1,
+      "wins": 1,
+      "draws": 0,
+      "losses": 0,
+      "goalsFor": 2,
+      "goalsAgainst": 0,
+      "attackTarget": 1.02,
+      "defenseTarget": 0.98,
+      "confidence": 0.34,
+      "note": "Same-venue H2H: Liverpool beat Villarreal 2-0 at Anfield in the 2022 Champions League semi-final first leg."
+    },
+    "lask": {
+      "venue": "away",
+      "sample": 1,
+      "wins": 1,
+      "draws": 0,
+      "losses": 0,
+      "goalsFor": 3,
+      "goalsAgainst": 1,
+      "attackTarget": 1.025,
+      "defenseTarget": 0.99,
+      "confidence": 0.48,
+      "note": "Exact venue analogue: Liverpool won 3-1 away to LASK in September 2023."
+    }
+  },
+  "inter": {
+    "liverpool": {
+      "venue": "home",
+      "sample": 1,
+      "wins": 0,
+      "draws": 0,
+      "losses": 1,
+      "goalsFor": 0,
+      "goalsAgainst": 1,
+      "attackTarget": 0.98,
+      "defenseTarget": 1.02,
+      "confidence": 0.66,
+      "note": "Exact very recent repeat: Liverpool won 1-0 at Inter in December 2025."
+    },
+    "bvb": {
+      "venue": "away",
+      "sample": 1,
+      "wins": 1,
+      "draws": 0,
+      "losses": 0,
+      "goalsFor": 2,
+      "goalsAgainst": 0,
+      "attackTarget": 1.02,
+      "defenseTarget": 0.98,
+      "confidence": 0.66,
+      "note": "Exact very recent repeat: Inter won 2-0 in Dortmund in January 2026."
+    }
+  }
+});
 
   const analogueSignals = Object.freeze({
     viktoriaplzen: Object.freeze({
@@ -2502,7 +2665,7 @@
   });
 
   window.UCLDRAW_PREDICTION_CONTEXT_DATA = Object.freeze({
-    version: 34,
+    version: 35,
     reviewedAt: '2026-09-02',
     matches,
     historicalSignals,

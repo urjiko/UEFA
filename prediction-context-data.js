@@ -1392,6 +1392,41 @@
 
     ['2026-08-20','cskasofia','crete','GRE','away',0,3],
     ['2026-08-27','cskasofia','crete','GRE','home',0,2],
+
+    // Conference League Pot 4 (official): Sint-Truidense, Brann, Kairat, Craiova.
+    ['2026-08-20','truidense','omonia','CYP','home',1,0],
+    ['2026-08-27','truidense','omonia','CYP','away',2,4],
+
+    ['2025-09-25','brann','lille','FRA','away',1,2],
+    ['2025-10-02','brann','utrecht','NED','home',1,0],
+    ['2025-10-23','brann','rangers','SCO','home',3,0],
+    ['2025-11-06','brann','bologna','ITA','away',0,0],
+    ['2025-11-27','brann','paok','GRE','away',1,1],
+    ['2025-12-11','brann','fenerbahce','TUR','home',0,4],
+    ['2026-01-22','brann','midtjylland','DEN','home',3,3],
+    ['2026-01-29','brann','strumgraz','AUT','away',0,1],
+    ['2026-02-19','brann','bologna','ITA','home',0,1],
+    ['2026-02-26','brann','bologna','ITA','away',0,1],
+
+    ['2025-09-18','kairat','sporting','POR','away',1,4],
+    ['2025-09-30','kairat','real','ESP','home',0,5],
+    ['2025-10-21','kairat','pafos','CYP','home',0,0],
+    ['2025-11-05','kairat','inter','ITA','away',1,2],
+    ['2025-11-26','kairat','copenhagen','DEN','away',2,3],
+    ['2025-12-09','kairat','olympiacos','GRE','home',0,1],
+    ['2026-01-20','kairat','brugge','BEL','home',1,4],
+    ['2026-01-28','kairat','arsenal','ENG','away',2,3],
+    ['2026-08-20','kairat','anderlecht','BEL','home',0,3],
+    ['2026-08-27','kairat','anderlecht','BEL','away',0,3],
+
+    ['2025-10-02','craiova','rakow','POL','away',0,2],
+    ['2025-10-23','craiova','noah','ARM','home',1,1],
+    ['2025-11-06','craiova','rapid','AUT','away',1,0],
+    ['2025-11-27','craiova','mainz','GER','home',1,0],
+    ['2025-12-11','craiova','spartapraha','CZE','home',1,2],
+    ['2025-12-18','craiova','aek','GRE','away',2,3],
+    ['2026-08-20','craiova','ararat','ARM','home',1,1],
+    ['2026-08-27','craiova','ararat','ARM','away',0,1],
   ].map(([date, teamSlug, opponentSlug, opponentCountry, venue, goalsFor, goalsAgainst]) => Object.freeze({
     date, teamSlug, opponentSlug, opponentCountry, venue, goalsFor, goalsAgainst
   })));
@@ -3795,7 +3830,7 @@
   });
 
   window.UCLDRAW_PREDICTION_CONTEXT_DATA = Object.freeze({
-    version: 50,
+    version: 51,
     reviewedAt: '2026-09-02',
     matches,
     historicalSignals,

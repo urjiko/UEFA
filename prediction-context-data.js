@@ -262,6 +262,18 @@
         note: 'UEFA: only one loss in the last nine home matches against English visitors (W5 D3).'
       })
     }),
+    shakhtar: Object.freeze({
+      TUR: Object.freeze({
+        sample: 10,
+        wins: 9,
+        draws: 1,
+        losses: 0,
+        attackTarget: 1.030,
+        defenseTarget: 0.970,
+        confidence: 0.66,
+        note: 'UEFA information kit: Shakhtar are W9 D1 L0 in ten competitive meetings with Turkish clubs before the 2026/27 league phase. The 2025 Besiktas tie (4-2 away, 2-0 home) is the freshest analogue for Fenerbahce.'
+      })
+    }),
     besiktas: Object.freeze({
       GER: Object.freeze({
         sample: 14,
@@ -412,7 +424,7 @@
   });
 
   window.UCLDRAW_PREDICTION_CONTEXT_DATA = Object.freeze({
-    version: 8,
+    version: 9,
     reviewedAt: '2026-09-02',
     matches,
     historicalSignals,

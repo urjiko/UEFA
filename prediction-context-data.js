@@ -1052,8 +1052,7 @@
     ['2025-11-27','celtavigo','ludogorets','BUL','away',2,3],
     ['2025-12-11','celtavigo','bologna','ITA','home',1,2],
     ['2026-01-22','celtavigo','lille','FRA','home',2,1],
-    ['2026-01-29','celtavigo','crvenazvezda','SRB','away',1,1]
-
+    ['2026-01-29','celtavigo','crvenazvezda','SRB','away',1,1],
 
     // Europa League Pot 4: Hoffenheim, 2024/25 Europa League league phase.
     ['2024-09-25','hoffenheim','midtjylland','DEN','away',1,1],
@@ -1109,166 +1108,186 @@
   // Long-run association facts remain deliberately tiny. They preserve patterns
   // that survive beyond one season without letting folklore overpower current strength.
   const historicalSignals = Object.freeze({
-    ferencvarosi: Object.freeze({
-      ITA: Object.freeze({
-        venue: 'away',
-        sample: 2,
-        wins: 0,
-        draws: 2,
-        losses: 0,
-        attackTarget: 1.010,
-        defenseTarget: 0.995,
-        confidence: 0.40,
-        note: 'Fresh Italian-club analogue: Ferencvaros drew 2-2 away to Fiorentina and 1-1 at home in the 2023/24 Conference League. The away split is used for the Milan trip.'
-      })
-    }),
-    sporting: Object.freeze({
-      TUR: Object.freeze({
-        sample: 10,
-        wins: 5,
-        draws: 3,
-        losses: 2,
-        attackTarget: 1.025,
-        defenseTarget: 0.980,
-        confidence: 0.50,
-        note: 'UEFA information kit: Sporting are W5 D3 L2 across ten competitive meetings with Turkish clubs; the freshest strong analogue is the 2021/22 Besiktas pair, won 4-1 away and 4-0 at home. Used conservatively for Galatasaray.'
-      })
-    }),
-    roma: Object.freeze({
-      TUR: Object.freeze({
-        sample: 2,
-        wins: 2,
-        draws: 0,
-        losses: 0,
-        attackTarget: 1.030,
-        defenseTarget: 0.970,
-        confidence: 0.34,
-        note: 'Roma beat Istanbul Basaksehir 4-0 at home and 3-0 away in the 2019/20 Europa League. It is a useful Turkish-club analogue for Fenerbahce, but age and single-opponent scope keep the weight modest.'
-      })
-    }),
-    brugge: Object.freeze({
-      ENG: Object.freeze({
-        venue: 'home',
-        sample: 14,
-        wins: 7,
-        draws: 3,
-        losses: 4,
-        attackTarget: 1.012,
-        defenseTarget: 0.995,
-        confidence: 0.30,
-        note: 'UEFA form guide gives Club Brugge a W7 D3 L4 home record against English clubs. Much of the positive record is old, so this is only a small home-specific layer; recent Villa and Arsenal results carry more weight.'
-      })
-    }),
-    galatasaray: Object.freeze({
-      GRE: Object.freeze({
-        sample: 7,
-        wins: 6,
-        draws: 0,
-        losses: 1,
-        attackTarget: 1.025,
-        defenseTarget: 0.975,
-        confidence: 0.58,
-        note: 'UEFA information kit: Galatasaray are W6 D0 L1 against Greek clubs, with the freshest meeting a 3-1 home win over PAOK in September 2024. This is used as the association analogue for the AEK Athens away fixture.'
-      }),
-      ENG: Object.freeze({
-        venue: 'home',
-        sample: 9,
-        wins: 5,
-        draws: 3,
-        losses: 1,
-        attackTarget: 1.025,
-        defenseTarget: 0.975,
-        confidence: 0.60,
-        note: 'UEFA: only one loss in the last nine home matches against English visitors (W5 D3).'
-      })
-    }),
-    liverpool: Object.freeze({
-      TUR: Object.freeze({
-        venue: 'away',
-        sample: 8,
-        wins: 1,
-        draws: 1,
-        losses: 6,
-        attackTarget: 0.970,
-        defenseTarget: 1.030,
-        confidence: 0.68,
-        note: 'UEFA: Liverpool had W1 D1 L4 in six away matches at Turkish clubs before September 2025, then lost 1-0 at Galatasaray twice in 2025/26. The current Fenerbahce trip therefore gets a strong but bounded Istanbul/Turkiye away signal.'
-      })
-    }),
-    shakhtar: Object.freeze({
-      TUR: Object.freeze({
-        sample: 10,
-        wins: 9,
-        draws: 1,
-        losses: 0,
-        attackTarget: 1.030,
-        defenseTarget: 0.970,
-        confidence: 0.66,
-        note: 'UEFA information kit: Shakhtar are W9 D1 L0 in ten competitive meetings with Turkish clubs before the 2026/27 league phase. The 2025 Besiktas tie (4-2 away, 2-0 home) is the freshest analogue for Fenerbahce.'
-      })
-    }),
-    besiktas: Object.freeze({
-      GER: Object.freeze({
-        sample: 14,
-        wins: 2,
-        draws: 1,
-        losses: 11,
-        attackTarget: 0.985,
-        defenseTarget: 1.015,
-        confidence: 0.35,
-        note: 'UEFA all-time association record before the 2026/27 league phase: W2 D1 L11 against German clubs.'
-      })
-    }),
-    lille: Object.freeze({
-      ENG: Object.freeze({
-        venue: 'away',
-        sample: 12,
-        wins: 1,
-        draws: 1,
-        losses: 10,
-        attackTarget: 0.975,
-        defenseTarget: 1.025,
-        confidence: 0.48,
-        note: 'UEFA association history plus recent Liverpool/Aston Villa trips: Lille have historically struggled away to English clubs.'
-      }),
-      ESP: Object.freeze({
-        venue: 'home',
-        sample: 9,
-        wins: 3,
-        draws: 5,
-        losses: 1,
-        attackTarget: 1.020,
-        defenseTarget: 0.980,
-        confidence: 0.52,
-        note: 'UEFA Spanish-opponent history, updated with the 1-0 home win over Real Madrid in 2024/25.'
-      }),
-      ITA: Object.freeze({
-        venue: 'away',
-        sample: 8,
-        wins: 6,
-        draws: 0,
-        losses: 2,
-        attackTarget: 1.020,
-        defenseTarget: 0.980,
-        confidence: 0.50,
-        note: 'UEFA Italian-opponent history, including recent away wins at Bologna and Roma.'
-      }),
-      TUR: Object.freeze({
-        venue: 'home',
-        sample: 3,
-        wins: 2,
-        draws: 1,
-        losses: 0,
-        attackTarget: 1.025,
-        defenseTarget: 0.975,
-        confidence: 0.56,
-        note: 'Lille are unbeaten at home in the relevant Turkish-club sample, with the 2-1 win over Fenerbahce in August 2024 the freshest analogue for Galatasaray.'
-      })
-    })
-  });
+  "ferencvarosi": {
+    "ITA": {
+      "venue": "away",
+      "sample": 2,
+      "wins": 0,
+      "draws": 2,
+      "losses": 0,
+      "attackTarget": 1.01,
+      "defenseTarget": 0.995,
+      "confidence": 0.4,
+      "note": "Fresh Italian-club analogue: Ferencvaros drew 2-2 away to Fiorentina and 1-1 at home in the 2023/24 Conference League. The away split is used for the Milan trip."
+    }
+  },
+  "sporting": {
+    "TUR": {
+      "sample": 10,
+      "wins": 5,
+      "draws": 3,
+      "losses": 2,
+      "attackTarget": 1.025,
+      "defenseTarget": 0.98,
+      "confidence": 0.5,
+      "note": "UEFA information kit: Sporting are W5 D3 L2 across ten competitive meetings with Turkish clubs; the freshest strong analogue is the 2021/22 Besiktas pair, won 4-1 away and 4-0 at home. Used conservatively for Galatasaray."
+    }
+  },
+  "roma": {
+    "TUR": {
+      "sample": 2,
+      "wins": 2,
+      "draws": 0,
+      "losses": 0,
+      "attackTarget": 1.03,
+      "defenseTarget": 0.97,
+      "confidence": 0.34,
+      "note": "Roma beat Istanbul Basaksehir 4-0 at home and 3-0 away in the 2019/20 Europa League. It is a useful Turkish-club analogue for Fenerbahce, but age and single-opponent scope keep the weight modest."
+    }
+  },
+  "brugge": {
+    "ENG": {
+      "venue": "home",
+      "sample": 14,
+      "wins": 7,
+      "draws": 3,
+      "losses": 4,
+      "attackTarget": 1.012,
+      "defenseTarget": 0.995,
+      "confidence": 0.3,
+      "note": "UEFA form guide gives Club Brugge a W7 D3 L4 home record against English clubs. Much of the positive record is old, so this is only a small home-specific layer; recent Villa and Arsenal results carry more weight."
+    }
+  },
+  "galatasaray": {
+    "GRE": {
+      "sample": 7,
+      "wins": 6,
+      "draws": 0,
+      "losses": 1,
+      "attackTarget": 1.025,
+      "defenseTarget": 0.975,
+      "confidence": 0.58,
+      "note": "UEFA information kit: Galatasaray are W6 D0 L1 against Greek clubs, with the freshest meeting a 3-1 home win over PAOK in September 2024. This is used as the association analogue for the AEK Athens away fixture."
+    },
+    "ENG": {
+      "venue": "home",
+      "sample": 9,
+      "wins": 5,
+      "draws": 3,
+      "losses": 1,
+      "attackTarget": 1.025,
+      "defenseTarget": 0.975,
+      "confidence": 0.6,
+      "note": "UEFA: only one loss in the last nine home matches against English visitors (W5 D3)."
+    }
+  },
+  "liverpool": {
+    "TUR": {
+      "venue": "away",
+      "sample": 8,
+      "wins": 1,
+      "draws": 1,
+      "losses": 6,
+      "attackTarget": 0.97,
+      "defenseTarget": 1.03,
+      "confidence": 0.68,
+      "note": "UEFA: Liverpool had W1 D1 L4 in six away matches at Turkish clubs before September 2025, then lost 1-0 at Galatasaray twice in 2025/26. The current Fenerbahce trip therefore gets a strong but bounded Istanbul/Turkiye away signal."
+    }
+  },
+  "shakhtar": {
+    "TUR": {
+      "sample": 10,
+      "wins": 9,
+      "draws": 1,
+      "losses": 0,
+      "attackTarget": 1.03,
+      "defenseTarget": 0.97,
+      "confidence": 0.66,
+      "note": "UEFA information kit: Shakhtar are W9 D1 L0 in ten competitive meetings with Turkish clubs before the 2026/27 league phase. The 2025 Besiktas tie (4-2 away, 2-0 home) is the freshest analogue for Fenerbahce."
+    }
+  },
+  "besiktas": {
+    "GER": {
+      "sample": 14,
+      "wins": 2,
+      "draws": 1,
+      "losses": 11,
+      "attackTarget": 0.985,
+      "defenseTarget": 1.015,
+      "confidence": 0.35,
+      "note": "UEFA all-time association record before the 2026/27 league phase: W2 D1 L11 against German clubs."
+    }
+  },
+  "lille": {
+    "ENG": {
+      "venue": "away",
+      "sample": 12,
+      "wins": 1,
+      "draws": 1,
+      "losses": 10,
+      "attackTarget": 0.975,
+      "defenseTarget": 1.025,
+      "confidence": 0.48,
+      "note": "UEFA association history plus recent Liverpool/Aston Villa trips: Lille have historically struggled away to English clubs."
+    },
+    "ESP": {
+      "venue": "home",
+      "sample": 9,
+      "wins": 3,
+      "draws": 5,
+      "losses": 1,
+      "attackTarget": 1.02,
+      "defenseTarget": 0.98,
+      "confidence": 0.52,
+      "note": "UEFA Spanish-opponent history, updated with the 1-0 home win over Real Madrid in 2024/25."
+    },
+    "ITA": {
+      "venue": "away",
+      "sample": 8,
+      "wins": 6,
+      "draws": 0,
+      "losses": 2,
+      "attackTarget": 1.02,
+      "defenseTarget": 0.98,
+      "confidence": 0.5,
+      "note": "UEFA Italian-opponent history, including recent away wins at Bologna and Roma."
+    },
+    "TUR": {
+      "venue": "home",
+      "sample": 3,
+      "wins": 2,
+      "draws": 1,
+      "losses": 0,
+      "attackTarget": 1.025,
+      "defenseTarget": 0.975,
+      "confidence": 0.56,
+      "note": "Lille are unbeaten at home in the relevant Turkish-club sample, with the 2-1 win over Fenerbahce in August 2024 the freshest analogue for Galatasaray."
+    }
+  },
+  "hapoelbeersheva": {
+    "ITA": {
+      "sample": 2,
+      "wins": 2,
+      "draws": 0,
+      "losses": 0,
+      "attackTarget": 1.018,
+      "defenseTarget": 0.982,
+      "confidence": 0.24,
+      "note": "Italian-club analogue: Hapoel Beer-Sheva beat Inter home and away in the 2016/17 Europa League, including 3-2 at home. Used lightly for Juventus because of age and opponent-strength difference."
+    },
+    "ENG": {
+      "sample": 2,
+      "wins": 0,
+      "draws": 2,
+      "losses": 0,
+      "attackTarget": 1,
+      "defenseTarget": 0.992,
+      "confidence": 0.18,
+      "note": "English-club analogue: Hapoel Beer-Sheva drew both 2016/17 Europa League meetings with Southampton (0-0 home, 1-1 away). Used only as a faint Bournemouth analogue."
+    }
+  }
+});
 
-  // Direct H2H and exact/same-venue repeats are kept separate from broad form.
-  // Confidence is deliberately capped so one matchup never overwhelms coefficient strength.
   const historicalPairSignals = Object.freeze({
   "ferencvarosi": {
     "juventus": {
@@ -2602,6 +2621,104 @@
       "confidence": 0.1,
       "note": "UEFA historical H2H heavily favours Juventus over Omonia. The series is decades old, so the Turin fixture receives only a tiny negative Omonia layer."
     }
+  },
+  "hoffenheim": {
+    "lyon": {
+      "venue": "home",
+      "sample": 1,
+      "wins": 0,
+      "draws": 1,
+      "losses": 0,
+      "goalsFor": 2,
+      "goalsAgainst": 2,
+      "attackTarget": 1,
+      "defenseTarget": 1,
+      "confidence": 0.6,
+      "note": "Exact recent repeat: Hoffenheim and Lyon drew 2-2 in Sinsheim in November 2024; the 2026/27 fixture is again at Hoffenheim."
+    },
+    "anderlecht": {
+      "venue": "away",
+      "sample": 1,
+      "wins": 1,
+      "draws": 0,
+      "losses": 0,
+      "goalsFor": 4,
+      "goalsAgainst": 3,
+      "attackTarget": 1.018,
+      "defenseTarget": 1.002,
+      "confidence": 0.66,
+      "note": "Exact recent repeat: Hoffenheim won 4-3 away to Anderlecht in January 2025; the 2026/27 fixture is again in Brussels."
+    }
+  },
+  "hapoelbeersheva": {
+    "besiktas": {
+      "sample": 2,
+      "wins": 0,
+      "draws": 0,
+      "losses": 2,
+      "goalsFor": 2,
+      "goalsAgainst": 5,
+      "attackTarget": 0.985,
+      "defenseTarget": 1.018,
+      "confidence": 0.24,
+      "note": "2016/17 Europa League round of 32: Besiktas beat Hapoel Beer-Sheva in both legs, 5-2 on aggregate. Age keeps this direct H2H modest."
+    }
+  },
+  "levskisofia": {
+    "salzburg": {
+      "sample": 2,
+      "wins": 0,
+      "draws": 0,
+      "losses": 2,
+      "goalsFor": 0,
+      "goalsAgainst": 2,
+      "attackTarget": 0.99,
+      "defenseTarget": 1.012,
+      "confidence": 0.16,
+      "note": "2009/10 Europa League: Salzburg won both meetings with Levski 1-0. Retained only as a small historical H2H layer."
+    },
+    "milan": {
+      "sample": 2,
+      "wins": 0,
+      "draws": 0,
+      "losses": 2,
+      "goalsFor": 2,
+      "goalsAgainst": 7,
+      "attackTarget": 0.985,
+      "defenseTarget": 1.015,
+      "confidence": 0.08,
+      "note": "1988/89 European Cup: Milan won both meetings against Levski, 7-2 on aggregate. The age makes this almost trace-level."
+    }
+  },
+  "ararat": {
+    "celje": {
+      "venue": "home",
+      "sample": 2,
+      "wins": 2,
+      "draws": 0,
+      "losses": 0,
+      "goalsFor": 3,
+      "goalsAgainst": 1,
+      "attackTarget": 1.018,
+      "defenseTarget": 0.988,
+      "confidence": 0.3,
+      "note": "Ararat-Armenia beat Celje at home in both relevant meetings: 1-0 in 2020 and 2-1 in August 2026. The recent return defeat is already captured in the match archive."
+    }
+  },
+  "nec": {
+    "dinamo": {
+      "venue": "away",
+      "sample": 1,
+      "wins": 0,
+      "draws": 0,
+      "losses": 1,
+      "goalsFor": 2,
+      "goalsAgainst": 3,
+      "attackTarget": 0.99,
+      "defenseTarget": 1.01,
+      "confidence": 0.1,
+      "note": "2008/09 UEFA Cup: Dinamo Zagreb beat NEC 3-2 in Zagreb. Current fixture is again in Zagreb; age keeps the effect tiny."
+    }
   }
 });
 
@@ -2972,7 +3089,7 @@
   });
 
   window.UCLDRAW_PREDICTION_CONTEXT_DATA = Object.freeze({
-    version: 38,
+    version: 39,
     reviewedAt: '2026-09-02',
     matches,
     historicalSignals,

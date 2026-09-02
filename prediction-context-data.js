@@ -739,6 +739,62 @@
     ['2025-12-09','marseille','union','BEL','away',3,2],
     ['2026-01-21','marseille','liverpool','ENG','home',0,3],
     ['2026-01-28','marseille','brugge','BEL','away',0,3]
+
+
+    // Europa League Pot 1 depth: 2024/25 samples for clubs with consecutive European seasons.
+    ['2024-09-19','bayerleverkusen','feyenoord','NED','away',4,0],
+    ['2024-10-01','bayerleverkusen','milan','ITA','home',1,0],
+    ['2024-10-23','bayerleverkusen','brest','FRA','away',1,1],
+    ['2024-11-05','bayerleverkusen','liverpool','ENG','away',0,4],
+    ['2024-11-26','bayerleverkusen','salzburg','AUT','home',5,0],
+    ['2024-12-10','bayerleverkusen','inter','ITA','home',1,0],
+    ['2025-01-21','bayerleverkusen','atleti','ESP','away',1,2],
+    ['2025-01-29','bayerleverkusen','spartapraha','CZE','home',2,0],
+
+    ['2024-09-19','benfica','crvenazvezda','SRB','away',2,1],
+    ['2024-10-02','benfica','atleti','ESP','home',4,0],
+    ['2024-10-23','benfica','feyenoord','NED','home',1,3],
+    ['2024-11-06','benfica','bayern','GER','away',0,1],
+    ['2024-11-27','benfica','monaco','FRA','away',3,2],
+    ['2024-12-11','benfica','bologna','ITA','home',0,0],
+    ['2025-01-21','benfica','barcelona','ESP','home',4,5],
+    ['2025-01-29','benfica','juventus','ITA','away',2,0],
+
+    ['2024-09-17','juventus','psv','NED','home',3,1],
+    ['2024-10-02','juventus','leipzig','GER','away',3,2],
+    ['2024-10-22','juventus','stuttgart','GER','home',0,1],
+    ['2024-11-05','juventus','lille','FRA','away',1,1],
+    ['2024-11-27','juventus','astonvilla','ENG','away',0,0],
+    ['2024-12-11','juventus','city','ENG','home',2,0],
+    ['2025-01-21','juventus','brugge','BEL','away',0,0],
+    ['2025-01-29','juventus','benfica','POR','home',0,2],
+
+    ['2024-09-26','lyon','olympiacos','GRE','home',2,0],
+    ['2024-10-03','lyon','rangers','SCO','away',4,1],
+    ['2024-10-24','lyon','besiktas','TUR','home',0,1],
+    ['2024-11-07','lyon','hoffenheim','GER','away',2,2],
+    ['2024-11-28','lyon','qarabag','AZE','away',4,1],
+    ['2024-12-12','lyon','frankfurt','GER','home',3,2],
+    ['2025-01-23','lyon','fenerbahce','TUR','away',0,0],
+    ['2025-01-30','lyon','ludogorets','BUL','home',1,1],
+
+    ['2024-09-26','olympiacos','lyon','FRA','away',0,2],
+    ['2024-10-03','olympiacos','braga','POR','home',3,0],
+    ['2024-10-24','olympiacos','malmo','SWE','away',1,0],
+    ['2024-11-07','olympiacos','rangers','SCO','home',1,1],
+    ['2024-11-28','olympiacos','fcsb','ROU','away',0,0],
+    ['2024-12-12','olympiacos','twente','NED','home',0,0],
+    ['2025-01-23','olympiacos','porto','POR','away',1,0],
+    ['2025-01-30','olympiacos','qarabag','AZE','home',3,0],
+
+    ['2024-09-25','azalkmaar','elfsborg','SWE','home',3,2],
+    ['2024-10-03','azalkmaar','athleticbilbao','ESP','away',0,2],
+    ['2024-10-24','azalkmaar','tottenham','ENG','away',0,1],
+    ['2024-11-07','azalkmaar','fenerbahce','TUR','home',3,1],
+    ['2024-11-28','azalkmaar','galatasaray','TUR','home',1,1],
+    ['2024-12-12','azalkmaar','ludogorets','BUL','away',2,2],
+    ['2025-01-23','azalkmaar','roma','ITA','home',1,0],
+    ['2025-01-30','azalkmaar','ferencvarosi','HUN','away',3,4]
   ].map(([date, teamSlug, opponentSlug, opponentCountry, venue, goalsFor, goalsAgainst]) => Object.freeze({
     date, teamSlug, opponentSlug, opponentCountry, venue, goalsFor, goalsAgainst
   })));
@@ -2087,7 +2143,7 @@
   });
 
   window.UCLDRAW_PREDICTION_CONTEXT_DATA = Object.freeze({
-    version: 27,
+    version: 28,
     reviewedAt: '2026-09-02',
     matches,
     historicalSignals,

@@ -173,6 +173,13 @@
       details.historicalPairSignal = historicPair;
     }
 
+    const analogue = DATA.analogueSignals?.[slug]?.[opponentSlug];
+    if (analogue && (!analogue.venue || analogue.venue === venue)) {
+      attack *= blend(1, analogue.attackTarget, analogue.confidence);
+      defense *= blend(1, analogue.defenseTarget, analogue.confidence);
+      details.analogueSignal = analogue;
+    }
+
     const squad = DATA.squadProfiles?.[slug];
     if (squad) {
       attack *= blend(1, squad.attackTarget, squad.attackConfidence);

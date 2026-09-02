@@ -135,7 +135,7 @@
     ['2026-02-19','lille','crvenazvezda','SRB','home',0,1],
     ['2026-02-26','lille','crvenazvezda','SRB','away',2,0],
     ['2026-03-12','lille','astonvilla','ENG','home',0,1],
-    ['2026-03-19','lille','astonvilla','ENG','away',0,2]
+    ['2026-03-19','lille','astonvilla','ENG','away',0,2],
 
 
     // Feyenoord: recent European sample. Includes the 2025 Fenerbahce tie as a direct Turkish-association analogue for the 2026/27 Galatasaray away fixture.
@@ -178,7 +178,7 @@
     ['2025-11-25','napoli','qarabag','AZE','home',2,0],
     ['2025-12-10','napoli','benfica','POR','away',0,2],
     ['2026-01-20','napoli','copenhagen','DEN','away',1,1],
-    ['2026-01-28','napoli','chelsea','ENG','home',2,3]
+    ['2026-01-28','napoli','chelsea','ENG','home',2,3],
 
 
     // Leipzig: recent Champions League sample. Direct Real Madrid, Manchester City and Shakhtar history is especially relevant to the 2026/27 draw.
@@ -209,7 +209,7 @@
     ['2025-11-25','villareal','bvb','GER','away',0,4],
     ['2025-12-10','villareal','copenhagen','DEN','home',2,3],
     ['2026-01-20','villareal','ajax','NED','home',1,2],
-    ['2026-01-28','villareal','bayerleverkusen','GER','away',0,3]
+    ['2026-01-28','villareal','bayerleverkusen','GER','away',0,3],
 
 
     // Bodo/Glimt: recent Europa/Champions League sample. Italian and French analogues are especially useful for Napoli, Lille and Lens; recent Dortmund and Atleti meetings are direct opponent evidence.
@@ -239,7 +239,7 @@
     ['2026-01-28','bodo','atleti','ESP','away',2,1],
     ['2026-02-18','bodo','inter','ITA','home',3,1],
     ['2026-02-24','bodo','inter','ITA','away',2,1],
-    ['2026-03-11','bodo','sporting','POR','home',3,0]
+    ['2026-03-11','bodo','sporting','POR','home',3,0],
 
 
     // Shakhtar: recent UCL + Conference sample. The 2025 Besiktas tie is a deliberately retained Turkish-association analogue for the 2026/27 Fenerbahce fixture.
@@ -264,7 +264,7 @@
     ['2026-04-09','shakhtar','azalkmaar','NED','home',3,0],
     ['2026-04-16','shakhtar','azalkmaar','NED','away',2,2],
     ['2026-04-30','shakhtar','crystalpalace','ENG','home',1,3],
-    ['2026-05-07','shakhtar','crystalpalace','ENG','away',1,2]
+    ['2026-05-07','shakhtar','crystalpalace','ENG','away',1,2],
 
 
     // Borussia Dortmund: consecutive Champions League league-phase samples (2024/25 and 2025/26).
@@ -395,7 +395,7 @@
     ['2025-11-26','psv','liverpool','ENG','away',4,1],
     ['2025-12-09','psv','atleti','ESP','home',2,3],
     ['2026-01-21','psv','newcastle','ENG','away',0,3],
-    ['2026-01-28','psv','bayern','GER','home',1,2]
+    ['2026-01-28','psv','bayern','GER','home',1,2],
 
 
     // Pot 1: Paris Saint-Germain, consecutive Champions League league-phase samples.
@@ -1559,7 +1559,7 @@
   });
 
   window.UCLDRAW_PREDICTION_CONTEXT_DATA = Object.freeze({
-    version: 16,
+    version: 17,
     reviewedAt: '2026-09-02',
     matches,
     historicalSignals,

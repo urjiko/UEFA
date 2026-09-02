@@ -645,6 +645,101 @@
     ['2026-08-11','sabah','aarhus','DEN','home',4,0],
     ['2026-08-19','sabah','hapoelbeersheva','ISR','away',1,2],
     ['2026-08-25','sabah','hapoelbeersheva','ISR','home',5,2]
+
+
+    // Europa League Pot 1: Bayer Leverkusen, 2025/26 Champions League league phase.
+    ['2025-09-18','bayerleverkusen','copenhagen','DEN','away',2,2],
+    ['2025-10-01','bayerleverkusen','psv','NED','home',1,1],
+    ['2025-10-21','bayerleverkusen','psg','FRA','home',2,7],
+    ['2025-11-05','bayerleverkusen','benfica','POR','away',1,0],
+    ['2025-11-25','bayerleverkusen','city','ENG','away',2,0],
+    ['2025-12-10','bayerleverkusen','newcastle','ENG','home',2,2],
+    ['2026-01-20','bayerleverkusen','olympiacos','GRE','away',0,2],
+    ['2026-01-28','bayerleverkusen','villareal','ESP','home',3,0],
+
+    // Europa League Pot 1: Benfica, 2025/26 Champions League league phase.
+    ['2025-09-16','benfica','qarabag','AZE','home',2,3],
+    ['2025-09-30','benfica','chelsea','ENG','away',0,1],
+    ['2025-10-21','benfica','newcastle','ENG','away',0,3],
+    ['2025-11-05','benfica','bayerleverkusen','GER','home',0,1],
+    ['2025-11-25','benfica','ajax','NED','away',2,0],
+    ['2025-12-10','benfica','napoli','ITA','home',2,0],
+    ['2026-01-21','benfica','juventus','ITA','away',0,2],
+    ['2026-01-28','benfica','real','ESP','home',4,2],
+
+    // Europa League Pot 1: Juventus, 2025/26 Champions League league phase.
+    ['2025-09-16','juventus','bvb','GER','home',4,4],
+    ['2025-10-01','juventus','villareal','ESP','away',2,2],
+    ['2025-10-22','juventus','real','ESP','away',0,1],
+    ['2025-11-04','juventus','sporting','POR','home',1,1],
+    ['2025-11-25','juventus','bodo','NOR','away',3,2],
+    ['2025-12-10','juventus','pafos','CYP','home',2,0],
+    ['2026-01-21','juventus','benfica','POR','home',2,0],
+    ['2026-01-28','juventus','monaco','FRA','away',0,0],
+
+    // Europa League Pot 1: Milan, latest full European league-phase sample (2024/25 Champions League).
+    ['2024-09-17','milan','liverpool','ENG','home',1,3],
+    ['2024-10-01','milan','bayerleverkusen','GER','away',0,1],
+    ['2024-10-22','milan','brugge','BEL','home',3,1],
+    ['2024-11-05','milan','real','ESP','away',3,1],
+    ['2024-11-26','milan','slovanbratislava','SVK','away',3,2],
+    ['2024-12-11','milan','crvenazvezda','SRB','home',2,1],
+    ['2025-01-22','milan','girona','ESP','home',1,0],
+    ['2025-01-29','milan','dinamo','CRO','away',1,2],
+
+    // Europa League Pot 1: Lyon, 2025/26 Europa League league phase.
+    ['2025-09-25','lyon','utrecht','NED','away',1,0],
+    ['2025-10-02','lyon','salzburg','AUT','home',2,0],
+    ['2025-10-23','lyon','basel','SUI','home',2,0],
+    ['2025-11-06','lyon','realbetis','ESP','away',0,2],
+    ['2025-11-27','lyon','maccabitelaviv','ISR','away',6,0],
+    ['2025-12-11','lyon','goaheadeagles','NED','home',2,1],
+    ['2026-01-22','lyon','youngboys','SUI','away',1,0],
+    ['2026-01-29','lyon','paok','GRE','home',4,2],
+
+    // Europa League Pot 1: AZ Alkmaar, 2025/26 Conference League league phase and knockouts.
+    ['2025-10-02','azalkmaar','aeklarnaca','CYP','away',0,4],
+    ['2025-10-23','azalkmaar','slovanbratislava','SVK','home',1,0],
+    ['2025-11-06','azalkmaar','crystalpalace','ENG','away',1,3],
+    ['2025-11-27','azalkmaar','shelbourne','IRL','home',2,0],
+    ['2025-12-11','azalkmaar','drita','KOS','away',3,0],
+    ['2025-12-18','azalkmaar','jagiellonia','POL','home',0,0],
+    ['2026-02-19','azalkmaar','noah','ARM','away',0,1],
+    ['2026-02-26','azalkmaar','noah','ARM','home',4,0],
+    ['2026-03-12','azalkmaar','spartapraha','CZE','home',2,1],
+    ['2026-03-19','azalkmaar','spartapraha','CZE','away',4,0],
+    ['2026-04-09','azalkmaar','shakhtar','UKR','away',0,3],
+    ['2026-04-16','azalkmaar','shakhtar','UKR','home',2,2],
+
+    // Europa League Pot 1: Olympiacos, 2025/26 Champions League league phase.
+    ['2025-09-17','olympiacos','pafos','CYP','home',0,0],
+    ['2025-10-01','olympiacos','arsenal','ENG','away',0,2],
+    ['2025-10-21','olympiacos','barcelona','ESP','away',1,6],
+    ['2025-11-04','olympiacos','psv','NED','home',1,1],
+    ['2025-11-26','olympiacos','real','ESP','home',3,4],
+    ['2025-12-09','olympiacos','kairat','KAZ','away',1,0],
+    ['2026-01-20','olympiacos','bayerleverkusen','GER','home',2,0],
+    ['2026-01-28','olympiacos','ajax','NED','away',2,1],
+
+    // Europa League Pot 1: Real Sociedad, latest full European league-phase sample (2024/25 Europa League).
+    ['2024-09-25','realsociedad','nice','FRA','away',1,1],
+    ['2024-10-03','realsociedad','anderlecht','BEL','home',1,2],
+    ['2024-10-24','realsociedad','maccabitelaviv','ISR','away',2,1],
+    ['2024-11-07','realsociedad','viktoriaplzen','CZE','away',1,2],
+    ['2024-11-28','realsociedad','ajax','NED','home',2,0],
+    ['2024-12-12','realsociedad','dynamokyiv','UKR','home',3,0],
+    ['2025-01-23','realsociedad','lazio','ITA','away',1,3],
+    ['2025-01-30','realsociedad','paok','GRE','home',2,0],
+
+    // Europa League Pot 1: Marseille, 2025/26 Champions League league phase.
+    ['2025-09-16','marseille','real','ESP','away',1,2],
+    ['2025-09-30','marseille','ajax','NED','home',4,0],
+    ['2025-10-22','marseille','sporting','POR','away',1,2],
+    ['2025-11-05','marseille','atalanta','ITA','home',0,1],
+    ['2025-11-25','marseille','newcastle','ENG','home',2,1],
+    ['2025-12-09','marseille','union','BEL','away',3,2],
+    ['2026-01-21','marseille','liverpool','ENG','home',0,3],
+    ['2026-01-28','marseille','brugge','BEL','away',0,3]
   ].map(([date, teamSlug, opponentSlug, opponentCountry, venue, goalsFor, goalsAgainst]) => Object.freeze({
     date, teamSlug, opponentSlug, opponentCountry, venue, goalsFor, goalsAgainst
   })));
@@ -1993,7 +2088,7 @@
   });
 
   window.UCLDRAW_PREDICTION_CONTEXT_DATA = Object.freeze({
-    version: 25,
+    version: 26,
     reviewedAt: '2026-09-02',
     matches,
     historicalSignals,

@@ -950,6 +950,203 @@
   // Direct H2H and exact/same-venue repeats are kept separate from broad form.
   // Confidence is deliberately capped so one matchup never overwhelms coefficient strength.
   const historicalPairSignals = Object.freeze({
+    bayerleverkusen: Object.freeze({
+      salzburg: Object.freeze({
+        venue: 'home',
+        sample: 1,
+        wins: 1,
+        draws: 0,
+        losses: 0,
+        goalsFor: 5,
+        goalsAgainst: 0,
+        attackTarget: 1.030,
+        defenseTarget: 0.970,
+        confidence: 0.68,
+        note: 'Exact recent repeat: Leverkusen beat Salzburg 5-0 at home in November 2024; the 2026/27 fixture is again in Leverkusen.'
+      })
+    }),
+    benfica: Object.freeze({
+      azalkmaar: Object.freeze({
+        venue: 'home',
+        sample: 2,
+        wins: 2,
+        draws: 0,
+        losses: 0,
+        goalsFor: 3,
+        goalsAgainst: 0,
+        attackTarget: 1.018,
+        defenseTarget: 0.982,
+        confidence: 0.28,
+        note: '2013/14 Europa League quarter-final: Benfica beat AZ in both legs, including 2-0 in Lisbon. Age keeps the signal low.'
+      })
+    }),
+    juventus: Object.freeze({
+      realsociedad: Object.freeze({
+        venue: 'home',
+        sample: 2,
+        wins: 1,
+        draws: 1,
+        losses: 0,
+        goalsFor: 4,
+        goalsAgainst: 2,
+        attackTarget: 1.012,
+        defenseTarget: 0.990,
+        confidence: 0.16,
+        note: '2003/04 Champions League: Juventus beat Real Sociedad at home and drew away. Retained only as a small historical signal because the meetings are old.'
+      })
+    }),
+    milan: Object.freeze({
+      olympiacos: Object.freeze({
+        venue: 'away',
+        sample: 2,
+        wins: 1,
+        draws: 0,
+        losses: 1,
+        goalsFor: 4,
+        goalsAgainst: 4,
+        attackTarget: 0.985,
+        defenseTarget: 1.020,
+        confidence: 0.34,
+        note: '2018/19 Europa League: Milan won 3-1 at home but lost 3-1 at Olympiacos. The 2026/27 fixture is again in Piraeus, making the venue-specific loss relevant despite its age.'
+      }),
+      salzburg: Object.freeze({
+        venue: 'away',
+        sample: 1,
+        wins: 0,
+        draws: 1,
+        losses: 0,
+        goalsFor: 1,
+        goalsAgainst: 1,
+        attackTarget: 1.000,
+        defenseTarget: 1.000,
+        confidence: 0.30,
+        note: 'Same-venue H2H: Milan drew 1-1 away to Salzburg in the 2022/23 Champions League group stage.'
+      })
+    }),
+    lyon: Object.freeze({
+      hoffenheim: Object.freeze({
+        venue: 'away',
+        sample: 1,
+        wins: 0,
+        draws: 1,
+        losses: 0,
+        goalsFor: 2,
+        goalsAgainst: 2,
+        attackTarget: 1.005,
+        defenseTarget: 1.005,
+        confidence: 0.60,
+        note: 'Exact recent repeat: Hoffenheim and Lyon drew 2-2 in Germany in November 2024; the 2026/27 fixture is again at Hoffenheim.'
+      }),
+      realsociedad: Object.freeze({
+        venue: 'away',
+        sample: 4,
+        wins: 2,
+        draws: 0,
+        losses: 2,
+        goalsFor: 2,
+        goalsAgainst: 4,
+        attackTarget: 0.990,
+        defenseTarget: 1.010,
+        confidence: 0.16,
+        note: 'Champions League H2H is split 2-2 across four meetings in 2003/04 and 2013/14. The age of the series keeps it only marginally active.'
+      })
+    }),
+    olympiacos: Object.freeze({
+      marseille: Object.freeze({
+        venue: 'away',
+        sample: 4,
+        wins: 2,
+        draws: 0,
+        losses: 2,
+        goalsFor: 3,
+        goalsAgainst: 3,
+        attackTarget: 0.995,
+        defenseTarget: 1.005,
+        confidence: 0.24,
+        note: 'Champions League H2H is perfectly split at W2-L2, including Marseille 2-1 Olympiacos and Olympiacos 1-0 Marseille in 2020/21.'
+      }),
+      milan: Object.freeze({
+        venue: 'home',
+        sample: 2,
+        wins: 1,
+        draws: 0,
+        losses: 1,
+        goalsFor: 4,
+        goalsAgainst: 4,
+        attackTarget: 1.020,
+        defenseTarget: 0.985,
+        confidence: 0.34,
+        note: '2018/19 Europa League: Olympiacos lost 3-1 in Milan then won 3-1 at home. The current meeting is again in Piraeus.'
+      })
+    }),
+    realsociedad: Object.freeze({
+      viktoriaplzen: Object.freeze({
+        sample: 1,
+        wins: 0,
+        draws: 0,
+        losses: 1,
+        goalsFor: 1,
+        goalsAgainst: 2,
+        attackTarget: 0.985,
+        defenseTarget: 1.015,
+        confidence: 0.44,
+        note: 'Very recent direct H2H: Viktoria Plzen beat Real Sociedad 2-1 in November 2024. Venue flips to San Sebastian in 2026/27.'
+      }),
+      lyon: Object.freeze({
+        venue: 'home',
+        sample: 4,
+        wins: 2,
+        draws: 0,
+        losses: 2,
+        goalsFor: 4,
+        goalsAgainst: 2,
+        attackTarget: 1.010,
+        defenseTarget: 0.990,
+        confidence: 0.16,
+        note: 'Champions League H2H is split 2-2 across four old meetings. Current fixture is in San Sebastian, so only a tiny historical layer is applied.'
+      }),
+      juventus: Object.freeze({
+        venue: 'away',
+        sample: 2,
+        wins: 0,
+        draws: 1,
+        losses: 1,
+        goalsFor: 2,
+        goalsAgainst: 4,
+        attackTarget: 0.990,
+        defenseTarget: 1.012,
+        confidence: 0.16,
+        note: '2003/04 Champions League: Real Sociedad drew at home and lost in Turin. The new match is in Turin and the age keeps the signal small.'
+      })
+    }),
+    marseille: Object.freeze({
+      besiktas: Object.freeze({
+        venue: 'away',
+        sample: 2,
+        wins: 1,
+        draws: 0,
+        losses: 1,
+        goalsFor: 3,
+        goalsAgainst: 2,
+        attackTarget: 0.990,
+        defenseTarget: 1.010,
+        confidence: 0.18,
+        note: '2007/08 Champions League: each side won its home game; Besiktas beat Marseille 2-1 in Istanbul. Current fixture is again in Istanbul.'
+      }),
+      olympiacos: Object.freeze({
+        venue: 'home',
+        sample: 4,
+        wins: 2,
+        draws: 0,
+        losses: 2,
+        goalsFor: 3,
+        goalsAgainst: 3,
+        attackTarget: 1.005,
+        defenseTarget: 0.995,
+        confidence: 0.24,
+        note: 'Champions League H2H is W2-L2 overall. Marseille won the latest home meeting 2-1 in December 2020.'
+      })
+    }),
     slavia: Object.freeze({
       arsenal: Object.freeze({
         venue: 'home',
@@ -2143,7 +2340,7 @@
   });
 
   window.UCLDRAW_PREDICTION_CONTEXT_DATA = Object.freeze({
-    version: 28,
+    version: 29,
     reviewedAt: '2026-09-02',
     matches,
     historicalSignals,

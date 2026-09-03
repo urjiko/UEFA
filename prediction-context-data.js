@@ -4133,8 +4133,8 @@
   });
 
   window.UCLDRAW_PREDICTION_CONTEXT_DATA = Object.freeze({
-    version: 59,
-    reviewedAt: '2026-09-02',
+    version: 60,
+    reviewedAt: '2026-09-03',
     matches,
     historicalSignals,
     historicalPairSignals,

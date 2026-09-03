@@ -3941,6 +3941,33 @@
       "confidence": 0.42,
       "note": "Fresh Croatian-club home analogue: Lincoln Red Imps drew 1-1 at home to Rijeka in November 2025. Used for Hajduk Split; the draw keeps the modifier essentially neutral."
     }
+  },
+  "jablonec": {
+    "riga": {
+      "venue": "away",
+      "attackTarget": 1.02,
+      "defenseTarget": 0.985,
+      "confidence": 0.56,
+      "note": "Very fresh Latvian-away analogue: Jablonec won 2-1 away to RFS in August 2026. Used for the Riga trip."
+    }
+  },
+  "aarhus": {
+    "braga": {
+      "venue": "home",
+      "attackTarget": 0.985,
+      "defenseTarget": 1.02,
+      "confidence": 0.46,
+      "note": "Very fresh Portuguese-club home analogue: Aarhus lost 3-1 at home to Benfica in the Europa League play-off on 27 August 2026. Used for Braga with opponent-strength shrinkage."
+    }
+  },
+  "nordsjaelland": {
+    "cskasofia": {
+      "venue": "home",
+      "attackTarget": 1.025,
+      "defenseTarget": 0.98,
+      "confidence": 0.42,
+      "note": "Bulgarian-club home analogue: Nordsjaelland beat Ludogorets 7-1 at home in October 2023. The scoreline is extreme, so the applied modifier is deliberately capped and modest."
+    }
   }
 });
 
@@ -4000,7 +4027,7 @@
   });
 
   window.UCLDRAW_PREDICTION_CONTEXT_DATA = Object.freeze({
-    version: 55,
+    version: 56,
     reviewedAt: '2026-09-02',
     matches,
     historicalSignals,

@@ -302,13 +302,13 @@
     if (typeof document === 'undefined' || document.getElementById(CONTEXT_DATA_SCRIPT_ID)) return;
     const dataScript = document.createElement('script');
     dataScript.id = CONTEXT_DATA_SCRIPT_ID;
-    dataScript.src = 'prediction-context-data.js?v=20260903ueclpot3backfillv54';
+    dataScript.src = 'prediction-context-data.js?v=20260903ueclpot5v56';
     dataScript.async = true;
     dataScript.addEventListener('load', () => {
       if (document.getElementById(CONTEXT_MODEL_SCRIPT_ID)) return;
       const modelScript = document.createElement('script');
       modelScript.id = CONTEXT_MODEL_SCRIPT_ID;
-      modelScript.src = 'prediction-context-model.js?v=20260903ueclpot3backfillv54';
+      modelScript.src = 'prediction-context-model.js?v=20260903ueclpot5v56';
       modelScript.async = true;
       document.head.appendChild(modelScript);
     }, { once: true });

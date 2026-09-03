@@ -4014,6 +4014,15 @@
       "confidence": 0.42,
       "note": "Bulgarian-club home analogue: Nordsjaelland beat Ludogorets 7-1 at home in October 2023. The scoreline is extreme, so the applied modifier is deliberately capped and modest."
     }
+  },
+  "thun": {
+    "hajduksplit": {
+      "venue": "home",
+      "attackTarget": 1,
+      "defenseTarget": 1,
+      "confidence": 0.48,
+      "note": "Very fresh Croatian-club home analogue: Thun drew 1-1 at home to GNK Dinamo in July 2026. Used for Hajduk Split; the draw keeps the adjustment neutral."
+    }
   }
 });
 
@@ -4073,7 +4082,7 @@
   });
 
   window.UCLDRAW_PREDICTION_CONTEXT_DATA = Object.freeze({
-    version: 57,
+    version: 58,
     reviewedAt: '2026-09-02',
     matches,
     historicalSignals,

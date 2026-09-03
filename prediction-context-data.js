@@ -3401,6 +3401,20 @@
       "confidence": 0.08,
       "note": "UEFA Europa League H2H is balanced at W1 D1 L1 and 5-5 across old Monaco-CSKA meetings. Retained only as a neutral historical reference."
     }
+  },
+  "borac": {
+    "panathinaikos": {
+      "sample": 1,
+      "wins": 0,
+      "draws": 1,
+      "losses": 0,
+      "goalsFor": 1,
+      "goalsAgainst": 1,
+      "attackTarget": 1,
+      "defenseTarget": 1,
+      "confidence": 0.3,
+      "note": "Very recent direct H2H: Borac and Panathinaikos drew 1-1 in Banja Luka in October 2024. The 2026/27 fixture is in Athens, so venue reversal keeps the effect modest."
+    }
   }
 });
 
@@ -3871,6 +3885,24 @@
       "confidence": 0.22,
       "note": "Danish-club analogue: Hearts lost 2-0 away to Copenhagen in December 2024. Venue flips for Nordsjaelland, so only a small country-level adjustment is applied."
     }
+  },
+  "getafe": {
+    "lugano": {
+      "venue": "home",
+      "attackTarget": 0.99,
+      "defenseTarget": 1.01,
+      "confidence": 0.18,
+      "note": "Swiss-club home analogue: Getafe lost 1-0 at home to Basel in October 2019. Used only lightly for Lugano because the evidence is old."
+    }
+  },
+  "lincoln": {
+    "hajduksplit": {
+      "venue": "home",
+      "attackTarget": 1,
+      "defenseTarget": 1,
+      "confidence": 0.42,
+      "note": "Fresh Croatian-club home analogue: Lincoln Red Imps drew 1-1 at home to Rijeka in November 2025. Used for Hajduk Split; the draw keeps the modifier essentially neutral."
+    }
   }
 });
 
@@ -3930,7 +3962,7 @@
   });
 
   window.UCLDRAW_PREDICTION_CONTEXT_DATA = Object.freeze({
-    version: 53,
+    version: 54,
     reviewedAt: '2026-09-02',
     matches,
     historicalSignals,

@@ -32,8 +32,8 @@ const model = context.UCLDRAW_PREDICTION_CONTEXT_MODEL;
 const coefficients = context.UCLDRAW_CLUB_COEFFICIENTS.clubs;
 const fixtures = context.UCLDRAW_CURRENT_FIXTURES.uclMatches;
 
-assert.equal(data.version, 59);
-assert.equal(data.reviewedAt, '2026-09-02');
+assert.equal(data.version, 60);
+assert.equal(data.reviewedAt, '2026-09-03');
 assert.equal(data.matches.length, 1343);
 assert.equal(model.methodology.recencyHalfLifeYears, 3);
 assert.equal(model.methodology.homePriorMatches, 8);
@@ -235,7 +235,19 @@ for (const [homeSlug, awaySlug] of context.UCLDRAW_CURRENT_FIXTURES.ueclMatches)
   }
 }
 assert.equal(context.UCLDRAW_CURRENT_FIXTURES.ueclMatches.length, 108);
-assert.ok(ueclFixtureSpecificCoverage >= 42, `Only ${ueclFixtureSpecificCoverage}/108 UECL fixtures have matchup-specific evidence through official Pot 4.`);
+const ueclTeamSlugs = [...new Set(context.UCLDRAW_CURRENT_FIXTURES.ueclMatches.flatMap(([homeSlug, awaySlug]) => [homeSlug, awaySlug]))];
+assert.equal(ueclTeamSlugs.length, 36, 'Conference League must contain exactly 36 league-phase teams.');
+for (const slug of ueclTeamSlugs) {
+  assert.ok(model.profiles[slug], `Missing Conference League context profile for ${slug}`);
+  const teamFixtures = context.UCLDRAW_CURRENT_FIXTURES.ueclMatches.filter(([homeSlug, awaySlug]) => homeSlug === slug || awaySlug === slug);
+  const homeFixtures = teamFixtures.filter(([homeSlug]) => homeSlug === slug);
+  const awayFixtures = teamFixtures.filter(([, awaySlug]) => awaySlug === slug);
+  assert.equal(teamFixtures.length, 6, `${slug} should have exactly six Conference League fixtures.`);
+  assert.equal(homeFixtures.length, 3, `${slug} should have exactly three Conference League home fixtures.`);
+  assert.equal(awayFixtures.length, 3, `${slug} should have exactly three Conference League away fixtures.`);
+}
+
+assert.ok(ueclFixtureSpecificCoverage >= 42, `Only ${ueclFixtureSpecificCoverage}/108 UECL fixtures have matchup-specific evidence across all six official Conference pots.`);
 assert.equal(ueclCapHits, 0, 'Conference League context should not hit safety caps.');
 
 
@@ -477,9 +489,9 @@ assert.ok(adjusted.awayExpected >= 0.15 && adjusted.awayExpected <= 4);
 assert.match(sources['prediction-context-model.js'], /reciprocalHistoricPair/);
 assert.match(sources['prediction-context-model.js'], /appliedConfidence/);
 assert.match(sources['prediction-context-model.js'], /analogueSignals/);
-assert.match(controller, /prediction-context-data\.js\?v=20260903ueclauditv59/);
-assert.match(controller, /prediction-context-model\.js\?v=20260903ueclauditv59/);
+assert.match(controller, /prediction-context-data\.js\?v=20260903ueclfinalv60/);
+assert.match(controller, /prediction-context-model\.js\?v=20260903ueclfinalv60/);
 assert.match(controller, /contextModel\(\)\?\.adjustExpectedGoals/);
 assert.match(controller, /__contextMatchupModel: true/);
 
-console.log(`UCL context audit passed: ${fixtureSpecificCoverage}/144 fixtures have matchup-specific evidence, no modifier cap hits.`);
+console.log(`Context audit passed: UCL ${fixtureSpecificCoverage}/144, UEL ${uelFixtureSpecificCoverage}/144, UECL ${ueclFixtureSpecificCoverage}/108 matchup-specific coverage; no modifier cap hits.`);

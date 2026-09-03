@@ -1427,6 +1427,72 @@
     ['2025-12-18','craiova','aek','GRE','away',2,3],
     ['2026-08-20','craiova','ararat','ARM','home',1,1],
     ['2026-08-27','craiova','ararat','ARM','away',0,1],
+
+    // Conference League Pot 3 backfill: Getafe, fresh 2026 play-off + 2019/20 Europa League context.
+    ['2026-08-20','getafe','partizan','SRB','home',3,1],
+    ['2026-08-27','getafe','partizan','SRB','away',1,2],
+    ['2019-09-19','getafe','trabzonspor','TUR','home',1,0],
+    ['2019-10-03','getafe','krasnodar','RUS','away',2,1],
+    ['2019-10-24','getafe','basel','SUI','home',0,1],
+    ['2019-11-07','getafe','basel','SUI','away',1,2],
+    ['2019-11-28','getafe','trabzonspor','TUR','away',1,0],
+    ['2019-12-12','getafe','krasnodar','RUS','home',3,0],
+    ['2020-02-20','getafe','ajax','NED','home',2,0],
+    ['2020-02-27','getafe','ajax','NED','away',1,2],
+
+    // Conference League Pot 3 backfill: KuPS, 2025/26 league phase + 2026 qualifying.
+    ['2025-10-02','kuopio','drita','KOS','home',1,1],
+    ['2025-10-23','kuopio','breidablik','ISL','away',0,0],
+    ['2025-11-06','kuopio','slovanbratislava','SVK','home',3,1],
+    ['2025-11-27','kuopio','jagiellonia','POL','away',0,1],
+    ['2025-12-11','kuopio','lausanne','SUI','home',0,0],
+    ['2025-12-18','kuopio','crystalpalace','ENG','away',2,2],
+    ['2026-02-19','kuopio','poznan','POL','home',0,2],
+    ['2026-02-26','kuopio','poznan','POL','away',0,1],
+    ['2026-07-07','kuopio','vardar','MKD','away',2,0],
+    ['2026-07-14','kuopio','vardar','MKD','home',2,3],
+    ['2026-07-21','kuopio','sabah','AZE','away',0,1],
+    ['2026-07-28','kuopio','sabah','AZE','home',0,2],
+    ['2026-08-06','kuopio','craiova','ROU','home',1,1],
+    ['2026-08-13','kuopio','craiova','ROU','away',1,2],
+    ['2026-08-20','kuopio','shamrock','IRL','away',1,1],
+    ['2026-08-27','kuopio','shamrock','IRL','home',1,0],
+
+    // Conference League Pot 3 backfill: Lincoln Red Imps, 2025/26 league phase + 2026 qualifying.
+    ['2025-10-02','lincoln','zrinjski','BIH','away',0,5],
+    ['2025-10-23','lincoln','poznan','POL','home',2,1],
+    ['2025-11-06','lincoln','rijeka','CRO','home',1,1],
+    ['2025-11-27','lincoln','hamrun','MLT','away',1,3],
+    ['2025-12-11','lincoln','sigmaolomouc','CZE','home',2,1],
+    ['2025-12-18','lincoln','legia','POL','away',1,4],
+    ['2026-07-07','lincoln','interclubdescaldes','AND','home',3,1],
+    ['2026-07-14','lincoln','interclubdescaldes','AND','away',1,1],
+    ['2026-07-21','lincoln','mjallby','SWE','away',0,3],
+    ['2026-07-28','lincoln','mjallby','SWE','home',0,0],
+    ['2026-08-06','lincoln','omonia','CYP','home',1,1],
+    ['2026-08-13','lincoln','omonia','CYP','away',0,1],
+    ['2026-08-20','lincoln','larne','NIR','home',0,2],
+    ['2026-08-27','lincoln','larne','NIR','away',3,0],
+
+    // Conference League Pot 3 backfill: Borac, 2024/25 run + fresh 2026 qualifying.
+    ['2024-10-03','borac','panathinaikos','GRE','home',1,1],
+    ['2024-10-24','borac','apoel','CYP','away',1,0],
+    ['2024-11-07','borac','vikingurreykjavik','ISL','away',0,2],
+    ['2024-11-28','borac','lask','AUT','home',2,1],
+    ['2024-12-12','borac','shamrock','IRL','away',0,3],
+    ['2024-12-19','borac','omonia','CYP','home',0,0],
+    ['2025-02-13','borac','olimpija','SVN','home',1,0],
+    ['2025-02-20','borac','olimpija','SVN','away',0,0],
+    ['2025-03-06','borac','rapid','AUT','home',1,1],
+    ['2025-03-13','borac','rapid','AUT','away',1,2],
+    ['2026-07-07','borac','levskisofia','BUL','home',1,1],
+    ['2026-07-14','borac','levskisofia','BUL','away',0,4],
+    ['2026-07-23','borac','petrocub','MDA','home',3,0],
+    ['2026-07-30','borac','petrocub','MDA','away',3,3],
+    ['2026-08-06','borac','vitebsk','BLR','home',1,0],
+    ['2026-08-13','borac','vitebsk','BLR','away',1,2],
+    ['2026-08-20','borac','vikingurreykjavik','ISL','away',3,1],
+    ['2026-08-27','borac','vikingurreykjavik','ISL','home',3,1],
   ].map(([date, teamSlug, opponentSlug, opponentCountry, venue, goalsFor, goalsAgainst]) => Object.freeze({
     date, teamSlug, opponentSlug, opponentCountry, venue, goalsFor, goalsAgainst
   })));
@@ -3864,7 +3930,7 @@
   });
 
   window.UCLDRAW_PREDICTION_CONTEXT_DATA = Object.freeze({
-    version: 52,
+    version: 53,
     reviewedAt: '2026-09-02',
     matches,
     historicalSignals,

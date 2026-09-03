@@ -1493,6 +1493,44 @@
     ['2026-08-13','borac','vitebsk','BLR','away',1,2],
     ['2026-08-20','borac','vikingurreykjavik','ISL','away',3,1],
     ['2026-08-27','borac','vikingurreykjavik','ISL','home',3,1],
+
+    // Conference League Pot 5: Riga, fresh 2026 Champions/Conference qualifying path.
+    ['2026-07-07','riga','ararat','ARM','away',0,2],
+    ['2026-07-14','riga','ararat','ARM','home',3,2],
+    ['2026-07-22','riga','vardar','MKD','away',3,2],
+    ['2026-07-28','riga','vardar','MKD','home',5,2],
+    ['2026-08-06','riga','gyor','HUN','home',1,0],
+    ['2026-08-13','riga','gyor','HUN','away',1,1],
+    ['2026-08-20','riga','klaksvik','FRO','away',0,0],
+    ['2026-08-27','riga','klaksvik','FRO','home',2,1],
+
+    // Conference League Pot 5: Hajduk Split, fresh 2026 Conference qualifying.
+    ['2026-08-06','hajduksplit','zalgiris','LTU','away',5,2],
+    ['2026-08-13','hajduksplit','zalgiris','LTU','home',4,0],
+    ['2026-08-20','hajduksplit','rakow','POL','home',2,2],
+    ['2026-08-27','hajduksplit','rakow','POL','away',3,2],
+
+    // Conference League Pot 5: Jablonec, fresh 2026 Conference qualifying.
+    ['2026-08-06','jablonec','rfs','LVA','home',2,0],
+    ['2026-08-13','jablonec','rfs','LVA','away',2,1],
+    ['2026-08-20','jablonec','rangers','SCO','away',0,1],
+    ['2026-08-27','jablonec','rangers','SCO','home',1,0],
+
+    // Conference League Pot 5: Aarhus, Champions League Q2/Q3 + Europa play-off.
+    ['2026-07-21','aarhus','poznan','POL','home',1,4],
+    ['2026-07-29','aarhus','poznan','POL','away',4,1],
+    ['2026-08-05','aarhus','sabah','AZE','home',2,1],
+    ['2026-08-11','aarhus','sabah','AZE','away',0,4],
+    ['2026-08-20','aarhus','benfica','POR','away',1,3],
+    ['2026-08-27','aarhus','benfica','POR','home',1,3],
+
+    // Conference League Pot 5: Inter Club d'Escaldes, fresh 2026 Champions/Conference qualifying.
+    ['2026-07-07','interclubdescaldes','lincoln','GIB','away',1,3],
+    ['2026-07-14','interclubdescaldes','lincoln','GIB','home',1,1],
+    ['2026-08-06','interclubdescaldes','floratallinn','EST','home',2,0],
+    ['2026-08-13','interclubdescaldes','floratallinn','EST','away',4,0],
+    ['2026-08-20','interclubdescaldes','drita','KOS','away',2,2],
+    ['2026-08-27','interclubdescaldes','drita','KOS','home',0,0],
   ].map(([date, teamSlug, opponentSlug, opponentCountry, venue, goalsFor, goalsAgainst]) => Object.freeze({
     date, teamSlug, opponentSlug, opponentCountry, venue, goalsFor, goalsAgainst
   })));
@@ -3962,7 +4000,7 @@
   });
 
   window.UCLDRAW_PREDICTION_CONTEXT_DATA = Object.freeze({
-    version: 54,
+    version: 55,
     reviewedAt: '2026-09-02',
     matches,
     historicalSignals,

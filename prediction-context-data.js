@@ -1531,6 +1531,52 @@
     ['2026-08-13','interclubdescaldes','floratallinn','EST','away',4,0],
     ['2026-08-20','interclubdescaldes','drita','KOS','away',2,2],
     ['2026-08-27','interclubdescaldes','drita','KOS','home',0,0],
+
+    // Conference League Pot 6: Thun, Champions Q2 + Europa Q3/play-off.
+    ['2026-07-21','thun','dinamo','CRO','home',1,1],
+    ['2026-07-28','thun','dinamo','CRO','away',2,3],
+    ['2026-08-06','thun','vikingurreykjavik','ISL','home',3,0],
+    ['2026-08-13','thun','vikingurreykjavik','ISL','away',2,3],
+    ['2026-08-20','thun','poznan','POL','away',0,7],
+    ['2026-08-27','thun','poznan','POL','home',2,2],
+
+    // Conference League Pot 6: Kauno Zalgiris, Champions Q1-Q3 + Europa play-off.
+    ['2026-07-07','kaunozalgiris','drita','KOS','home',1,1],
+    ['2026-07-14','kaunozalgiris','drita','KOS','away',3,2],
+    ['2026-07-21','kaunozalgiris','klaksvik','FRO','away',0,0],
+    ['2026-07-29','kaunozalgiris','klaksvik','FRO','home',1,0],
+    ['2026-08-04','kaunozalgiris','dinamo','CRO','away',0,5],
+    ['2026-08-11','kaunozalgiris','dinamo','CRO','home',1,2],
+    ['2026-08-20','kaunozalgiris','besiktas','TUR','away',0,3],
+    ['2026-08-27','kaunozalgiris','besiktas','TUR','home',1,0],
+
+    // Conference League Pot 6: Mjallby, Champions Q2/Q3 + Europa play-off.
+    ['2026-07-21','mjallby','lincoln','GIB','home',3,0],
+    ['2026-07-28','mjallby','lincoln','GIB','away',0,0],
+    ['2026-08-04','mjallby','slovanbratislava','SVK','home',1,2],
+    ['2026-08-11','mjallby','slovanbratislava','SVK','away',0,2],
+    ['2026-08-20','mjallby','salzburg','AUT','home',0,1],
+    ['2026-08-27','mjallby','salzburg','AUT','away',0,3],
+
+    // Conference League Pot 6: Iberia Tbilisi, Champions Q1/Q2 + Europa Q3/play-off.
+    ['2026-07-08','iberia1999','floratallinn','EST','away',3,2],
+    ['2026-07-14','iberia1999','floratallinn','EST','home',2,2],
+    ['2026-07-21','iberia1999','slovanbratislava','SVK','home',0,2],
+    ['2026-07-29','iberia1999','slovanbratislava','SVK','away',1,1],
+    ['2026-08-04','iberia1999','larne','NIR','away',0,0],
+    ['2026-08-11','iberia1999','larne','NIR','home',2,1],
+    ['2026-08-20','iberia1999','jagiellonia','POL','away',0,4],
+    ['2026-08-27','iberia1999','jagiellonia','POL','home',1,2],
+
+    // Conference League Pot 6: Egnatia, Champions Q1/Q2 + Europa Q3/play-off.
+    ['2026-07-08','egnatia','petrocub','MDA','away',1,1],
+    ['2026-07-15','egnatia','petrocub','MDA','home',6,1],
+    ['2026-07-22','egnatia','celje','SVN','home',3,3],
+    ['2026-07-28','egnatia','celje','SVN','away',2,2],
+    ['2026-08-04','egnatia','shamrock','IRL','away',1,3],
+    ['2026-08-13','egnatia','shamrock','IRL','home',5,1],
+    ['2026-08-20','egnatia','lillestrom','NOR','home',0,0],
+    ['2026-08-27','egnatia','lillestrom','NOR','away',1,2],
   ].map(([date, teamSlug, opponentSlug, opponentCountry, venue, goalsFor, goalsAgainst]) => Object.freeze({
     date, teamSlug, opponentSlug, opponentCountry, venue, goalsFor, goalsAgainst
   })));
@@ -4027,7 +4073,7 @@
   });
 
   window.UCLDRAW_PREDICTION_CONTEXT_DATA = Object.freeze({
-    version: 56,
+    version: 57,
     reviewedAt: '2026-09-02',
     matches,
     historicalSignals,

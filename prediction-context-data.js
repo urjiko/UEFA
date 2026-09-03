@@ -3271,6 +3271,19 @@
       "defenseTarget": 1.005,
       "confidence": 0.2,
       "note": "2019/20 Europa League: Getafe won 2-0 in Spain and Ajax won 2-1 in Amsterdam. Current fixture is again at Ajax; the split tie and age keep the effect near neutral."
+    },
+    "thun": {
+      "venue": "home",
+      "sample": 2,
+      "wins": 2,
+      "draws": 0,
+      "losses": 0,
+      "goalsFor": 6,
+      "goalsAgainst": 2,
+      "attackTarget": 1.012,
+      "defenseTarget": 0.988,
+      "confidence": 0.12,
+      "note": "2005/06 Champions League: Ajax beat Thun 2-0 in Amsterdam and 4-2 in Switzerland. The 2026/27 fixture is again in Amsterdam, but the age keeps the signal tiny."
     }
   },
   "atalanta": {
@@ -3498,6 +3511,21 @@
       "defenseTarget": 1,
       "confidence": 0.3,
       "note": "Very recent direct H2H: Borac and Panathinaikos drew 1-1 in Banja Luka in October 2024. The 2026/27 fixture is in Athens, so venue reversal keeps the effect modest."
+    }
+  },
+  "hajduksplit": {
+    "ajax": {
+      "venue": "home",
+      "sample": 2,
+      "wins": 0,
+      "draws": 1,
+      "losses": 1,
+      "goalsFor": 0,
+      "goalsAgainst": 3,
+      "attackTarget": 0.992,
+      "defenseTarget": 1.008,
+      "confidence": 0.08,
+      "note": "1994/95 Champions League quarter-final: Hajduk drew 0-0 with Ajax at home before losing 3-0 in Amsterdam. The exact home venue repeats, but the history is over three decades old."
     }
   }
 });
@@ -3825,6 +3853,13 @@
       "defenseTarget": 1.015,
       "confidence": 0.24,
       "note": "Danish away analogue: Braga lost 3-2 at Midtjylland in the 2021/22 Europa League. Used lightly for Aarhus."
+    },
+    "brann": {
+      "venue": "away",
+      "attackTarget": 0.995,
+      "defenseTarget": 1.005,
+      "confidence": 0.18,
+      "note": "Recent Norwegian-club analogue: Braga lost 2-1 at home to Bodo/Glimt in October 2024. Venue flips for Brann, so the effect is deliberately close to neutral."
     }
   },
   "monaco": {
@@ -3968,6 +4003,13 @@
       "defenseTarget": 1.01,
       "confidence": 0.22,
       "note": "Danish-club analogue: Hearts lost 2-0 away to Copenhagen in December 2024. Venue flips for Nordsjaelland, so only a small country-level adjustment is applied."
+    },
+    "pafos": {
+      "venue": "away",
+      "attackTarget": 1.005,
+      "defenseTarget": 0.995,
+      "confidence": 0.16,
+      "note": "Recent Cypriot-club analogue: Hearts beat Omonia 2-0 at home in October 2024. The Pafos match is away, so venue reversal makes this only a trace adjustment."
     }
   },
   "getafe": {
@@ -4022,6 +4064,15 @@
       "defenseTarget": 1,
       "confidence": 0.48,
       "note": "Very fresh Croatian-club home analogue: Thun drew 1-1 at home to GNK Dinamo in July 2026. Used for Hajduk Split; the draw keeps the adjustment neutral."
+    }
+  },
+  "freiburg": {
+    "twente": {
+      "venue": "home",
+      "attackTarget": 1.018,
+      "defenseTarget": 0.985,
+      "confidence": 0.48,
+      "note": "Very fresh Dutch-club home analogue: Freiburg beat Utrecht 2-0 at home in October 2025. Used for Twente."
     }
   }
 });
@@ -4082,7 +4133,7 @@
   });
 
   window.UCLDRAW_PREDICTION_CONTEXT_DATA = Object.freeze({
-    version: 58,
+    version: 59,
     reviewedAt: '2026-09-02',
     matches,
     historicalSignals,

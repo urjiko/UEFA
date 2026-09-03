@@ -32,7 +32,7 @@ const model = context.UCLDRAW_PREDICTION_CONTEXT_MODEL;
 const coefficients = context.UCLDRAW_CLUB_COEFFICIENTS.clubs;
 const fixtures = context.UCLDRAW_CURRENT_FIXTURES.uclMatches;
 
-assert.equal(data.version, 58);
+assert.equal(data.version, 59);
 assert.equal(data.reviewedAt, '2026-09-02');
 assert.equal(data.matches.length, 1343);
 assert.equal(model.methodology.recencyHalfLifeYears, 3);
@@ -235,7 +235,7 @@ for (const [homeSlug, awaySlug] of context.UCLDRAW_CURRENT_FIXTURES.ueclMatches)
   }
 }
 assert.equal(context.UCLDRAW_CURRENT_FIXTURES.ueclMatches.length, 108);
-assert.ok(ueclFixtureSpecificCoverage >= 37, `Only ${ueclFixtureSpecificCoverage}/108 UECL fixtures have matchup-specific evidence through official Pot 4.`);
+assert.ok(ueclFixtureSpecificCoverage >= 42, `Only ${ueclFixtureSpecificCoverage}/108 UECL fixtures have matchup-specific evidence through official Pot 4.`);
 assert.equal(ueclCapHits, 0, 'Conference League context should not hit safety caps.');
 
 
@@ -411,6 +411,22 @@ assert.ok(nordsjaellandCska.details.analogueSignal, 'Nordsjaelland-CSKA should u
 const thunHajduk = model.teamModifiers(team('thun'), team('hajduksplit'), 'home');
 assert.ok(thunHajduk.details.analogueSignal, 'Thun-Hajduk should use the fresh Dinamo Croatian-home analogue.');
 
+
+const ajaxThun = model.teamModifiers(team('ajax'), team('thun'), 'home');
+assert.ok(ajaxThun.details.historicalPairSignal, 'Ajax-Thun should retain the 2005 Amsterdam H2H at tiny confidence.');
+
+const hajdukAjax = model.teamModifiers(team('hajduksplit'), team('ajax'), 'home');
+assert.ok(hajdukAjax.details.historicalPairSignal, 'Hajduk-Ajax should retain the 1995 Split H2H only at trace confidence.');
+
+const freiburgTwente = model.teamModifiers(team('freiburg'), team('twente'), 'home');
+assert.ok(freiburgTwente.details.analogueSignal, 'Freiburg-Twente should use the 2025 Utrecht home analogue.');
+
+const bragaBrann = model.teamModifiers(team('braga'), team('brann'), 'away');
+assert.ok(bragaBrann.details.analogueSignal, 'Braga at Brann should use only a trace Bodo country analogue because venue flips.');
+
+const heartsPafos = model.teamModifiers(team('hearts'), team('pafos'), 'away');
+assert.ok(heartsPafos.details.analogueSignal, 'Hearts at Pafos should use only a trace Omonia country analogue because venue flips.');
+
 const lensCity = model.teamModifiers(team('lens'), team('city'), 'home');
 assert.ok(lensCity.details.analogueSignal, 'Lens-Man City should use the Arsenal home analogue.');
 
@@ -461,8 +477,8 @@ assert.ok(adjusted.awayExpected >= 0.15 && adjusted.awayExpected <= 4);
 assert.match(sources['prediction-context-model.js'], /reciprocalHistoricPair/);
 assert.match(sources['prediction-context-model.js'], /appliedConfidence/);
 assert.match(sources['prediction-context-model.js'], /analogueSignals/);
-assert.match(controller, /prediction-context-data\.js\?v=20260903ueclcompletev58/);
-assert.match(controller, /prediction-context-model\.js\?v=20260903ueclcompletev58/);
+assert.match(controller, /prediction-context-data\.js\?v=20260903ueclauditv59/);
+assert.match(controller, /prediction-context-model\.js\?v=20260903ueclauditv59/);
 assert.match(controller, /contextModel\(\)\?\.adjustExpectedGoals/);
 assert.match(controller, /__contextMatchupModel: true/);
 

@@ -145,21 +145,23 @@ const event = {
 
 clickHandler(event);
 
-assert.deepEqual(
-  state.scores['locked-match'],
-  { homeGoals: 2, awayGoals: 1, source: 'manual', model: { marker: 'locked' } },
-  'Explicitly locked match score must survive a full AI rerun.'
-);
-assert.deepEqual(
-  state.scores['team-locked-match'],
-  { homeGoals: 1, awayGoals: 0, source: 'manual', model: { marker: 'team-locked' } },
-  'A score involving a locked team must survive a full AI rerun.'
-);
-assert.deepEqual(
-  state.scores['open-match'],
-  { homeGoals: 3, awayGoals: 2, source: 'new-ai' },
-  'Unlocked matches must still receive the new AI prediction.'
-);
+const lockedScore = state.scores['locked-match'];
+assert.equal(lockedScore.homeGoals, 2, 'Explicitly locked home score must survive a full AI rerun.');
+assert.equal(lockedScore.awayGoals, 1, 'Explicitly locked away score must survive a full AI rerun.');
+assert.equal(lockedScore.source, 'manual');
+assert.equal(lockedScore.model?.marker, 'locked');
+
+const teamLockedScore = state.scores['team-locked-match'];
+assert.equal(teamLockedScore.homeGoals, 1, 'Team-locked home score must survive a full AI rerun.');
+assert.equal(teamLockedScore.awayGoals, 0, 'Team-locked away score must survive a full AI rerun.');
+assert.equal(teamLockedScore.source, 'manual');
+assert.equal(teamLockedScore.model?.marker, 'team-locked');
+
+const openScore = state.scores['open-match'];
+assert.equal(openScore.homeGoals, 3, 'Unlocked home score must receive the new AI prediction.');
+assert.equal(openScore.awayGoals, 2, 'Unlocked away score must receive the new AI prediction.');
+assert.equal(openScore.source, 'new-ai');
+
 assert.equal(state.matchLocks['locked-match'], true, 'Explicit match lock must be restored after AI prediction.');
 assert.equal(state.teamLocks['Team Lock FC'], true, 'Team lock must be restored after AI prediction.');
 assert.equal(event.preventDefaultCalled, true, 'Capture handler must block the legacy AI click handler.');

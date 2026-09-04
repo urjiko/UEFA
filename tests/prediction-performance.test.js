@@ -20,6 +20,7 @@ const header = read('prediction-header-v2.js');
 const polish = read('interface-polish.js');
 const refinement4 = read('ui-refinement-v4.js');
 const refinement5 = read('ui-refinement-v5.js');
+const lockFix = read('prediction-lock-fix-v2.js');
 
 assert.match(config, /UCLDRAW_DISABLE_LEGACY_SHARE_UI = true/);
 assert.match(ui, /ucldraw:prediction-rendered/);
@@ -42,19 +43,25 @@ assert.match(refinement5, /legacyShareUiEnabled/);
 assert.match(refinement5, /addEventListener\('scroll', syncFloatingShare/);
 assert.doesNotMatch(refinement5, /addEventListener\('scroll', queueRefresh/);
 
+assert.match(lockFix, /setManualScoreWithoutReroll/);
+assert.match(lockFix, /predictAllPreservingLocks/);
+assert.match(lockFix, /__stableMatchLock/);
+assert.match(lockFix, /__stableLockPrediction/);
+
 assert.match(shareV9, /legacyShareUiEnabled/);
 assert.match(shareV9, /if \(legacyShareUiEnabled\)/);
 
 for (const asset of [
   'prediction-community.css?v=20260901a',
   'prediction-ai-controller.js?v=20260901b',
+  'prediction-lock-fix-v2.js?v=20260904lock2',
   'prediction-ui.js?v=20260831a',
   'community-config.js?v=20260828b',
   'prediction-community.js?v=20260901a',
   'interface-polish.js?v=20260828p1',
   'prediction-header-v2.js?v=20260828p1',
   'ui-refinement-v4.js?v=20260828p1',
-  'ui-refinement-v5.js?v=20260901hq1',
+  'ui-refinement-v5.js?v=20260904lock2',
   'prediction-share.js?v=20260828p1',
   'prediction-share-v2.js?v=20260828p1',
   'prediction-share-v3.js?v=20260828p1',
@@ -65,4 +72,4 @@ for (const asset of [
   assert.ok(html.includes(asset), `performance cache revision missing: ${asset}`);
 }
 
-console.log('Prediction hot-path observer and scroll optimization checks passed.');
+console.log('Prediction hot-path observer, lock and scroll optimization checks passed.');

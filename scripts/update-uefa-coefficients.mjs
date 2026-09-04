@@ -146,7 +146,7 @@ export function matchRows(catalog,rows) {
     if(!hit){
       const ranked=sameCountry.map((row)=>({row,value:Math.max(...names.map((name)=>score(name,row.officialName)))}))
         .sort((a,b)=>b.value-a.value||a.row.rank-b.row.rank);
-      if(ranked[0]?.value>=0.66&&(!ranked[1]||ranked[0].value>ranked[1].value)) hit=ranked[0].row;
+      if(ranked[0]?.value>=0.8&&(!ranked[1]||ranked[0].value>ranked[1].value)) hit=ranked[0].row;
     }
     if(hit){
       const usesAssociationFloor=Number.isFinite(floor)&&floor>hit.coefficient;

@@ -98,6 +98,7 @@ jobs:
           node scripts/check-home-advantage-profiles.mjs
           node tests/home-advantage-model.test.js
           node tests/prediction-context-model.test.js
+          node tests/prediction-calibration.test.js
       - name: Check base HTML and controls
         run: |
           node tests/ui-v3.test.js

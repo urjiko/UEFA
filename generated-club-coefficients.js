@@ -7,7 +7,7 @@
   "sourceUrl": "https://kassiesa.net/uefa/data/method5/trank2026.html",
   "officialValidationUrl": "https://www.uefa.com/nationalassociations/uefarankings/?year=2026",
   "officialValidation": "live-uefa-overview",
-  "updatedAt": "2026-09-04T05:57:03.886Z",
+  "updatedAt": "2026-09-04T06:00:15.489Z",
   "officialRowCount": 401,
   "associationFloorSlugs": [
     "aarhus",
@@ -44,6 +44,7 @@
     "goteborg",
     "shkendija",
     "apollon",
+    "hapoeltelaviv",
     "katowice",
     "bohemian",
     "rijeka",
@@ -344,7 +345,7 @@
     "cska1948": {
       "coefficient": 4.212,
       "rank": null,
-      "officialName": "CSKA 1948 Sofia (association floor)",
+      "officialName": "CSKA 1948 (association floor)",
       "country": "BUL",
       "associationFloor": true
     },
@@ -524,11 +525,11 @@
       "associationFloor": false
     },
     "hapoeltelaviv": {
-      "coefficient": 32.5,
-      "rank": 69,
-      "officialName": "Maccabi Tel-Aviv",
+      "coefficient": 5.5,
+      "rank": null,
+      "officialName": "Hapoel Tel Aviv (association floor)",
       "country": "ISR",
-      "associationFloor": false
+      "associationFloor": true
     },
     "hearts": {
       "coefficient": 11.5,

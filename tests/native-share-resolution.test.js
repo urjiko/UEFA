@@ -55,9 +55,27 @@ assert.match(fidelity, /function repaintFixtureText/);
 assert.match(fidelity, /function repaintStandingsText/);
 assert.match(fidelity, /function repaintFooter/);
 assert.match(fidelity, /nativeTextScale: SCALE/);
+
+// Every user-visible text family in the final image must be repainted on the native 2x canvas.
+assert.match(fidelity, /context\.fillText\('2026-27'/);
+assert.match(fidelity, /snapshot\.activeName/);
+assert.match(fidelity, /journeyTitles/);
+assert.match(fidelity, /fixture\.week/);
+assert.match(fidelity, /formatDate\(fixture\.date\)/);
+assert.match(fidelity, /fixture\.home\.name/);
+assert.match(fidelity, /fixture\.away\.name/);
 assert.match(fidelity, /fixture\.score\.homeGoals/);
+assert.match(fidelity, /fixture\.score\.awayGoals/);
+assert.match(fidelity, /String\(row\.rank\)/);
+assert.match(fidelity, /row\.team\.name/);
 assert.match(fidelity, /row\.goalDifference/);
 assert.match(fidelity, /String\(row\.points\)/);
+assert.match(fidelity, /FOOTER_LABEL/);
+assert.match(fidelity, /SITE_LINK/);
+assert.match(fidelity, /context\.fillText\('Maç Sonuçları'/);
+assert.match(fidelity, /context\.fillText\('Puan Durumu'/);
+assert.match(fidelity, /context\.fillText\('AV'/);
+assert.match(fidelity, /context\.fillText\('P'/);
 
 assert.match(ui, /function snapshotProtectedPredictions/);
 assert.match(ui, /function restoreProtectedPredictions/);
@@ -66,5 +84,7 @@ assert.match(ui, /matchLocks\[match\.id\]/);
 assert.match(ui, /teamLocks\[match\.home\.name\]/);
 assert.match(ui, /setText\(button, locked \? '🔒' : 'Takımı Kilitle'\)/);
 assert.match(ui, /setText\(button, matchLocked \? '🔒' : 'Kilitle'\)/);
+assert.match(ui, /document\.addEventListener\('click',[\s\S]*true\);/);
+assert.match(ui, /event\.stopImmediatePropagation\(\)/);
 
 console.log('Native 2400x3200 text fidelity and lock-preservation checks passed.');

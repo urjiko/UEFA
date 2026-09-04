@@ -1,0 +1,49 @@
+name: Refresh UEFA coefficients
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - scripts/update-uefa-coefficients.mjs
+      - team-pool-loader.js
+      - qualification-bracket.js
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: refresh-uefa-coefficients
+  cancel-in-progress: true
+
+jobs:
+  refresh:
+    if: ${{ !contains(github.event.head_commit.message || '', '[generated coefficients]') }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Regenerate coefficient snapshot
+        run: node scripts/update-uefa-coefficients.mjs
+      - name: Validate generated coefficient snapshot
+        run: |
+          node tests/uefa-coefficients.test.mjs
+          node tests/generated-coefficients.test.js
+      - name: Commit refreshed coefficient snapshot
+        run: |
+          if git diff --quiet -- generated-club-coefficients.js; then
+            echo 'Coefficient snapshot already current.'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add generated-club-coefficients.js
+          git commit -m '[generated coefficients] Refresh UEFA coefficient snapshot'
+          git push

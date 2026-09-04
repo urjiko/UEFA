@@ -7,37 +7,66 @@
   "sourceUrl": "https://kassiesa.net/uefa/data/method5/trank2026.html",
   "officialValidationUrl": "https://www.uefa.com/nationalassociations/uefarankings/?year=2026",
   "officialValidation": "live-uefa-overview",
-  "updatedAt": "2026-05-30T19:00:00.000Z",
+  "updatedAt": "2026-09-04T05:57:03.886Z",
   "officialRowCount": 401,
   "associationFloorSlugs": [
+    "aarhus",
     "bournemouth",
+    "brighton",
+    "celtavigo",
     "como",
     "crete",
+    "crystalpalace",
     "egnatia",
     "gallen",
     "getafe",
     "gornikzabrze",
-    "hearts",
+    "hoffenheim",
     "hradeckralove",
+    "lens",
+    "lillestrom",
     "mjallby",
     "nec",
+    "nordsjaelland",
     "sion",
     "sunderland",
     "thun",
     "torreense",
-    "truidense"
+    "tromso",
+    "truidense",
+    "twente",
+    "viking",
+    "gyor",
+    "motherwell",
+    "interturku",
+    "debreceni",
+    "cska1948",
+    "goteborg",
+    "shkendija",
+    "apollon",
+    "katowice",
+    "bohemian",
+    "rijeka",
+    "jablonec",
+    "rfs",
+    "valur",
+    "dinamocity",
+    "beitar",
+    "dac",
+    "tobol"
   ],
   "unmatchedSlugs": [
     "dinamominsk",
-    "fiori"
+    "fiori",
+    "vitebsk"
   ],
   "clubs": {
     "aarhus": {
-      "coefficient": 3,
-      "rank": 197,
-      "officialName": "AGF Aarhus",
+      "coefficient": 8.421,
+      "rank": null,
+      "officialName": "AGF Aarhus (association floor)",
       "country": "DEN",
-      "associationFloor": false
+      "associationFloor": true
     },
     "aek": {
       "coefficient": 24,
@@ -59,6 +88,13 @@
       "officialName": "Anderlecht",
       "country": "BEL",
       "associationFloor": false
+    },
+    "apollon": {
+      "coefficient": 7.138,
+      "rank": null,
+      "officialName": "Apollon Limassol (association floor)",
+      "country": "CYP",
+      "associationFloor": true
     },
     "ararat": {
       "coefficient": 7,
@@ -93,6 +129,13 @@
       "rank": 10,
       "officialName": "Atlético Madrid",
       "country": "ESP",
+      "associationFloor": false
+    },
+    "auda": {
+      "coefficient": 4.5,
+      "rank": 311,
+      "officialName": "FK Auda",
+      "country": "LVA",
       "associationFloor": false
     },
     "austriawien": {
@@ -137,6 +180,13 @@
       "country": "GER",
       "associationFloor": false
     },
+    "beitar": {
+      "coefficient": 5.5,
+      "rank": null,
+      "officialName": "Beitar Jerusalem (association floor)",
+      "country": "ISR",
+      "associationFloor": true
+    },
     "benfica": {
       "coefficient": 90,
       "rank": 14,
@@ -156,6 +206,20 @@
       "rank": 32,
       "officialName": "Bodø/Glimt",
       "country": "NOR",
+      "associationFloor": false
+    },
+    "bohemian": {
+      "coefficient": 3.468,
+      "rank": null,
+      "officialName": "Bohemian (association floor)",
+      "country": "IRL",
+      "associationFloor": true
+    },
+    "borac": {
+      "coefficient": 13.125,
+      "rank": 140,
+      "officialName": "Borac Banja Luka",
+      "country": "BIH",
       "associationFloor": false
     },
     "bournemouth": {
@@ -180,11 +244,11 @@
       "associationFloor": false
     },
     "brighton": {
-      "coefficient": 16,
-      "rank": 87,
-      "officialName": "Brighton & Hove Albion",
+      "coefficient": 23.903,
+      "rank": null,
+      "officialName": "Brighton & Hove Albion (association floor)",
       "country": "ENG",
-      "associationFloor": false
+      "associationFloor": true
     },
     "brugge": {
       "coefficient": 75.25,
@@ -208,11 +272,11 @@
       "associationFloor": false
     },
     "celtavigo": {
-      "coefficient": 16.25,
-      "rank": 104,
-      "officialName": "Celta de Vigo",
+      "coefficient": 19.409,
+      "rank": null,
+      "officialName": "Celta de Vigo (association floor)",
       "country": "ESP",
-      "associationFloor": false
+      "associationFloor": true
     },
     "celtic": {
       "coefficient": 44,
@@ -271,11 +335,18 @@
       "associationFloor": false
     },
     "crystalpalace": {
-      "coefficient": 21.88,
-      "rank": 86,
-      "officialName": "Crystal Palace",
+      "coefficient": 23.903,
+      "rank": null,
+      "officialName": "Crystal Palace (association floor)",
       "country": "ENG",
-      "associationFloor": false
+      "associationFloor": true
+    },
+    "cska1948": {
+      "coefficient": 4.212,
+      "rank": null,
+      "officialName": "CSKA 1948 Sofia (association floor)",
+      "country": "BUL",
+      "associationFloor": true
     },
     "cskasofia": {
       "coefficient": 6.5,
@@ -284,11 +355,39 @@
       "country": "BUL",
       "associationFloor": false
     },
+    "dac": {
+      "coefficient": 4.475,
+      "rank": null,
+      "officialName": "DAC 1904 (association floor)",
+      "country": "SVK",
+      "associationFloor": true
+    },
+    "debreceni": {
+      "coefficient": 5.437,
+      "rank": null,
+      "officialName": "Debreceni (association floor)",
+      "country": "HUN",
+      "associationFloor": true
+    },
     "dinamo": {
       "coefficient": 46.5,
       "rank": 56,
       "officialName": "Dinamo Zagreb",
       "country": "CRO",
+      "associationFloor": false
+    },
+    "dinamocity": {
+      "coefficient": 1.625,
+      "rank": null,
+      "officialName": "Dinamo City (association floor)",
+      "country": "ALB",
+      "associationFloor": true
+    },
+    "drita": {
+      "coefficient": 13.625,
+      "rank": 133,
+      "officialName": "FC Drita",
+      "country": "KOS",
       "associationFloor": false
     },
     "dynamokyiv": {
@@ -382,6 +481,20 @@
       "country": "POL",
       "associationFloor": true
     },
+    "goteborg": {
+      "coefficient": 5.925,
+      "rank": null,
+      "officialName": "IFK Göteborg (association floor)",
+      "country": "SWE",
+      "associationFloor": true
+    },
+    "gyor": {
+      "coefficient": 5.437,
+      "rank": null,
+      "officialName": "Győr (association floor)",
+      "country": "HUN",
+      "associationFloor": true
+    },
     "hajduksplit": {
       "coefficient": 10,
       "rank": 172,
@@ -410,12 +523,19 @@
       "country": "ISR",
       "associationFloor": false
     },
+    "hapoeltelaviv": {
+      "coefficient": 32.5,
+      "rank": 69,
+      "officialName": "Maccabi Tel-Aviv",
+      "country": "ISR",
+      "associationFloor": false
+    },
     "hearts": {
-      "coefficient": 6.41,
-      "rank": null,
-      "officialName": "Heart of Midlothian (association floor)",
+      "coefficient": 11.5,
+      "rank": 155,
+      "officialName": "Hearts FC",
       "country": "SCO",
-      "associationFloor": true
+      "associationFloor": false
     },
     "helsinki": {
       "coefficient": 14,
@@ -432,11 +552,11 @@
       "associationFloor": false
     },
     "hoffenheim": {
-      "coefficient": 7,
-      "rank": 112,
-      "officialName": "1899 Hoffenheim",
+      "coefficient": 18.58,
+      "rank": null,
+      "officialName": "1899 Hoffenheim (association floor)",
       "country": "GER",
-      "associationFloor": false
+      "associationFloor": true
     },
     "hradeckralove": {
       "coefficient": 9.705,
@@ -444,6 +564,13 @@
       "officialName": "Hradec Králové (association floor)",
       "country": "CZE",
       "associationFloor": true
+    },
+    "iberia1999": {
+      "coefficient": 5,
+      "rank": 289,
+      "officialName": "Iberia 1999",
+      "country": "GEO",
+      "associationFloor": false
     },
     "inter": {
       "coefficient": 127,
@@ -458,6 +585,20 @@
       "officialName": "Inter Club d'Escaldes",
       "country": "AND",
       "associationFloor": false
+    },
+    "interturku": {
+      "coefficient": 2.8,
+      "rank": null,
+      "officialName": "Inter Turku (association floor)",
+      "country": "FIN",
+      "associationFloor": true
+    },
+    "jablonec": {
+      "coefficient": 9.705,
+      "rank": null,
+      "officialName": "FK Jablonec (association floor)",
+      "country": "CZE",
+      "associationFloor": true
     },
     "jagiellonia": {
       "coefficient": 22,
@@ -478,6 +619,20 @@
       "rank": 157,
       "officialName": "Kairat Almaty",
       "country": "KAZ",
+      "associationFloor": false
+    },
+    "katowice": {
+      "coefficient": 9.35,
+      "rank": null,
+      "officialName": "GKS Katowice (association floor)",
+      "country": "POL",
+      "associationFloor": true
+    },
+    "kaunozalgiris": {
+      "coefficient": 6,
+      "rank": 244,
+      "officialName": "Kauno Zalgiris",
+      "country": "LTU",
       "associationFloor": false
     },
     "klaksvik": {
@@ -516,11 +671,11 @@
       "associationFloor": false
     },
     "lens": {
-      "coefficient": 12.5,
-      "rank": 120,
-      "officialName": "RC Lens",
+      "coefficient": 16.699,
+      "rank": null,
+      "officialName": "RC Lens (association floor)",
       "country": "FRA",
-      "associationFloor": false
+      "associationFloor": true
     },
     "levskisofia": {
       "coefficient": 7,
@@ -537,11 +692,11 @@
       "associationFloor": false
     },
     "lillestrom": {
-      "coefficient": 2,
-      "rank": 204,
-      "officialName": "Lillestrøm SK",
+      "coefficient": 8.247,
+      "rank": null,
+      "officialName": "Lillestrøm SK (association floor)",
       "country": "NOR",
-      "associationFloor": false
+      "associationFloor": true
     },
     "lincoln": {
       "coefficient": 13.5,
@@ -562,6 +717,13 @@
       "rank": 78,
       "officialName": "Ludogorets Razgrad",
       "country": "BUL",
+      "associationFloor": false
+    },
+    "lugano": {
+      "coefficient": 21.25,
+      "rank": 98,
+      "officialName": "FC Lugano",
+      "country": "SUI",
       "associationFloor": false
     },
     "lyon": {
@@ -620,6 +782,13 @@
       "country": "FRA",
       "associationFloor": false
     },
+    "motherwell": {
+      "coefficient": 6.41,
+      "rank": null,
+      "officialName": "Motherwell (association floor)",
+      "country": "SCO",
+      "associationFloor": true
+    },
     "napoli": {
       "coefficient": 63,
       "rank": 34,
@@ -634,12 +803,19 @@
       "country": "NED",
       "associationFloor": true
     },
-    "nordsjaelland": {
-      "coefficient": 7,
-      "rank": 196,
-      "officialName": "FC Nordsjælland",
-      "country": "DEN",
+    "noah": {
+      "coefficient": 10.75,
+      "rank": 161,
+      "officialName": "FC Noah",
+      "country": "ARM",
       "associationFloor": false
+    },
+    "nordsjaelland": {
+      "coefficient": 8.421,
+      "rank": null,
+      "officialName": "FC Nordsjælland (association floor)",
+      "country": "DEN",
+      "associationFloor": true
     },
     "olympiacos": {
       "coefficient": 62.25,
@@ -660,6 +836,13 @@
       "rank": 83,
       "officialName": "Pafos FC",
       "country": "CYP",
+      "associationFloor": false
+    },
+    "paide": {
+      "coefficient": 7.5,
+      "rank": 213,
+      "officialName": "Paide Linnameeskond",
+      "country": "EST",
       "associationFloor": false
     },
     "panathinaikos": {
@@ -718,6 +901,13 @@
       "country": "AZE",
       "associationFloor": false
     },
+    "rakow": {
+      "coefficient": 22.25,
+      "rank": 91,
+      "officialName": "Raków Czestochowa",
+      "country": "POL",
+      "associationFloor": false
+    },
     "rangers": {
       "coefficient": 59.25,
       "rank": 38,
@@ -760,11 +950,39 @@
       "country": "FRA",
       "associationFloor": false
     },
+    "rfs": {
+      "coefficient": 2.575,
+      "rank": null,
+      "officialName": "RFS (association floor)",
+      "country": "LVA",
+      "associationFloor": true
+    },
+    "riga": {
+      "coefficient": 10.5,
+      "rank": 163,
+      "officialName": "Riga FC",
+      "country": "LVA",
+      "associationFloor": false
+    },
+    "rijeka": {
+      "coefficient": 5.631,
+      "rank": null,
+      "officialName": "Rijeka (association floor)",
+      "country": "CRO",
+      "associationFloor": true
+    },
     "roma": {
       "coefficient": 97.75,
       "rank": 13,
       "officialName": "AS Roma",
       "country": "ITA",
+      "associationFloor": false
+    },
+    "runavik": {
+      "coefficient": 2,
+      "rank": 373,
+      "officialName": "NSI Runavik",
+      "country": "FRO",
       "associationFloor": false
     },
     "sabah": {
@@ -795,12 +1013,26 @@
       "country": "IRL",
       "associationFloor": false
     },
+    "shelbourne": {
+      "coefficient": 4,
+      "rank": 328,
+      "officialName": "Shelbourne",
+      "country": "IRL",
+      "associationFloor": false
+    },
     "sherifftiraspol": {
       "coefficient": 20,
       "rank": 102,
       "officialName": "Sheriff Tiraspol",
       "country": "MDA",
       "associationFloor": false
+    },
+    "shkendija": {
+      "coefficient": 1.551,
+      "rank": null,
+      "officialName": "Shkëndija (association floor)",
+      "country": "MKD",
+      "associationFloor": true
     },
     "sion": {
       "coefficient": 6.94,
@@ -858,6 +1090,20 @@
       "country": "ENG",
       "associationFloor": true
     },
+    "tallinn": {
+      "coefficient": 10,
+      "rank": 175,
+      "officialName": "Flora Tallinn",
+      "country": "EST",
+      "associationFloor": false
+    },
+    "tampere": {
+      "coefficient": 3.5,
+      "rank": 335,
+      "officialName": "Ilves Tampere",
+      "country": "FIN",
+      "associationFloor": false
+    },
     "tblisi": {
       "coefficient": 5,
       "rank": 292,
@@ -870,6 +1116,13 @@
       "rank": null,
       "officialName": "Thun (association floor)",
       "country": "SUI",
+      "associationFloor": true
+    },
+    "tobol": {
+      "coefficient": 2.75,
+      "rank": null,
+      "officialName": "Tobol (association floor)",
+      "country": "KAZ",
       "associationFloor": true
     },
     "torreense": {
@@ -887,11 +1140,11 @@
       "associationFloor": false
     },
     "tromso": {
-      "coefficient": 2,
-      "rank": 203,
-      "officialName": "Tromsø IL",
+      "coefficient": 8.247,
+      "rank": null,
+      "officialName": "Tromsø IL (association floor)",
       "country": "NOR",
-      "associationFloor": false
+      "associationFloor": true
     },
     "truidense": {
       "coefficient": 12.45,
@@ -901,11 +1154,11 @@
       "associationFloor": true
     },
     "twente": {
-      "coefficient": 13.5,
-      "rank": 136,
-      "officialName": "FC Twente Enschede",
+      "coefficient": 13.585,
+      "rank": null,
+      "officialName": "FC Twente Enschede (association floor)",
       "country": "NED",
-      "associationFloor": false
+      "associationFloor": true
     },
     "union": {
       "coefficient": 48,
@@ -914,12 +1167,26 @@
       "country": "BEL",
       "associationFloor": false
     },
-    "viking": {
-      "coefficient": 4.5,
-      "rank": 202,
-      "officialName": "Viking Stavanger",
-      "country": "NOR",
+    "vaduz": {
+      "coefficient": 8.5,
+      "rank": 194,
+      "officialName": "FC Vaduz",
+      "country": "LIE",
       "associationFloor": false
+    },
+    "valur": {
+      "coefficient": 3.304,
+      "rank": null,
+      "officialName": "Valur (association floor)",
+      "country": "ISL",
+      "associationFloor": true
+    },
+    "viking": {
+      "coefficient": 8.247,
+      "rank": null,
+      "officialName": "Viking Stavanger (association floor)",
+      "country": "NOR",
+      "associationFloor": true
     },
     "vikingurreykjavik": {
       "coefficient": 11.75,

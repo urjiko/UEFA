@@ -8,6 +8,10 @@
   if (!data?.competitions || !manifest || !bracket?.teams) return;
 
   const SNAPSHOT_DATE = '2026-08-28';
+  const COEFFICIENT_SLUG_OVERRIDES = Object.freeze({
+    kaunozalgiris: 'kaunozalgiris',
+    iberia1999: 'iberia1999'
+  });
   const FINAL_POTS = Object.freeze({
     ucl: Object.freeze([
       Object.freeze(['psg', 'bayern', 'real', 'liverpool', 'inter', 'city', 'arsenal', 'barcelona', 'atleti']),
@@ -69,7 +73,10 @@
   function finalTeam(slug, pot) {
     const existing = existingBySlug.get(slug) || null;
     const descriptor = descriptorFor(slug);
-    const coefficientSlug = descriptor?.coefficientSlug || existing?.coefficientSlug || slug;
+    const coefficientSlug = COEFFICIENT_SLUG_OVERRIDES[slug]
+      || descriptor?.coefficientSlug
+      || existing?.coefficientSlug
+      || slug;
     const coefficientRecord = coefficientData.clubs?.[coefficientSlug] || coefficientData.clubs?.[slug] || null;
     const crest = manifestCrest(slug, descriptor) || existing?.crest || null;
     const name = descriptor?.name || existing?.name || slug;

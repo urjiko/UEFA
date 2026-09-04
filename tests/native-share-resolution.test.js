@@ -10,6 +10,7 @@ const v8 = read('prediction-share-v8.js');
 const v9 = read('prediction-share-v9.js');
 const fidelity = read('prediction-share-fidelity-patch.js');
 const ui = read('ui-refinement-v5.js');
+const lockFix = read('prediction-lock-fix-v2.js');
 const html = read('index.html');
 
 assert.match(v6, /const NATIVE_SCALE = 2/);
@@ -42,7 +43,8 @@ assert.match(ui, /prediction-share-v8\.js\?v=20260901hq1/);
 assert.match(ui, /prediction-share-fidelity-patch\.js\?v=20260902hq2/);
 assert.ok(html.includes('prediction-share-v6.js?v=20260901hq1'));
 assert.ok(html.includes('prediction-share-v7.js?v=20260901hq1'));
-assert.ok(html.includes('ui-refinement-v5.js?v=20260901hq1'));
+assert.ok(html.includes('ui-refinement-v5.js?v=20260904lock2'));
+assert.ok(html.includes('prediction-lock-fix-v2.js?v=20260904lock2'));
 
 assert.doesNotMatch(v9, /function upscaleCanvas/);
 assert.doesNotMatch(v9, /drawImage\(sourceCanvas/);
@@ -86,5 +88,8 @@ assert.match(ui, /setText\(button, locked \? '🔒' : 'Takımı Kilitle'\)/);
 assert.match(ui, /setText\(button, matchLocked \? '🔒' : 'Kilitle'\)/);
 assert.match(ui, /document\.addEventListener\('click',[\s\S]*true\);/);
 assert.match(ui, /event\.stopImmediatePropagation\(\)/);
+assert.match(lockFix, /setManualScoreWithoutReroll/);
+assert.match(lockFix, /predictAllPreservingLocks/);
+assert.match(lockFix, /stateLabel\.textContent = 'Tahmin edildi'/);
 
-console.log('Native 2400x3200 text fidelity and lock-preservation checks passed.');
+console.log('Native 2400x3200 text fidelity and stable-lock checks passed.');

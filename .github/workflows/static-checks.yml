@@ -99,6 +99,14 @@ jobs:
           node tests/home-advantage-model.test.js
           node tests/prediction-context-model.test.js
           node tests/prediction-calibration.test.js
+      - name: Upload prediction calibration diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: prediction-calibration-report
+          path: prediction-calibration-report.json
+          if-no-files-found: ignore
+          retention-days: 1
       - name: Check base HTML and controls
         run: |
           node tests/ui-v3.test.js

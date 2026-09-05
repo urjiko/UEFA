@@ -74,13 +74,13 @@
     document.head.appendChild(script);
   }
 
-  ensureStylesheet('prediction-community-v2.css?v=20260905a', 'data-prediction-community-v2');
-  ensureStylesheet('prediction-community-v3.css?v=20260905a', 'data-prediction-community-v3');
+  ensureStylesheet('prediction-community-v2.css?v=20260905c', 'data-prediction-community-v2');
+  ensureStylesheet('prediction-community-v3.css?v=20260905c', 'data-prediction-community-v3');
 
-  // Must be registered before Community V2's window-capture Finish listener.
-  // This keeps export prewarming in the background so Bitir can never hang on PNG generation.
-  ensureScript('prediction-finish-hotfix.js?v=20260905a', 'data-prediction-finish-hotfix');
-  ensureScript('prediction-community-v2.js?v=20260905a', 'data-prediction-community-v2');
-  ensureScript('prediction-community-v3.js?v=20260905a', 'data-prediction-community-v3');
+  // Must register before Community V2's window-capture Finish listener. This layer
+  // owns Finish, strips the legacy share selector and never waits on export/stat hydration.
+  ensureScript('prediction-finish-hotfix.js?v=20260905c', 'data-prediction-finish-hotfix');
+  ensureScript('prediction-community-v2.js?v=20260905c', 'data-prediction-community-v2');
+  ensureScript('prediction-community-v3.js?v=20260905c', 'data-prediction-community-v3');
   ensureScript('prediction-share-export-safety.js?v=20260905b', 'data-prediction-export-safety');
 })();

@@ -56,7 +56,7 @@ for (const asset of [
   'prediction-ai-controller.js?v=20260901b',
   'prediction-lock-fix-v2.js?v=20260904lock2',
   'prediction-ui.js?v=20260831a',
-  'community-config.js?v=20260828b',
+  'community-config.js?v=20260905c',
   'prediction-community.js?v=20260901a',
   'interface-polish.js?v=20260828p1',
   'prediction-header-v2.js?v=20260828p1',

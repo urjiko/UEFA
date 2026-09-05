@@ -18,7 +18,7 @@ const shareV4 = read('prediction-share-v4.js');
 const ai = read('prediction-ai-controller.js');
 
 assert.ok(html.includes('prediction-community.css?v=20260901a'));
-assert.ok(html.includes('community-config.js?v=20260828b'));
+assert.ok(html.includes('community-config.js?v=20260905c'));
 assert.ok(html.includes('prediction-community.js?v=20260901a'));
 assert.ok(html.indexOf('prediction-ui.js') < html.indexOf('prediction-community.js'));
 

@@ -125,8 +125,11 @@ assert.match(finishHotfix, /window\.addEventListener\('click'/);
 assert.match(finishHotfix, /prediction-community-finish-button/);
 assert.match(finishHotfix, /event\.stopImmediatePropagation\(\)/);
 assert.match(finishHotfix, /prewarmExportInBackground\(\)/);
-assert.match(finishHotfix, /const result = await community\.submitPrediction\(payload\)/);
-assert.match(finishHotfix, /await community\.openAveragePage/);
+assert.match(finishHotfix, /openAveragePageInBackground/);
+assert.match(finishHotfix, /withTimeout/);
+assert.match(finishHotfix, /SUBMIT_TIMEOUT_MS\s*=\s*12000/);
+assert.match(finishHotfix, /classList\.remove\('prediction-share-v4-button'/);
+assert.doesNotMatch(finishHotfix, /await\s+community\.openAveragePage/);
 assert.doesNotMatch(finishHotfix, /await\s+renderer\.prepareExport\(\)/);
 
 assert.match(resultsUi, /Tahmin Görselini İndir/);
@@ -146,14 +149,14 @@ assert.match(sql, /on conflict \(id\) do update/i);
 assert.match(sql, /prediction_source'\s*=\s*'user'/);
 assert.match(sql, /'updated', v_existing/);
 assert.match(sql, /revoke all on table public\.prediction_submissions from anon, authenticated/i);
-assert.match(config, /prediction-finish-hotfix\.js\?v=20260905a/);
+assert.match(config, /prediction-finish-hotfix\.js\?v=20260905c/);
 assert.ok(
-  config.indexOf("prediction-finish-hotfix.js?v=20260905a") < config.indexOf("prediction-community-v2.js?v=20260905a"),
+  config.indexOf("prediction-finish-hotfix.js?v=20260905c") < config.indexOf("prediction-community-v2.js?v=20260905c"),
   'Finish hotfix must register before Community V2 capture listener.'
 );
-assert.match(config, /prediction-community-v2\.js\?v=20260905a/);
-assert.match(config, /prediction-community-v3\.js\?v=20260905a/);
-assert.match(config, /prediction-community-v3\.css\?v=20260905a/);
+assert.match(config, /prediction-community-v2\.js\?v=20260905c/);
+assert.match(config, /prediction-community-v3\.js\?v=20260905c/);
+assert.match(config, /prediction-community-v3\.css\?v=20260905c/);
 assert.match(config, /prediction-share-export-safety\.js\?v=20260905b/);
 assert.match(config, /UCLDRAW_PREDICTION_SHARE_FIDELITY_PATCH/);
 assert.match(config, /disabled:\s*true/);
@@ -163,4 +166,4 @@ assert.match(fidelity, /disabled:\s*true/);
 assert.doesNotMatch(fidelity, /prototype\.toBlob\s*=/);
 assert.doesNotMatch(fidelity, /copyCleanStrip/);
 
-console.log('Community UI keeps one vote identity, finishes without blocking on export prewarm and keeps interactive result controls.');
+console.log('Community UI keeps one vote identity, cannot hang on follow-up work and keeps interactive result controls.');

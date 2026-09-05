@@ -7,6 +7,8 @@
 
   // Disable the old toBlob fidelity repaint synchronously, before ui-refinement-v5
   // gets a chance to load a cached copy of prediction-share-fidelity-patch.js.
+  // V7/V8/V9 already render at native 2400x3200; repainting the same fixtures
+  // again during PNG encoding is what caused overlapping dates, scores and names.
   window.UCLDRAW_PREDICTION_SHARE_FIDELITY_PATCH = Object.freeze({
     version: 3,
     disabled: true,
@@ -32,6 +34,7 @@
   // Supabase's sb_publishable_* keys are API keys, not JWTs. Existing community
   // modules still add the old `Authorization: Bearer <key>` header. Strip only
   // that obsolete header for this project's RPC calls while keeping `apikey`.
+  // The wrapper is deliberately narrow so every other fetch on the site is untouched.
   const nativeFetch = window.fetch.bind(window);
   window.fetch = function ucldrawSupabasePublishableFetch(input, init = {}) {
     const requestUrl = typeof input === 'string' ? input : input?.url;
@@ -91,6 +94,13 @@
     return new URL(`${dirs[payload.leagueId] || dirs.ucl}/tahmin/${payload.teamSlug}/ortalama/`, root).href;
   }
 
+  function announceAverageRendered() {
+    try {
+      window.dispatchEvent(new CustomEvent('ucldraw:community-average-rendered'));
+    } catch {}
+    window.UCLDRAW_COMMUNITY_RESULTS_V3?.scan?.();
+  }
+
   function startAveragePage(community, payload, result) {
     const fallbackUrl = averageFallbackUrl(community, payload);
     let request;
@@ -117,6 +127,7 @@
     }, AVERAGE_FALLBACK_MS);
 
     Promise.resolve(request)
+      .then(() => announceAverageRendered())
       .catch((error) => {
         console.error(error);
         showToast(error?.message || 'İstatistikler yüklenemedi.');
@@ -193,6 +204,7 @@
     finishCurrentPrediction,
     startAveragePage,
     normalizeFinishButtons,
+    announceAverageRendered,
     finishTimeoutMs: FINISH_TIMEOUT_MS
   });
 
@@ -220,6 +232,6 @@
   ensureStylesheet('prediction-community-v2.css?v=20260905d', 'data-prediction-community-v2');
   ensureStylesheet('prediction-community-v3.css?v=20260905d', 'data-prediction-community-v3');
   ensureScript('prediction-community-v2.js?v=20260905d', 'data-prediction-community-v2');
-  ensureScript('prediction-community-v3.js?v=20260905d', 'data-prediction-community-v3');
+  ensureScript('prediction-community-v3.js?v=20260905e', 'data-prediction-community-v3');
   ensureScript('prediction-share-export-safety.js?v=20260905b', 'data-prediction-export-safety');
 })();

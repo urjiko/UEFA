@@ -30,6 +30,7 @@ assert.match(css, /\.roster-team-action-simple\.is-simple-action-modal[\s\S]*gri
 assert.match(css, /padding:\s*3px 12px\s*!important/);
 assert.match(css, /width:\s*102px\s*!important/);
 assert.match(css, /\.draw-header-refined \.draw-kicker[\s\S]*display:\s*block\s*!important/);
+assert.doesNotMatch(css, /body\[data-league="uel"\][\s\S]*arkaplanuel\.jpg/);
 assert.match(css, /\.draw-header-refined \.draw-title[\s\S]*text-shadow:\s*none\s*!important/);
 assert.match(css, /\.prediction-header-refined \.prediction-header-identity h2[\s\S]*text-shadow:\s*none\s*!important/);
 assert.match(css, /width:\s*min\(1014px, 100%\)\s*!important/);
@@ -79,8 +80,8 @@ assert.match(share, /async function redrawAlignedHeader/);
 assert.match(share, /context\.fillText\('2026-27', copyX, clubY \+ 30\)/);
 assert.match(share, /context\.fillText\(snapshot\.activeName, copyX, clubY \+ 96\)/);
 assert.match(share, /context\.fillText\(journey, copyX, clubY \+ 145\)/);
-assert.match(share, /predictionLink\(snapshot\)/);
-assert.match(share, /context\.fillText\(directLink, copyX, clubY \+ 174\)/);
+assert.match(share, /predictionLink\(snapshot/);
+assert.doesNotMatch(share, /context\.fillText\(directLink/);
 assert.match(share, /Sen de \$\{snapshot\.activeName\} için tahminini yap/);
 assert.match(share, /navigator\.share\(\{ title, text, files: \[file\] \}\)/);
 assert.match(share, /drawCrestWithShadow\(context, leagueLogo[\s\S]*30, 44\)/);

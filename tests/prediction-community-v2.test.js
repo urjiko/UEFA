@@ -7,6 +7,8 @@ const assert = require('node:assert/strict');
 
 const root = path.resolve(__dirname, '..');
 const source = fs.readFileSync(path.join(root, 'prediction-community-v2.js'), 'utf8');
+const resultsUi = fs.readFileSync(path.join(root, 'prediction-community-v3.js'), 'utf8');
+const resultsCss = fs.readFileSync(path.join(root, 'prediction-community-v3.css'), 'utf8');
 const config = fs.readFileSync(path.join(root, 'community-config.js'), 'utf8');
 const safety = fs.readFileSync(path.join(root, 'prediction-share-export-safety.js'), 'utf8');
 const fidelity = fs.readFileSync(path.join(root, 'prediction-share-fidelity-patch.js'), 'utf8');
@@ -118,11 +120,26 @@ assert.match(source, /event\.stopImmediatePropagation\(\)/);
 assert.match(source, /UCLDRAW_PREDICTION_SHARE_V9/);
 assert.match(source, /MIN_STRONG_SAMPLE\s*=\s*20/);
 
+assert.match(resultsUi, /Tahmin Görselini İndir/);
+assert.match(resultsUi, /Tahmin Linkini Kopyala/);
+assert.match(resultsUi, /control\.remove\(\)/);
+assert.match(resultsUi, /retry\.textContent = 'Tekrar Tahmin Et'/);
+assert.match(resultsUi, /community-match-toolbar/);
+assert.match(resultsUi, /En tartışmalı/);
+assert.match(resultsUi, /community-match-verdict/);
+assert.match(resultsCss, /community-actions-simplified/);
+assert.match(resultsCss, /align-items:\s*center\s*!important/);
+assert.match(resultsCss, /justify-content:\s*center\s*!important/);
+assert.match(resultsCss, /community-match-filters/);
+assert.match(resultsCss, /community-results-hero/);
+
 assert.match(sql, /on conflict \(id\) do update/i);
 assert.match(sql, /prediction_source'\s*=\s*'user'/);
 assert.match(sql, /'updated', v_existing/);
 assert.match(sql, /revoke all on table public\.prediction_submissions from anon, authenticated/i);
 assert.match(config, /prediction-community-v2\.js\?v=20260905a/);
+assert.match(config, /prediction-community-v3\.js\?v=20260905a/);
+assert.match(config, /prediction-community-v3\.css\?v=20260905a/);
 assert.match(config, /prediction-share-export-safety\.js\?v=20260905b/);
 assert.match(config, /UCLDRAW_PREDICTION_SHARE_FIDELITY_PATCH/);
 assert.match(config, /disabled:\s*true/);
@@ -132,4 +149,4 @@ assert.match(fidelity, /disabled:\s*true/);
 assert.doesNotMatch(fidelity, /prototype\.toBlob\s*=/);
 assert.doesNotMatch(fidelity, /copyCleanStrip/);
 
-console.log('Community V2 keeps one vote identity and exports one native canvas without a second fidelity repaint.');
+console.log('Community UI keeps one vote identity, simplifies result actions and provides interactive match filters.');

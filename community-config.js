@@ -230,8 +230,8 @@
   }
 
   ensureStylesheet('prediction-community-v2.css?v=20260905d', 'data-prediction-community-v2');
-  ensureStylesheet('prediction-community-v3.css?v=20260905d', 'data-prediction-community-v3');
+  ensureStylesheet('prediction-community-v3.css?v=20260905f', 'data-prediction-community-v3');
   ensureScript('prediction-community-v2.js?v=20260905d', 'data-prediction-community-v2');
-  ensureScript('prediction-community-v3.js?v=20260905e', 'data-prediction-community-v3');
+  ensureScript('prediction-community-v3.js?v=20260905f', 'data-prediction-community-v3');
   ensureScript('prediction-share-export-safety.js?v=20260905b', 'data-prediction-export-safety');
 })();

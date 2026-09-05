@@ -8,6 +8,18 @@
     const fidelity = window.UCLDRAW_PREDICTION_SHARE_FIDELITY_PATCH;
     if (!fidelity?.outputWidth || !fidelity?.outputHeight) return false;
 
+    // The fidelity repaint is intentionally disabled now. Do not wrap toBlob at
+    // all: V9 can encode the native 2400x3200 canvas exactly as rendered.
+    if (fidelity.disabled) {
+      window.UCLDRAW_PREDICTION_EXPORT_SAFETY = Object.freeze({
+        version: 2,
+        passthrough: true,
+        outputWidth: fidelity.outputWidth,
+        outputHeight: fidelity.outputHeight
+      });
+      return true;
+    }
+
     const currentToBlob = HTMLCanvasElement.prototype.toBlob;
     if (currentToBlob?.ucldrawCloneSafe) {
       window.UCLDRAW_PREDICTION_EXPORT_SAFETY = Object.freeze({ version: 1 });
@@ -27,9 +39,6 @@
       context.imageSmoothingEnabled = true;
       context.imageSmoothingQuality = 'high';
       context.drawImage(this, 0, 0);
-
-      // The fidelity patch may repaint text before encoding. Let it mutate only this disposable clone,
-      // never the cached export canvas used by subsequent share/download actions.
       return currentToBlob.call(clone, callback, type, quality);
     }
 

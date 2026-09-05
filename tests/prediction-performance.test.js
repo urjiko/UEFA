@@ -10,6 +10,7 @@ const read = (file) => fs.readFileSync(path.join(root, file), 'utf8');
 const html = read('index.html');
 const ui = read('prediction-ui.js');
 const community = read('prediction-community.js');
+const communityV3 = read('prediction-community-v3.js');
 const config = read('community-config.js');
 const baseShare = read('prediction-share.js');
 const shareV2 = read('prediction-share-v2.js');
@@ -26,6 +27,8 @@ assert.match(config, /UCLDRAW_DISABLE_LEGACY_SHARE_UI = true/);
 assert.match(config, /UCLDRAW_FINISH_CONTROLLER/);
 assert.match(ui, /ucldraw:prediction-rendered/);
 assert.doesNotMatch(community, /new MutationObserver/);
+assert.doesNotMatch(communityV3, /new MutationObserver/);
+assert.match(communityV3, /ucldraw:community-average-rendered/);
 assert.match(community, /finishCurrentPrediction/);
 
 assert.doesNotMatch(baseShare, /MutationObserver\([^]*ensureShareButton[^]*predictionSection/);
@@ -57,7 +60,7 @@ for (const asset of [
   'prediction-ai-controller.js?v=20260901b',
   'prediction-lock-fix-v2.js?v=20260904lock2',
   'prediction-ui.js?v=20260831a',
-  'community-config.js?v=20260905d',
+  'community-config.js?v=20260905e',
   'prediction-community.js?v=20260901a',
   'interface-polish.js?v=20260828p1',
   'prediction-header-v2.js?v=20260828p1',
@@ -73,4 +76,4 @@ for (const asset of [
   assert.ok(html.includes(asset), `performance cache revision missing: ${asset}`);
 }
 
-console.log('Prediction hot-path observer, lock and scroll optimization checks passed.');
+console.log('Prediction hot-path observers stay bounded and community results are event-driven.');

@@ -4,6 +4,18 @@
   // Public browser credentials only. Never put a privileged secret key here.
   // Share/export renderers stay available, but their legacy DOM observers/UI are disabled.
   window.UCLDRAW_DISABLE_LEGACY_SHARE_UI = true;
+
+  // Disable the old toBlob fidelity repaint synchronously, before ui-refinement-v5
+  // gets a chance to load a cached copy of prediction-share-fidelity-patch.js.
+  // V7/V8/V9 already render at native 2400x3200; repainting the same fixtures
+  // again during PNG encoding is what caused overlapping dates, scores and names.
+  window.UCLDRAW_PREDICTION_SHARE_FIDELITY_PATCH = Object.freeze({
+    version: 3,
+    disabled: true,
+    outputWidth: 2400,
+    outputHeight: 3200
+  });
+
   window.UCLDRAW_COMMUNITY_CONFIG = Object.freeze({
     supabaseUrl: '',
     supabaseAnonKey: '',
@@ -34,5 +46,5 @@
 
   ensureStylesheet('prediction-community-v2.css?v=20260905a', 'data-prediction-community-v2');
   ensureScript('prediction-community-v2.js?v=20260905a', 'data-prediction-community-v2');
-  ensureScript('prediction-share-export-safety.js?v=20260905a', 'data-prediction-export-safety');
+  ensureScript('prediction-share-export-safety.js?v=20260905b', 'data-prediction-export-safety');
 })();

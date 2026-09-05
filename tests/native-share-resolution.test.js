@@ -9,6 +9,8 @@ const v7 = read('prediction-share-v7.js');
 const v8 = read('prediction-share-v8.js');
 const v9 = read('prediction-share-v9.js');
 const fidelity = read('prediction-share-fidelity-patch.js');
+const config = read('community-config.js');
+const safety = read('prediction-share-export-safety.js');
 const ui = read('ui-refinement-v5.js');
 const lockFix = read('prediction-lock-fix-v2.js');
 const html = read('index.html');
@@ -40,7 +42,6 @@ for (const source of [v6, v7, v8]) {
 
 assert.match(v8, /prediction-share-v9\.js\?v=20260901hq1/);
 assert.match(ui, /prediction-share-v8\.js\?v=20260901hq1/);
-assert.match(ui, /prediction-share-fidelity-patch\.js\?v=20260902hq2/);
 assert.ok(html.includes('prediction-share-v6.js?v=20260901hq1'));
 assert.ok(html.includes('prediction-share-v7.js?v=20260901hq1'));
 assert.ok(html.includes('ui-refinement-v5.js?v=20260904lock2'));
@@ -51,33 +52,21 @@ assert.doesNotMatch(v9, /drawImage\(sourceCanvas/);
 assert.match(v9, /canvas\.width !== OUTPUT_WIDTH \|\| canvas\.height !== OUTPUT_HEIGHT/);
 assert.match(v9, /native 2400×3200 çözünürlükte/);
 
-assert.match(fidelity, /version: 2/);
-assert.match(fidelity, /function repaintHeaderCopy/);
-assert.match(fidelity, /function repaintFixtureText/);
-assert.match(fidelity, /function repaintStandingsText/);
-assert.match(fidelity, /function repaintFooter/);
-assert.match(fidelity, /nativeTextScale: SCALE/);
-
-// Every user-visible text family in the final image must be repainted on the native 2x canvas.
-assert.match(fidelity, /context\.fillText\('2026-27'/);
-assert.match(fidelity, /snapshot\.activeName/);
-assert.match(fidelity, /journeyTitles/);
-assert.match(fidelity, /fixture\.week/);
-assert.match(fidelity, /formatDate\(fixture\.date\)/);
-assert.match(fidelity, /fixture\.home\.name/);
-assert.match(fidelity, /fixture\.away\.name/);
-assert.match(fidelity, /fixture\.score\.homeGoals/);
-assert.match(fidelity, /fixture\.score\.awayGoals/);
-assert.match(fidelity, /String\(row\.rank\)/);
-assert.match(fidelity, /row\.team\.name/);
-assert.match(fidelity, /row\.goalDifference/);
-assert.match(fidelity, /String\(row\.points\)/);
-assert.match(fidelity, /FOOTER_LABEL/);
-assert.match(fidelity, /SITE_LINK/);
-assert.match(fidelity, /context\.fillText\('Maç Sonuçları'/);
-assert.match(fidelity, /context\.fillText\('Puan Durumu'/);
-assert.match(fidelity, /context\.fillText\('AV'/);
-assert.match(fidelity, /context\.fillText\('P'/);
+// V7/V8/V9 are now the only final render path. The old fidelity module must
+// remain a compatibility marker only and must never repaint the encoded PNG.
+assert.match(fidelity, /version: 3/);
+assert.match(fidelity, /disabled:\s*true/);
+assert.doesNotMatch(fidelity, /function repaintHeaderCopy/);
+assert.doesNotMatch(fidelity, /function repaintFixtureText/);
+assert.doesNotMatch(fidelity, /function repaintStandingsText/);
+assert.doesNotMatch(fidelity, /function repaintFooter/);
+assert.doesNotMatch(fidelity, /copyCleanStrip/);
+assert.doesNotMatch(fidelity, /prototype\.toBlob\s*=/);
+assert.match(config, /UCLDRAW_PREDICTION_SHARE_FIDELITY_PATCH/);
+assert.match(config, /disabled:\s*true/);
+assert.match(config, /prediction-share-export-safety\.js\?v=20260905b/);
+assert.match(safety, /if \(fidelity\.disabled\)/);
+assert.match(safety, /passthrough:\s*true/);
 
 assert.match(ui, /function snapshotProtectedPredictions/);
 assert.match(ui, /function restoreProtectedPredictions/);
@@ -92,4 +81,4 @@ assert.match(lockFix, /setManualScoreWithoutReroll/);
 assert.match(lockFix, /predictAllPreservingLocks/);
 assert.match(lockFix, /stateLabel\.textContent = 'Tahmin edildi'/);
 
-console.log('Native 2400x3200 text fidelity and stable-lock checks passed.');
+console.log('Native 2400x3200 single-render export and stable-lock checks passed.');

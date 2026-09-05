@@ -9,6 +9,7 @@ const root = path.resolve(__dirname, '..');
 const source = fs.readFileSync(path.join(root, 'prediction-community-v2.js'), 'utf8');
 const config = fs.readFileSync(path.join(root, 'community-config.js'), 'utf8');
 const safety = fs.readFileSync(path.join(root, 'prediction-share-export-safety.js'), 'utf8');
+const fidelity = fs.readFileSync(path.join(root, 'prediction-share-fidelity-patch.js'), 'utf8');
 const sql = fs.readFileSync(path.join(root, 'supabase/community-predictions.sql'), 'utf8');
 const approximately = (actual, expected, epsilon = 1e-9) => assert.ok(
   Math.abs(actual - expected) <= epsilon,
@@ -122,8 +123,13 @@ assert.match(sql, /prediction_source'\s*=\s*'user'/);
 assert.match(sql, /'updated', v_existing/);
 assert.match(sql, /revoke all on table public\.prediction_submissions from anon, authenticated/i);
 assert.match(config, /prediction-community-v2\.js\?v=20260905a/);
-assert.match(config, /prediction-share-export-safety\.js\?v=20260905a/);
-assert.match(safety, /disposable clone/);
-assert.match(safety, /ucldrawCloneSafe/);
+assert.match(config, /prediction-share-export-safety\.js\?v=20260905b/);
+assert.match(config, /UCLDRAW_PREDICTION_SHARE_FIDELITY_PATCH/);
+assert.match(config, /disabled:\s*true/);
+assert.match(safety, /if \(fidelity\.disabled\)/);
+assert.match(safety, /passthrough:\s*true/);
+assert.match(fidelity, /disabled:\s*true/);
+assert.doesNotMatch(fidelity, /prototype\.toBlob\s*=/);
+assert.doesNotMatch(fidelity, /copyCleanStrip/);
 
-console.log('Community V2 keeps one vote identity, computes human-only summary metrics and isolates export repainting.');
+console.log('Community V2 keeps one vote identity and exports one native canvas without a second fidelity repaint.');

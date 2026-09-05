@@ -16,12 +16,42 @@
     outputHeight: 3200
   });
 
+  const SUPABASE_URL = 'https://xjgdkqtksgbzcpdcuoah.supabase.co';
+  const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_t43dfpIGdfCdf3fEVCjnhQ_18472TTu';
+
   window.UCLDRAW_COMMUNITY_CONFIG = Object.freeze({
-    supabaseUrl: '',
-    supabaseAnonKey: '',
+    supabaseUrl: SUPABASE_URL,
+    supabasePublishableKey: SUPABASE_PUBLISHABLE_KEY,
+    // Temporary compatibility alias for the existing community modules.
+    // This is a publishable browser key, not a legacy JWT anon key.
+    supabaseAnonKey: SUPABASE_PUBLISHABLE_KEY,
     submitRpc: 'submit_prediction',
     averagesRpc: 'get_prediction_averages'
   });
+
+  // Supabase's sb_publishable_* keys are API keys, not JWTs. Existing community
+  // modules still add the old `Authorization: Bearer <key>` header. Strip only
+  // that obsolete header for this project's RPC calls while keeping `apikey`.
+  // The wrapper is deliberately narrow so every other fetch on the site is untouched.
+  const nativeFetch = window.fetch.bind(window);
+  window.fetch = function ucldrawSupabasePublishableFetch(input, init = {}) {
+    const requestUrl = typeof input === 'string' ? input : input?.url;
+    const rpcPrefix = `${SUPABASE_URL}/rest/v1/rpc/`;
+    if (!requestUrl?.startsWith(rpcPrefix)) return nativeFetch(input, init);
+
+    const sourceHeaders = init.headers
+      || ((typeof Request !== 'undefined' && input instanceof Request) ? input.headers : undefined);
+    const headers = new Headers(sourceHeaders || {});
+    headers.set('apikey', SUPABASE_PUBLISHABLE_KEY);
+    if (headers.get('Authorization') === `Bearer ${SUPABASE_PUBLISHABLE_KEY}`) {
+      headers.delete('Authorization');
+    }
+
+    if (typeof Request !== 'undefined' && input instanceof Request) {
+      return nativeFetch(new Request(input, { ...init, headers }));
+    }
+    return nativeFetch(input, { ...init, headers });
+  };
 
   const source = document.currentScript?.src || document.baseURI;
   const assetRoot = new URL('./', source);

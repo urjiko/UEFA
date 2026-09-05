@@ -60,8 +60,12 @@ assert.doesNotMatch(css, /prediction-community-finish-note/);
 assert.match(css, /community-average-grid/);
 assert.match(css, /community-average-active/);
 
-assert.match(config, /supabaseUrl:\s*''/);
-assert.match(config, /supabaseAnonKey:\s*''/);
+assert.match(config, /const SUPABASE_URL = 'https:\/\/[a-z0-9]+\.supabase\.co'/);
+assert.match(config, /const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_[A-Za-z0-9_-]+'/);
+assert.match(config, /supabasePublishableKey:\s*SUPABASE_PUBLISHABLE_KEY/);
+assert.match(config, /supabaseAnonKey:\s*SUPABASE_PUBLISHABLE_KEY/);
+assert.match(config, /headers\.delete\('Authorization'\)/);
+assert.match(config, /headers\.set\('apikey', SUPABASE_PUBLISHABLE_KEY\)/);
 assert.match(config, /UCLDRAW_DISABLE_LEGACY_SHARE_UI = true/);
 
 assert.match(shareV4, /createActionButton\('Bitir'/);
@@ -73,6 +77,7 @@ assert.match(ai, /if \(state\.scores\[match\.id\]\) continue/);
 assert.match(community, /ai\.predictMissing\(state\)/);
 assert.match(community, /session\.refresh\?\.\(\)/);
 assert.doesNotMatch(config, /service_role/i);
+assert.doesNotMatch(config, /sb_secret_/i);
 
 assert.match(sql, /create table if not exists public\.prediction_submissions/);
 assert.match(sql, /enable row level security/);
@@ -83,4 +88,4 @@ assert.match(sql, /get_prediction_averages/);
 assert.match(sql, /grant execute on function public\.submit_prediction/);
 assert.match(sql, /grant execute on function public\.get_prediction_averages/);
 
-console.log('Prediction routes, Finish flow and anonymous community-average plumbing passed.');
+console.log('Prediction routes, Finish flow and configured Supabase community plumbing passed.');

@@ -36,6 +36,7 @@ jobs:
           node --check community-config.js
           node --check prediction-community.js
           node --check prediction-community-v2.js
+          node --check prediction-community-v3.js
           node --check draw-engine-v2.js
           node --check venue-sequence-v4.js
           node --check schedule-ui.js

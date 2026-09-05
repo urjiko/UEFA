@@ -84,6 +84,7 @@ jobs:
           node --check scripts/stabilize-coefficient-snapshot.mjs
           node --check scripts/build-home-advantage-profiles.mjs
           node --check scripts/check-home-advantage-profiles.mjs
+          node tests/prediction-community-v2.test.js
       - name: Check generated team pools and coefficients
         run: |
           node scripts/generate-team-pools.mjs

@@ -21,10 +21,9 @@
     const values = bars.map(percentFromBar);
     const max = values.length ? Math.max(...values) : 0;
     const min = values.length ? Math.min(...values) : 0;
-    const spread = max - min;
     return {
       venue: venueText === 'İç saha' ? STATE.home : STATE.away,
-      spread,
+      spread: max - min,
       max
     };
   }
@@ -40,7 +39,7 @@
 
     const retry = [...actions.querySelectorAll('a')].find((link) => /Yeniden Tahmin Et|Tekrar Tahmin Et/.test(link.textContent));
     if (retry) {
-      retry.textContent = 'Tekrar Tahmin Et';
+      if (retry.textContent !== 'Tekrar Tahmin Et') retry.textContent = 'Tekrar Tahmin Et';
       retry.classList.add('community-retry-button');
     }
 
@@ -142,40 +141,46 @@
     if (header) header.classList.add('community-results-hero');
 
     const description = header?.querySelector('p');
-    if (description) description.textContent = 'Topluluk bu fikstürü nasıl görüyor? Maç maç dağılım, beklenen puan ve en çok ayrışılan eşleşmeler.';
+    const desiredDescription = 'Topluluk bu fikstürü nasıl görüyor? Maç maç dağılım, beklenen puan ve en çok ayrışılan eşleşmeler.';
+    if (description && description.textContent !== desiredDescription) description.textContent = desiredDescription;
 
     const status = section.querySelector('.community-average-status');
     if (status) status.classList.add('community-results-status');
 
     section.querySelectorAll('.community-stat-metric').forEach((metric, index) => {
-      metric.dataset.metricIndex = String(index + 1);
+      const value = String(index + 1);
+      if (metric.dataset.metricIndex !== value) metric.dataset.metricIndex = value;
     });
   }
 
   function enhance(section) {
-    if (!section) return;
+    if (!section || section.hidden) return false;
     section.dataset.communityResultsV3 = 'true';
     section.classList.add('community-results-v3');
-
     tuneCopy(section);
     simplifyActions(section);
     section.querySelectorAll('.community-average-match').forEach((card) => addVerdict(card));
     addFilterBar(section);
+    return true;
   }
 
   function scan() {
-    const section = document.getElementById('predictionCommunityAverage');
-    if (section && !section.hidden) enhance(section);
+    return enhance(document.getElementById('predictionCommunityAverage'));
   }
 
-  const observer = new MutationObserver(() => scan());
-  observer.observe(document.documentElement, { childList: true, subtree: true });
-  window.addEventListener('popstate', scan);
-  window.addEventListener('ucldraw:prediction-rendered', scan);
+  // Do not observe the whole document. The previous MutationObserver watched childList
+  // changes and then changed textContent inside its own callback, producing another
+  // childList mutation. Once the average page appeared that created an endless
+  // microtask loop, starving fetch completions, timers, navigation and share rendering.
+  // Results are now enhanced only after the community renderer explicitly announces
+  // that its DOM is ready.
+  window.addEventListener('ucldraw:community-average-rendered', scan);
+  window.addEventListener('popstate', () => window.requestAnimationFrame(scan));
   scan();
 
   window.UCLDRAW_COMMUNITY_RESULTS_V3 = Object.freeze({
     enhance,
+    scan,
     simplifyActions,
     addFilterBar,
     cardMeta

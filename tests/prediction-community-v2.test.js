@@ -7,6 +7,7 @@ const assert = require('node:assert/strict');
 
 const root = path.resolve(__dirname, '..');
 const source = fs.readFileSync(path.join(root, 'prediction-community-v2.js'), 'utf8');
+const finishHotfix = fs.readFileSync(path.join(root, 'prediction-finish-hotfix.js'), 'utf8');
 const resultsUi = fs.readFileSync(path.join(root, 'prediction-community-v3.js'), 'utf8');
 const resultsCss = fs.readFileSync(path.join(root, 'prediction-community-v3.css'), 'utf8');
 const config = fs.readFileSync(path.join(root, 'community-config.js'), 'utf8');
@@ -120,6 +121,14 @@ assert.match(source, /event\.stopImmediatePropagation\(\)/);
 assert.match(source, /UCLDRAW_PREDICTION_SHARE_V9/);
 assert.match(source, /MIN_STRONG_SAMPLE\s*=\s*20/);
 
+assert.match(finishHotfix, /window\.addEventListener\('click'/);
+assert.match(finishHotfix, /prediction-community-finish-button/);
+assert.match(finishHotfix, /event\.stopImmediatePropagation\(\)/);
+assert.match(finishHotfix, /prewarmExportInBackground\(\)/);
+assert.match(finishHotfix, /const result = await community\.submitPrediction\(payload\)/);
+assert.match(finishHotfix, /await community\.openAveragePage/);
+assert.doesNotMatch(finishHotfix, /await\s+renderer\.prepareExport\(\)/);
+
 assert.match(resultsUi, /Tahmin Görselini İndir/);
 assert.match(resultsUi, /Tahmin Linkini Kopyala/);
 assert.match(resultsUi, /control\.remove\(\)/);
@@ -137,6 +146,11 @@ assert.match(sql, /on conflict \(id\) do update/i);
 assert.match(sql, /prediction_source'\s*=\s*'user'/);
 assert.match(sql, /'updated', v_existing/);
 assert.match(sql, /revoke all on table public\.prediction_submissions from anon, authenticated/i);
+assert.match(config, /prediction-finish-hotfix\.js\?v=20260905a/);
+assert.ok(
+  config.indexOf("prediction-finish-hotfix.js?v=20260905a") < config.indexOf("prediction-community-v2.js?v=20260905a"),
+  'Finish hotfix must register before Community V2 capture listener.'
+);
 assert.match(config, /prediction-community-v2\.js\?v=20260905a/);
 assert.match(config, /prediction-community-v3\.js\?v=20260905a/);
 assert.match(config, /prediction-community-v3\.css\?v=20260905a/);
@@ -149,4 +163,4 @@ assert.match(fidelity, /disabled:\s*true/);
 assert.doesNotMatch(fidelity, /prototype\.toBlob\s*=/);
 assert.doesNotMatch(fidelity, /copyCleanStrip/);
 
-console.log('Community UI keeps one vote identity, simplifies result actions and provides interactive match filters.');
+console.log('Community UI keeps one vote identity, finishes without blocking on export prewarm and keeps interactive result controls.');

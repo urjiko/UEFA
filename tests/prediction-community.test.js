@@ -18,7 +18,7 @@ const shareV4 = read('prediction-share-v4.js');
 const ai = read('prediction-ai-controller.js');
 
 assert.ok(html.includes('prediction-community.css?v=20260901a'));
-assert.ok(html.includes('community-config.js?v=20260905d'));
+assert.ok(html.includes('community-config.js?v=20260905e'));
 assert.ok(html.includes('prediction-community.js?v=20260901a'));
 assert.ok(html.indexOf('prediction-ui.js') < html.indexOf('prediction-community.js'));
 
@@ -69,6 +69,7 @@ assert.match(config, /headers\.set\('apikey', SUPABASE_PUBLISHABLE_KEY\)/);
 assert.match(config, /UCLDRAW_DISABLE_LEGACY_SHARE_UI = true/);
 assert.match(config, /UCLDRAW_FINISH_CONTROLLER/);
 assert.match(config, /event\.stopImmediatePropagation\(\)/);
+assert.match(config, /announceAverageRendered/);
 
 assert.match(shareV4, /createActionButton\('Bitir'/);
 assert.match(shareV4, /prediction-community-finish-button/);

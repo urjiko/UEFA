@@ -41,6 +41,13 @@
     });
   }
 
+  function announceAverageRendered() {
+    try {
+      window.dispatchEvent(new CustomEvent('ucldraw:community-average-rendered'));
+    } catch {}
+    window.UCLDRAW_COMMUNITY_RESULTS_V3?.scan?.();
+  }
+
   async function boot() {
     const info = routeInfo();
     if (!info) throw new Error('Tahmin adresi geçersiz.');
@@ -99,6 +106,7 @@
 
     if (info.page === 'average') {
       await window.UCLDRAW_COMMUNITY?.openAveragePage?.(info.leagueId, info.teamSlug, { updateHistory: false });
+      announceAverageRendered();
     } else {
       const result = window.UCLDRAW_APP?.openCurrentPredictionForSlug?.(info.leagueId, info.teamSlug);
       if (!result?.ok) throw new Error(result?.reason || 'Güncel tahmin ekranı açılamadı.');

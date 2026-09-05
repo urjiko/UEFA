@@ -1,4 +1,4 @@
--- Run this once in Supabase SQL Editor.
+-- Run this in Supabase SQL Editor after creating the project.
 -- Stores only anonymous prediction payloads. No names, emails or account IDs are required.
 
 create extension if not exists pgcrypto;
@@ -9,8 +9,12 @@ create table if not exists public.prediction_submissions (
   team_slug text not null check (team_slug ~ '^[a-z0-9-]+$'),
   fixture_version text not null,
   predictions jsonb not null check (jsonb_typeof(predictions) = 'array'),
-  created_at timestamptz not null default now()
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
 );
+
+alter table public.prediction_submissions
+  add column if not exists updated_at timestamptz not null default now();
 
 create index if not exists prediction_submissions_lookup_idx
   on public.prediction_submissions (league_id, team_slug, fixture_version, created_at desc);
@@ -32,7 +36,8 @@ set search_path = public
 as $$
 declare
   v_expected integer;
-  v_inserted integer := 0;
+  v_existing boolean := false;
+  v_written integer := 0;
 begin
   if p_league_id not in ('ucl','uel','uecl') then
     raise exception 'invalid league';
@@ -59,22 +64,51 @@ begin
        or coalesce(item->>'opponent_slug','') !~ '^[a-z0-9-]+$'
        or coalesce(item->>'venue','') not in ('home','away')
        or coalesce(item->>'outcome','') not in ('win','draw','loss')
+       or coalesce(item->>'prediction_source','') not in ('user','ai')
        or jsonb_typeof(coalesce(item->'manual_score','false'::jsonb)) <> 'boolean'
+       or (
+         coalesce((item->>'manual_score')::boolean, false) is true
+         and (
+           item->>'prediction_source' <> 'user'
+           or item->'selected_goals' is null
+           or item->'opponent_goals' is null
+           or jsonb_typeof(item->'selected_goals') <> 'number'
+           or jsonb_typeof(item->'opponent_goals') <> 'number'
+           or (item->>'selected_goals')::numeric < 0
+           or (item->>'opponent_goals')::numeric < 0
+           or (item->>'selected_goals')::numeric > 20
+           or (item->>'opponent_goals')::numeric > 20
+         )
+       )
   ) then
     raise exception 'invalid prediction payload';
   end if;
 
-  insert into public.prediction_submissions (
-    id, league_id, team_slug, fixture_version, predictions
-  ) values (
-    p_submission_id, p_league_id, p_team_slug, p_fixture_version, p_predictions
-  )
-  on conflict (id) do nothing;
+  select exists (
+    select 1 from public.prediction_submissions where id = p_submission_id
+  ) into v_existing;
 
-  get diagnostics v_inserted = row_count;
+  insert into public.prediction_submissions as existing (
+    id, league_id, team_slug, fixture_version, predictions, updated_at
+  ) values (
+    p_submission_id, p_league_id, p_team_slug, p_fixture_version, p_predictions, now()
+  )
+  on conflict (id) do update
+    set predictions = excluded.predictions,
+        updated_at = now()
+    where existing.league_id = excluded.league_id
+      and existing.team_slug = excluded.team_slug
+      and existing.fixture_version = excluded.fixture_version;
+
+  get diagnostics v_written = row_count;
+  if v_written <> 1 then
+    raise exception 'submission identity mismatch';
+  end if;
+
   return jsonb_build_object(
-    'accepted', v_inserted = 1,
-    'duplicate', v_inserted = 0
+    'accepted', true,
+    'updated', v_existing,
+    'duplicate', false
   );
 end;
 $$;
@@ -114,16 +148,22 @@ as $$
     item->>'match_key' as match_key,
     item->>'opponent_slug' as opponent_slug,
     item->>'venue' as venue,
-    count(*)::bigint as total_votes,
-    count(*) filter (where item->>'outcome' = 'win')::bigint as win_votes,
-    count(*) filter (where item->>'outcome' = 'draw')::bigint as draw_votes,
-    count(*) filter (where item->>'outcome' = 'loss')::bigint as loss_votes,
-    count(*) filter (where (item->>'manual_score')::boolean is true)::bigint as manual_score_votes,
+    count(*) filter (where item->>'prediction_source' = 'user')::bigint as total_votes,
+    count(*) filter (where item->>'prediction_source' = 'user' and item->>'outcome' = 'win')::bigint as win_votes,
+    count(*) filter (where item->>'prediction_source' = 'user' and item->>'outcome' = 'draw')::bigint as draw_votes,
+    count(*) filter (where item->>'prediction_source' = 'user' and item->>'outcome' = 'loss')::bigint as loss_votes,
+    count(*) filter (
+      where item->>'prediction_source' = 'user' and item->>'manual_score' = 'true'
+    )::bigint as manual_score_votes,
     round(avg((item->>'selected_goals')::numeric) filter (
-      where (item->>'manual_score')::boolean is true and item->>'selected_goals' is not null
+      where item->>'prediction_source' = 'user'
+        and item->>'manual_score' = 'true'
+        and item->>'selected_goals' is not null
     ), 2) as avg_selected_goals,
     round(avg((item->>'opponent_goals')::numeric) filter (
-      where (item->>'manual_score')::boolean is true and item->>'opponent_goals' is not null
+      where item->>'prediction_source' = 'user'
+        and item->>'manual_score' = 'true'
+        and item->>'opponent_goals' is not null
     ), 2) as avg_opponent_goals,
     count(distinct id)::bigint as submission_count
   from filtered

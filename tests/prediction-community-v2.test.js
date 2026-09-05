@@ -10,6 +10,10 @@ const source = fs.readFileSync(path.join(root, 'prediction-community-v2.js'), 'u
 const config = fs.readFileSync(path.join(root, 'community-config.js'), 'utf8');
 const safety = fs.readFileSync(path.join(root, 'prediction-share-export-safety.js'), 'utf8');
 const sql = fs.readFileSync(path.join(root, 'supabase/community-predictions.sql'), 'utf8');
+const approximately = (actual, expected, epsilon = 1e-9) => assert.ok(
+  Math.abs(actual - expected) <= epsilon,
+  `expected ${actual} to be within ${epsilon} of ${expected}`
+);
 
 const storage = new Map();
 let uuidCounter = 0;
@@ -98,13 +102,13 @@ const rows = [
 const summary = community.computeCommunitySummary(rows, fixtures, team);
 assert.equal(summary.submissionCount, 120);
 assert.equal(summary.coveredFixtures, 2);
-assert.equal(summary.expectedPoints, 3);
-assert.equal(summary.expectedWins, 0.8);
-assert.equal(summary.expectedDraws, 0.6);
-assert.equal(summary.expectedLosses, 0.6);
-assert.equal(summary.confidence, 0.5);
-assert.equal(summary.averageSelectedGoals, 2.8);
-assert.equal(summary.averageOpponentGoals, 2.5999999999999996);
+approximately(summary.expectedPoints, 3);
+approximately(summary.expectedWins, 0.8);
+approximately(summary.expectedDraws, 0.6);
+approximately(summary.expectedLosses, 0.6);
+approximately(summary.confidence, 0.5);
+approximately(summary.averageSelectedGoals, 2.8);
+approximately(summary.averageOpponentGoals, 2.6);
 assert.equal(summary.scoreSamples, 80);
 
 assert.match(source, /window\.addEventListener\('click'/);

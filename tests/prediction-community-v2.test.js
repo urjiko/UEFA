@@ -1,0 +1,125 @@
+'use strict';
+
+const fs = require('node:fs');
+const path = require('node:path');
+const vm = require('node:vm');
+const assert = require('node:assert/strict');
+
+const root = path.resolve(__dirname, '..');
+const source = fs.readFileSync(path.join(root, 'prediction-community-v2.js'), 'utf8');
+const config = fs.readFileSync(path.join(root, 'community-config.js'), 'utf8');
+const safety = fs.readFileSync(path.join(root, 'prediction-share-export-safety.js'), 'utf8');
+const sql = fs.readFileSync(path.join(root, 'supabase/community-predictions.sql'), 'utf8');
+
+const storage = new Map();
+let uuidCounter = 0;
+const localStorage = {
+  get length() { return storage.size; },
+  key(index) { return [...storage.keys()][index] ?? null; },
+  getItem(key) { return storage.get(key) ?? null; },
+  setItem(key, value) { storage.set(key, String(value)); }
+};
+
+const listeners = new Map();
+const windowObject = {
+  UCLDRAW_COMMUNITY_CONFIG: { supabaseUrl: '', supabaseAnonKey: '' },
+  UCLDRAW_COMMUNITY: {
+    backendConfigured: () => false,
+    buildSubmission: () => null,
+    finishProgress: () => ({ completed: 0, total: 0, done: false }),
+    openAveragePage: async () => ({ rows: [], team: null, competition: null })
+  },
+  addEventListener(type, handler) { listeners.set(type, handler); },
+  setInterval() { return 1; },
+  clearInterval() {},
+  setTimeout() { return 1; }
+};
+
+const documentObject = {
+  getElementById() { return null; },
+  querySelector() { return null; }
+};
+
+const context = {
+  window: windowObject,
+  document: documentObject,
+  localStorage,
+  crypto: { randomUUID: () => `00000000-0000-4000-8000-${String(++uuidCounter).padStart(12, '0')}` },
+  fetch: async () => { throw new Error('fetch should not run'); },
+  console,
+  Object,
+  Array,
+  String,
+  Number,
+  Boolean,
+  Math,
+  Map,
+  Set,
+  JSON,
+  Promise
+};
+
+vm.runInNewContext(source, context, { filename: 'prediction-community-v2.js' });
+const community = windowObject.UCLDRAW_COMMUNITY_V2;
+assert.ok(community, 'Community V2 must install over the base community API.');
+
+const firstPayload = {
+  leagueId: 'ucl',
+  teamSlug: 'galatasaray',
+  fixtureVersion: '2026-27',
+  predictions: [{ outcome: 'win' }]
+};
+const secondPayload = {
+  ...firstPayload,
+  predictions: [{ outcome: 'loss' }]
+};
+const firstId = community.stableSubmissionId(firstPayload);
+const secondId = community.stableSubmissionId(secondPayload);
+assert.equal(firstId, secondId, 'Changing predictions must update the same browser/team/version submission.');
+assert.equal(uuidCounter, 1, 'Stable submission identity must allocate only one UUID.');
+
+const team = { name: 'Team FC', poolSlug: 'team' };
+const opponentOne = { name: 'One FC', poolSlug: 'one' };
+const opponentTwo = { name: 'Two FC', poolSlug: 'two' };
+const fixtures = [
+  { home: true, opponent: opponentOne },
+  { home: false, opponent: opponentTwo }
+];
+const rows = [
+  {
+    match_key: 'team--one', total_votes: 100, win_votes: 60, draw_votes: 20, loss_votes: 20,
+    manual_score_votes: 50, avg_selected_goals: 1.8, avg_opponent_goals: 1.2, submission_count: 120
+  },
+  {
+    match_key: 'two--team', total_votes: 50, win_votes: 10, draw_votes: 20, loss_votes: 20,
+    manual_score_votes: 30, avg_selected_goals: 1.0, avg_opponent_goals: 1.4, submission_count: 120
+  }
+];
+const summary = community.computeCommunitySummary(rows, fixtures, team);
+assert.equal(summary.submissionCount, 120);
+assert.equal(summary.coveredFixtures, 2);
+assert.equal(summary.expectedPoints, 3);
+assert.equal(summary.expectedWins, 0.8);
+assert.equal(summary.expectedDraws, 0.6);
+assert.equal(summary.expectedLosses, 0.6);
+assert.equal(summary.confidence, 0.5);
+assert.equal(summary.averageSelectedGoals, 2.8);
+assert.equal(summary.averageOpponentGoals, 2.5999999999999996);
+assert.equal(summary.scoreSamples, 80);
+
+assert.match(source, /window\.addEventListener\('click'/);
+assert.match(source, /prediction-community-finish-button/);
+assert.match(source, /event\.stopImmediatePropagation\(\)/);
+assert.match(source, /UCLDRAW_PREDICTION_SHARE_V9/);
+assert.match(source, /MIN_STRONG_SAMPLE\s*=\s*20/);
+
+assert.match(sql, /on conflict \(id\) do update/i);
+assert.match(sql, /prediction_source'\s*=\s*'user'/);
+assert.match(sql, /'updated', v_existing/);
+assert.match(sql, /revoke all on table public\.prediction_submissions from anon, authenticated/i);
+assert.match(config, /prediction-community-v2\.js\?v=20260905a/);
+assert.match(config, /prediction-share-export-safety\.js\?v=20260905a/);
+assert.match(safety, /disposable clone/);
+assert.match(safety, /ucldrawCloneSafe/);
+
+console.log('Community V2 keeps one vote identity, computes human-only summary metrics and isolates export repainting.');

@@ -91,25 +91,29 @@
 
     function applyFilter(filter) {
       const cards = [...grid.querySelectorAll('.community-average-match')];
-      cards.forEach((card) => {
+      cards.forEach((card, index) => {
         const meta = cardMeta(card);
         card.dataset.venue = meta.venue;
         card.dataset.spread = String(meta.spread);
+        if (!card.dataset.originalIndex) card.dataset.originalIndex = String(index + 1);
       });
 
-      let visible = cards;
+      const originalOrder = [...cards].sort((a, b) => Number(a.dataset.originalIndex) - Number(b.dataset.originalIndex));
+      if (filter !== STATE.divided) originalOrder.forEach((card) => grid.appendChild(card));
+
+      let visible = originalOrder;
       if (filter === STATE.home || filter === STATE.away) {
-        visible = cards.filter((card) => card.dataset.venue === filter);
+        visible = originalOrder.filter((card) => card.dataset.venue === filter);
       } else if (filter === STATE.divided) {
-        visible = [...cards].sort((a, b) => Number(a.dataset.spread) - Number(b.dataset.spread));
+        visible = [...originalOrder].sort((a, b) => Number(a.dataset.spread) - Number(b.dataset.spread));
+        visible.forEach((card) => grid.appendChild(card));
       }
 
-      cards.forEach((card) => {
+      originalOrder.forEach((card) => {
         card.hidden = filter === STATE.home || filter === STATE.away
           ? card.dataset.venue !== filter
           : false;
       });
-      if (filter === STATE.divided) visible.forEach((card) => grid.appendChild(card));
 
       controls.querySelectorAll('button').forEach((button) => {
         const active = button.dataset.filter === filter;
@@ -149,7 +153,7 @@
   }
 
   function enhance(section) {
-    if (!section || section.dataset.communityResultsV3 === 'true') return;
+    if (!section) return;
     section.dataset.communityResultsV3 = 'true';
     section.classList.add('community-results-v3');
 

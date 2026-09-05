@@ -35,6 +35,7 @@ jobs:
           node --check prediction-route-shell.js
           node --check community-config.js
           node --check prediction-community.js
+          node --check prediction-community-v2.js
           node --check draw-engine-v2.js
           node --check venue-sequence-v4.js
           node --check schedule-ui.js
@@ -65,6 +66,7 @@ jobs:
           node --check prediction-share-v7.js
           node --check prediction-share-v8.js
           node --check prediction-share-v9.js
+          node --check prediction-share-export-safety.js
           node --check site-footer.js
           node --check ui-refinement-v4.js
           node --check ui-refinement-v5.js
@@ -82,6 +84,12 @@ jobs:
           node --check scripts/stabilize-coefficient-snapshot.mjs
           node --check scripts/build-home-advantage-profiles.mjs
           node --check scripts/check-home-advantage-profiles.mjs
+          node tests/prediction-community-v2.test.js
+          node tests/prediction-community.test.js
+          node tests/prediction-finish-flow.test.js
+          node tests/prediction-export-v9.test.js
+          node tests/native-share-resolution.test.js
+          node tests/header-lock-share-v7.test.js
       - name: Check generated team pools and coefficients
         run: |
           node scripts/generate-team-pools.mjs
@@ -125,6 +133,7 @@ jobs:
           git diff --exit-code -- champions-league europa-league conference-league sitemap.xml
           node tests/league-routes.test.js
           node tests/prediction-community.test.js
+          node tests/prediction-community-v2.test.js
           node tests/prediction-performance.test.js
           node tests/prediction-finish-flow.test.js
       - name: Check existing music roster and prediction controls

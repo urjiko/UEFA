@@ -7,7 +7,6 @@ const assert = require('node:assert/strict');
 
 const root = path.resolve(__dirname, '..');
 const source = fs.readFileSync(path.join(root, 'prediction-community-v2.js'), 'utf8');
-const finishHotfix = fs.readFileSync(path.join(root, 'prediction-finish-hotfix.js'), 'utf8');
 const resultsUi = fs.readFileSync(path.join(root, 'prediction-community-v3.js'), 'utf8');
 const resultsCss = fs.readFileSync(path.join(root, 'prediction-community-v3.css'), 'utf8');
 const config = fs.readFileSync(path.join(root, 'community-config.js'), 'utf8');
@@ -121,17 +120,6 @@ assert.match(source, /event\.stopImmediatePropagation\(\)/);
 assert.match(source, /UCLDRAW_PREDICTION_SHARE_V9/);
 assert.match(source, /MIN_STRONG_SAMPLE\s*=\s*20/);
 
-assert.match(finishHotfix, /window\.addEventListener\('click'/);
-assert.match(finishHotfix, /prediction-community-finish-button/);
-assert.match(finishHotfix, /event\.stopImmediatePropagation\(\)/);
-assert.match(finishHotfix, /prewarmExportInBackground\(\)/);
-assert.match(finishHotfix, /openAveragePageInBackground/);
-assert.match(finishHotfix, /withTimeout/);
-assert.match(finishHotfix, /SUBMIT_TIMEOUT_MS\s*=\s*12000/);
-assert.match(finishHotfix, /classList\.remove\('prediction-share-v4-button'/);
-assert.doesNotMatch(finishHotfix, /await\s+community\.openAveragePage/);
-assert.doesNotMatch(finishHotfix, /await\s+renderer\.prepareExport\(\)/);
-
 assert.match(resultsUi, /Tahmin Görselini İndir/);
 assert.match(resultsUi, /Tahmin Linkini Kopyala/);
 assert.match(resultsUi, /control\.remove\(\)/);
@@ -149,14 +137,21 @@ assert.match(sql, /on conflict \(id\) do update/i);
 assert.match(sql, /prediction_source'\s*=\s*'user'/);
 assert.match(sql, /'updated', v_existing/);
 assert.match(sql, /revoke all on table public\.prediction_submissions from anon, authenticated/i);
-assert.match(config, /prediction-finish-hotfix\.js\?v=20260905c/);
-assert.ok(
-  config.indexOf("prediction-finish-hotfix.js?v=20260905c") < config.indexOf("prediction-community-v2.js?v=20260905c"),
-  'Finish hotfix must register before Community V2 capture listener.'
-);
-assert.match(config, /prediction-community-v2\.js\?v=20260905c/);
-assert.match(config, /prediction-community-v3\.js\?v=20260905c/);
-assert.match(config, /prediction-community-v3\.css\?v=20260905c/);
+
+assert.match(config, /UCLDRAW_FINISH_CONTROLLER/);
+assert.match(config, /window\.addEventListener\('click'/);
+assert.match(config, /prediction-community-finish-button/);
+assert.match(config, /event\.stopImmediatePropagation\(\)/);
+assert.match(config, /classList\.remove\('prediction-share-v4-button'/);
+assert.match(config, /FINISH_TIMEOUT_MS\s*=\s*12000/);
+assert.match(config, /withTimeout/);
+assert.match(config, /startAveragePage/);
+assert.match(config, /community-average-active/);
+assert.match(config, /window\.location\.assign/);
+assert.doesNotMatch(config, /prediction-finish-hotfix\.js/);
+assert.match(config, /prediction-community-v2\.js\?v=20260905d/);
+assert.match(config, /prediction-community-v3\.js\?v=20260905d/);
+assert.match(config, /prediction-community-v3\.css\?v=20260905d/);
 assert.match(config, /prediction-share-export-safety\.js\?v=20260905b/);
 assert.match(config, /UCLDRAW_PREDICTION_SHARE_FIDELITY_PATCH/);
 assert.match(config, /disabled:\s*true/);
@@ -166,4 +161,4 @@ assert.match(fidelity, /disabled:\s*true/);
 assert.doesNotMatch(fidelity, /prototype\.toBlob\s*=/);
 assert.doesNotMatch(fidelity, /copyCleanStrip/);
 
-console.log('Community UI keeps one vote identity, cannot hang on follow-up work and keeps interactive result controls.');
+console.log('Community UI keeps one vote identity and Finish is owned synchronously before legacy share handlers.');

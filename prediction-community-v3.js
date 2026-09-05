@@ -10,15 +10,38 @@
     divided: 'divided'
   });
 
+  const OUTCOME_LABELS = Object.freeze({
+    win: Object.freeze({ short: 'G', long: 'Galibiyet' }),
+    draw: Object.freeze({ short: 'B', long: 'Beraberlik' }),
+    loss: Object.freeze({ short: 'M', long: 'Mağlubiyet' })
+  });
+
   function percentFromBar(bar) {
     const width = Number.parseFloat(bar?.querySelector('.community-average-track i')?.style?.width || '0');
-    return Number.isFinite(width) ? width : 0;
+    return Number.isFinite(width) ? Math.max(0, Math.min(100, width)) : 0;
+  }
+
+  function outcomeKind(bar) {
+    if (bar.classList.contains('win')) return 'win';
+    if (bar.classList.contains('draw')) return 'draw';
+    return 'loss';
+  }
+
+  function outcomeData(card) {
+    return [...card.querySelectorAll('.community-average-bar')].map((bar) => {
+      const kind = outcomeKind(bar);
+      return {
+        kind,
+        value: percentFromBar(bar),
+        short: OUTCOME_LABELS[kind].short,
+        long: OUTCOME_LABELS[kind].long
+      };
+    });
   }
 
   function cardMeta(card) {
     const venueText = card.querySelector('.community-average-opponent > span')?.textContent?.trim() || '';
-    const bars = [...card.querySelectorAll('.community-average-bar')];
-    const values = bars.map(percentFromBar);
+    const values = outcomeData(card).map((item) => item.value);
     const max = values.length ? Math.max(...values) : 0;
     const min = values.length ? Math.min(...values) : 0;
     return {
@@ -48,19 +71,60 @@
     actions.classList.add('community-actions-simplified');
   }
 
+  function ensureVerticalChart(card) {
+    if (card.querySelector('.community-outcome-chart')) return;
+    const source = card.querySelector('.community-average-bars');
+    const data = outcomeData(card);
+    if (!source || data.length !== 3) return;
+
+    const maximum = Math.max(...data.map((item) => item.value));
+    const chart = document.createElement('figure');
+    chart.className = 'community-outcome-chart';
+    chart.setAttribute('aria-label', data.map((item) => `${item.long} yüzde ${Math.round(item.value)}`).join(', '));
+
+    const plot = document.createElement('div');
+    plot.className = 'community-outcome-plot';
+
+    data.forEach((item) => {
+      const column = document.createElement('div');
+      column.className = 'community-outcome-column';
+      column.dataset.outcome = item.kind;
+      if (item.value === maximum && maximum > 0) column.classList.add('is-dominant');
+
+      const value = document.createElement('strong');
+      value.textContent = `%${Math.round(item.value)}`;
+
+      const rail = document.createElement('div');
+      rail.className = 'community-outcome-rail';
+      const fill = document.createElement('i');
+      fill.style.height = `${item.value}%`;
+      rail.appendChild(fill);
+
+      const label = document.createElement('span');
+      label.textContent = item.short;
+      label.title = item.long;
+
+      column.append(value, rail, label);
+      plot.appendChild(column);
+    });
+
+    const caption = document.createElement('figcaption');
+    caption.textContent = 'Topluluk dağılımı';
+    chart.append(plot, caption);
+    source.classList.add('community-average-bars-source');
+    source.setAttribute('aria-hidden', 'true');
+    source.before(chart);
+    card.classList.add('has-vertical-chart');
+  }
+
   function addVerdict(card) {
     if (card.querySelector('.community-match-verdict')) return;
-    const bars = [...card.querySelectorAll('.community-average-bar')];
-    if (bars.length !== 3) return;
-    const ranked = bars.map((bar) => ({
-      label: bar.querySelector('div:first-child span')?.textContent?.trim() || '',
-      value: percentFromBar(bar)
-    })).sort((a, b) => b.value - a.value);
+    const ranked = outcomeData(card).sort((a, b) => b.value - a.value);
     if (!ranked[0]?.value) return;
 
     const verdict = document.createElement('span');
     verdict.className = 'community-match-verdict';
-    verdict.textContent = `${ranked[0].label} · %${Math.round(ranked[0].value)}`;
+    verdict.textContent = `${ranked[0].long} önde · %${Math.round(ranked[0].value)}`;
     card.querySelector('.community-average-opponent')?.appendChild(verdict);
   }
 
@@ -75,7 +139,7 @@
     const title = document.createElement('div');
     title.className = 'community-match-toolbar-copy';
     const strong = document.createElement('strong');
-    strong.textContent = 'Maçlara bak';
+    strong.textContent = 'Maç görünümü';
     const count = document.createElement('span');
     title.append(strong, count);
 
@@ -141,7 +205,7 @@
     if (header) header.classList.add('community-results-hero');
 
     const description = header?.querySelector('p');
-    const desiredDescription = 'Topluluk bu fikstürü nasıl görüyor? Maç maç dağılım, beklenen puan ve en çok ayrışılan eşleşmeler.';
+    const desiredDescription = 'Lig aşaması için kullanıcı tahminlerinin anonim ve toplu görünümü.';
     if (description && description.textContent !== desiredDescription) description.textContent = desiredDescription;
 
     const status = section.querySelector('.community-average-status');
@@ -159,7 +223,10 @@
     section.classList.add('community-results-v3');
     tuneCopy(section);
     simplifyActions(section);
-    section.querySelectorAll('.community-average-match').forEach((card) => addVerdict(card));
+    section.querySelectorAll('.community-average-match').forEach((card) => {
+      ensureVerticalChart(card);
+      addVerdict(card);
+    });
     addFilterBar(section);
     return true;
   }
@@ -168,12 +235,8 @@
     return enhance(document.getElementById('predictionCommunityAverage'));
   }
 
-  // Do not observe the whole document. The previous MutationObserver watched childList
-  // changes and then changed textContent inside its own callback, producing another
-  // childList mutation. Once the average page appeared that created an endless
-  // microtask loop, starving fetch completions, timers, navigation and share rendering.
-  // Results are now enhanced only after the community renderer explicitly announces
-  // that its DOM is ready.
+  // Keep result enhancement event-driven. A document-wide MutationObserver previously
+  // retriggered itself while rewriting result copy and could starve navigation/rendering.
   window.addEventListener('ucldraw:community-average-rendered', scan);
   window.addEventListener('popstate', () => window.requestAnimationFrame(scan));
   scan();
@@ -182,6 +245,7 @@
     enhance,
     scan,
     simplifyActions,
+    ensureVerticalChart,
     addFilterBar,
     cardMeta
   });

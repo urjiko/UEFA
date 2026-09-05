@@ -29,6 +29,7 @@ assert.match(ui, /ucldraw:prediction-rendered/);
 assert.doesNotMatch(community, /new MutationObserver/);
 assert.doesNotMatch(communityV3, /new MutationObserver/);
 assert.match(communityV3, /ucldraw:community-average-rendered/);
+assert.match(communityV3, /ensureVerticalChart/);
 assert.match(community, /finishCurrentPrediction/);
 
 assert.doesNotMatch(baseShare, /MutationObserver\([^]*ensureShareButton[^]*predictionSection/);
@@ -60,7 +61,7 @@ for (const asset of [
   'prediction-ai-controller.js?v=20260901b',
   'prediction-lock-fix-v2.js?v=20260904lock2',
   'prediction-ui.js?v=20260831a',
-  'community-config.js?v=20260905e',
+  'community-config.js?v=20260905f',
   'prediction-community.js?v=20260901a',
   'interface-polish.js?v=20260828p1',
   'prediction-header-v2.js?v=20260828p1',
@@ -76,4 +77,4 @@ for (const asset of [
   assert.ok(html.includes(asset), `performance cache revision missing: ${asset}`);
 }
 
-console.log('Prediction hot-path observers stay bounded and community results are event-driven.');
+console.log('Prediction hot-path observers stay bounded and community results remain event-driven.');

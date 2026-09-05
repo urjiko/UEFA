@@ -200,12 +200,6 @@
     context.fillStyle = 'rgba(255, 255, 255, 0.76)';
     context.fillText(journey, copyX, clubY + 145);
 
-    const directLink = predictionLink(snapshot);
-    const linkSize = fitFont(context, directLink, copyWidth, 17, 11, 600);
-    context.font = `600 ${linkSize}px "Champions Sans", Arial, sans-serif`;
-    context.fillStyle = 'rgba(255, 255, 255, 0.62)';
-    context.fillText(directLink, copyX, clubY + 174);
-
     context.textAlign = 'right';
     context.font = '700 16px "Champions Sans", Arial, sans-serif';
     context.fillStyle = 'rgba(255, 255, 255, 0.66)';

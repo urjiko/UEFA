@@ -23,6 +23,7 @@ const refinement5 = read('ui-refinement-v5.js');
 const lockFix = read('prediction-lock-fix-v2.js');
 
 assert.match(config, /UCLDRAW_DISABLE_LEGACY_SHARE_UI = true/);
+assert.match(config, /UCLDRAW_FINISH_CONTROLLER/);
 assert.match(ui, /ucldraw:prediction-rendered/);
 assert.doesNotMatch(community, /new MutationObserver/);
 assert.match(community, /finishCurrentPrediction/);
@@ -56,7 +57,7 @@ for (const asset of [
   'prediction-ai-controller.js?v=20260901b',
   'prediction-lock-fix-v2.js?v=20260904lock2',
   'prediction-ui.js?v=20260831a',
-  'community-config.js?v=20260905c',
+  'community-config.js?v=20260905d',
   'prediction-community.js?v=20260901a',
   'interface-polish.js?v=20260828p1',
   'prediction-header-v2.js?v=20260828p1',

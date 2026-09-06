@@ -1,48 +1,35 @@
 body.community-average-active {
   --community-accent: #7e9cff;
-  --community-surface: rgba(10, 16, 27, .78);
+  --community-surface: rgba(10, 16, 27, .72);
   --community-surface-soft: rgba(255, 255, 255, .025);
-  --community-stroke: rgba(255, 255, 255, .09);
-  --community-stroke-strong: rgba(255, 255, 255, .15);
+  --community-stroke: rgba(255, 255, 255, .10);
+  --community-stroke-strong: rgba(255, 255, 255, .16);
   --community-copy: #f4f7fb;
-  --community-muted: rgba(244, 247, 251, .58);
-  background: #07111b;
+  --community-muted: rgba(244, 247, 251, .62);
+  background:
+    linear-gradient(180deg, rgba(0, 4, 14, .28), rgba(0, 4, 14, .86)),
+    var(--league-background, radial-gradient(circle at 50% 0%, rgba(var(--accent-rgb), .32), transparent 40%));
+  background-color: #020714;
+  background-position: center;
+  background-size: cover;
+  background-attachment: fixed;
 }
 
 body[data-league="ucl"].community-average-active { --community-accent: #7e9cff; }
 body[data-league="uel"].community-average-active { --community-accent: #e3a15e; }
-body[data-league="uecl"].community-average-active { --community-accent: #58c4d6; }
+body[data-league="uecl"].community-average-active {
+  --community-accent: #58c4d6;
+  background:
+    linear-gradient(180deg, rgba(0, 12, 4, .22), rgba(0, 8, 3, .86)),
+    var(--league-background, url("assets/arkaplancon.jpg"));
+  background-color: #020714;
+  background-position: center;
+  background-size: cover;
+  background-attachment: fixed;
+}
 
 body.community-average-active::before,
-body.community-average-active::after {
-  content: '';
-  position: fixed;
-  pointer-events: none;
-  z-index: -1;
-  border-radius: 999px;
-  filter: blur(72px);
-  opacity: .34;
-}
-
-body.community-average-active::before {
-  width: 34vw;
-  height: 34vw;
-  min-width: 300px;
-  min-height: 300px;
-  left: -12vw;
-  top: -13vw;
-  background: color-mix(in srgb, var(--community-accent) 34%, transparent);
-}
-
-body.community-average-active::after {
-  width: 28vw;
-  height: 28vw;
-  min-width: 260px;
-  min-height: 260px;
-  right: -11vw;
-  top: 36vh;
-  background: color-mix(in srgb, var(--community-accent) 17%, transparent);
-}
+body.community-average-active::after { content: none; }
 
 .community-results-v3 {
   width: min(1120px, calc(100% - 30px));
@@ -52,8 +39,8 @@ body.community-average-active::after {
 }
 
 .community-results-v3 .glass {
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(11px);
+  -webkit-backdrop-filter: blur(11px);
   box-shadow: none;
 }
 
@@ -69,7 +56,7 @@ body.community-average-active::after {
   border: 1px solid var(--community-stroke-strong);
   border-radius: 18px;
   background:
-    linear-gradient(110deg, color-mix(in srgb, var(--community-accent) 8%, rgba(10,16,27,.90)), rgba(8,13,22,.88) 52%, rgba(8,13,22,.82));
+    linear-gradient(110deg, color-mix(in srgb, var(--community-accent) 8%, rgba(10,16,27,.86)), rgba(8,13,22,.82) 52%, rgba(8,13,22,.76));
 }
 
 .community-results-v3 .community-results-hero::after {
@@ -81,7 +68,7 @@ body.community-average-active::after {
   top: -92px;
   border: 1px solid color-mix(in srgb, var(--community-accent) 21%, transparent);
   border-radius: 50%;
-  opacity: .7;
+  opacity: .62;
 }
 
 .community-results-v3 .community-results-hero .community-team-crest {
@@ -107,10 +94,11 @@ body.community-average-active::after {
   min-width: 0;
 }
 
-.community-results-v3 .community-results-hero span {
+.community-results-v3 .community-results-hero > div > span {
   color: color-mix(in srgb, var(--community-accent) 76%, white);
   font-size: .66rem;
-  letter-spacing: .11em;
+  letter-spacing: .075em;
+  text-transform: none;
 }
 
 .community-results-v3 .community-results-hero h1 {
@@ -137,7 +125,7 @@ body.community-average-active::after {
   padding: 6px 10px;
   border: 1px solid var(--community-stroke);
   border-radius: 999px;
-  background: rgba(255,255,255,.018);
+  background: rgba(5,10,18,.44);
   color: var(--community-muted);
   font-size: .68rem;
 }
@@ -158,14 +146,14 @@ body.community-average-active::after {
   padding: 16px;
   border: 1px solid var(--community-stroke);
   border-radius: 14px;
-  background: rgba(255,255,255,.018);
+  background: rgba(5,10,18,.56);
   transition: border-color .16s ease, background .16s ease, transform .16s ease;
 }
 
 .community-results-v3 .community-stat-metric:hover {
   transform: translateY(-1px);
   border-color: color-mix(in srgb, var(--community-accent) 31%, var(--community-stroke-strong));
-  background: color-mix(in srgb, var(--community-accent) 4%, rgba(255,255,255,.022));
+  background: color-mix(in srgb, var(--community-accent) 4%, rgba(5,10,18,.64));
 }
 
 .community-results-v3 .community-stat-metric::before {
@@ -178,7 +166,7 @@ body.community-average-active::after {
 
 .community-results-v3 .community-stat-metric:first-child {
   border-color: color-mix(in srgb, var(--community-accent) 34%, var(--community-stroke));
-  background: linear-gradient(145deg, color-mix(in srgb, var(--community-accent) 8%, rgba(255,255,255,.024)), rgba(255,255,255,.014));
+  background: linear-gradient(145deg, color-mix(in srgb, var(--community-accent) 8%, rgba(5,10,18,.64)), rgba(5,10,18,.5));
 }
 
 .community-results-v3 .community-stat-metric:first-child::before {
@@ -252,7 +240,7 @@ body.community-average-active::after {
   border: 1px solid var(--community-stroke);
   border-radius: 9px;
   color: var(--community-muted);
-  background: rgba(255,255,255,.014);
+  background: rgba(5,10,18,.48);
   font: inherit;
   font-size: .66rem;
   font-weight: 800;
@@ -268,7 +256,7 @@ body.community-average-active::after {
 .community-match-filters button.is-active {
   color: #fff;
   border-color: color-mix(in srgb, var(--community-accent) 54%, var(--community-stroke));
-  background: color-mix(in srgb, var(--community-accent) 10%, rgba(255,255,255,.02));
+  background: color-mix(in srgb, var(--community-accent) 10%, rgba(5,10,18,.58));
 }
 
 .community-results-v3 .community-average-grid {
@@ -293,14 +281,19 @@ body.community-average-active::after {
   padding: 16px;
   border: 1px solid var(--community-stroke);
   border-radius: 15px;
-  background: rgba(255,255,255,.016);
+  background: rgba(5,10,18,.54);
   transition: border-color .16s ease, background .16s ease, transform .16s ease;
+}
+
+.community-results-v3 .community-average-match > *:not(.community-card-crest-watermark) {
+  position: relative;
+  z-index: 1;
 }
 
 .community-results-v3 .community-average-match:hover {
   transform: translateY(-1px);
   border-color: color-mix(in srgb, var(--community-accent) 25%, var(--community-stroke-strong));
-  background: rgba(255,255,255,.022);
+  background: rgba(5,10,18,.62);
 }
 
 .community-results-v3 .community-average-match::before {
@@ -308,12 +301,33 @@ body.community-average-active::after {
   position: absolute;
   right: 10px;
   bottom: 7px;
+  z-index: 1;
   color: rgba(255,255,255,.055);
   font-family: "Barlow Condensed", Inter, sans-serif;
   font-size: 1.75rem;
   font-weight: 800;
   line-height: 1;
   pointer-events: none;
+}
+
+.community-card-crest-watermark {
+  position: absolute;
+  left: 54px;
+  bottom: -34px;
+  width: 126px;
+  height: 126px;
+  display: grid;
+  place-items: center;
+  opacity: .065;
+  filter: grayscale(1) saturate(.15);
+  pointer-events: none;
+  transform: rotate(-5deg);
+}
+
+.community-card-crest-watermark img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
 }
 
 .community-results-v3 .community-average-opponent {
@@ -351,7 +365,7 @@ body.community-average-active::after {
   white-space: nowrap;
 }
 
-.community-results-v3 .community-average-opponent > span:not(.community-limited-data):not(.community-match-verdict) {
+.community-results-v3 .community-average-opponent > span:not(.community-team-crest):not(.community-limited-data):not(.community-match-verdict) {
   width: max-content;
   max-width: 100%;
   color: var(--community-muted);
@@ -387,9 +401,9 @@ body.community-average-active::after {
   grid-template-rows: 1fr auto;
   gap: 5px;
   padding: 9px 10px 8px;
-  border: 1px solid rgba(255,255,255,.065);
+  border: 1px solid rgba(255,255,255,.07);
   border-radius: 12px;
-  background: rgba(0,0,0,.13);
+  background: rgba(0,0,0,.18);
 }
 
 .community-outcome-plot {
@@ -489,9 +503,9 @@ body.community-average-active::after {
   width: max-content;
   max-width: 100%;
   padding: 7px 9px;
-  border: 1px solid rgba(255,255,255,.055);
+  border: 1px solid rgba(255,255,255,.06);
   border-radius: 9px;
-  background: rgba(255,255,255,.012);
+  background: rgba(0,0,0,.14);
 }
 
 .community-results-v3 .community-average-score span,
@@ -553,7 +567,7 @@ body.community-average-active::after {
   padding: 13px;
   border: 1px solid var(--community-stroke);
   border-radius: 12px;
-  background: rgba(255,255,255,.014);
+  background: rgba(5,10,18,.5);
 }
 
 .community-results-v3 .community-insight-card > span {
@@ -581,7 +595,7 @@ body.community-average-active::after {
 
 .community-results-v3 .community-average-actions.community-actions-simplified {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 8px;
   padding: 0;
   border: 0;
@@ -604,13 +618,18 @@ body.community-average-active::after {
 
 .community-results-v3 .community-share-button {
   border-color: color-mix(in srgb, var(--community-accent) 50%, rgba(255,255,255,.13));
-  background: color-mix(in srgb, var(--community-accent) 12%, rgba(255,255,255,.025));
+  background: color-mix(in srgb, var(--community-accent) 12%, rgba(5,10,18,.62));
 }
 
-.community-results-v3 .community-retry-button {
-  color: rgba(255,255,255,.84);
+.community-results-v3 .community-retry-button,
+.community-results-v3 .community-other-team-button {
+  color: rgba(255,255,255,.86);
   border-color: var(--community-stroke);
-  background: rgba(255,255,255,.012);
+  background: rgba(5,10,18,.5);
+}
+
+.community-results-v3 .community-other-team-button {
+  color: var(--community-muted);
 }
 
 .community-results-v3 .community-average-bar.win,
@@ -699,6 +718,15 @@ body.community-average-active::after {
     gap: 10px;
   }
 
+  .community-card-crest-watermark {
+    left: auto;
+    right: 18px;
+    bottom: -22px;
+    width: 92px;
+    height: 92px;
+    opacity: .055;
+  }
+
   .community-outcome-chart {
     min-height: 156px;
   }
@@ -735,10 +763,14 @@ body.community-average-active::after {
     grid-template-columns: 1fr 1fr;
   }
 
+  .community-results-v3 .community-share-button {
+    grid-column: 1 / -1;
+  }
+
   .community-results-v3 .community-average-actions .action-button {
     min-width: 0;
     padding: 0 10px;
-    font-size: .75rem;
+    font-size: .72rem;
     white-space: normal;
   }
 }

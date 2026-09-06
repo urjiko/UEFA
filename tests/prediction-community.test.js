@@ -70,8 +70,10 @@ assert.match(config, /UCLDRAW_DISABLE_LEGACY_SHARE_UI = true/);
 assert.match(config, /UCLDRAW_FINISH_CONTROLLER/);
 assert.match(config, /event\.stopImmediatePropagation\(\)/);
 assert.match(config, /announceAverageRendered/);
-assert.match(config, /prediction-community-v3\.js\?v=20260905f/);
-assert.match(config, /prediction-community-v3\.css\?v=20260905f/);
+assert.match(config, /prediction-community-v3\.js\?v=20260906a/);
+assert.match(config, /prediction-community-v3\.css\?v=20260906a/);
+assert.match(config, /updateHistory:\s*false/);
+assert.match(config, /resetRouteToRoot/);
 
 assert.match(shareV4, /createActionButton\('Bitir'/);
 assert.match(shareV4, /prediction-community-finish-button/);

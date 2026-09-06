@@ -16,6 +16,10 @@
     loss: Object.freeze({ short: 'M', long: 'Mağlubiyet' })
   });
 
+  function appRootHref() {
+    return new URL(window.UCLDRAW_APP_ROOT || './', document.baseURI).href;
+  }
+
   function percentFromBar(bar) {
     const width = Number.parseFloat(bar?.querySelector('.community-average-track i')?.style?.width || '0');
     return Number.isFinite(width) ? Math.max(0, Math.min(100, width)) : 0;
@@ -39,16 +43,39 @@
     });
   }
 
+  function venueForCard(card) {
+    if (card.dataset.venue === STATE.home || card.dataset.venue === STATE.away) return card.dataset.venue;
+    const venue = [...card.querySelectorAll('.community-average-opponent > span')].find((node) => {
+      if (node.classList.contains('community-team-crest')) return false;
+      const text = node.textContent?.trim();
+      return text === 'İç saha' || text === 'Deplasman';
+    });
+    const value = venue?.textContent?.trim() === 'İç saha' ? STATE.home : STATE.away;
+    if (venue) venue.classList.add('community-average-venue');
+    card.dataset.venue = value;
+    return value;
+  }
+
   function cardMeta(card) {
-    const venueText = card.querySelector('.community-average-opponent > span')?.textContent?.trim() || '';
-    const values = outcomeData(card).map((item) => item.value);
-    const max = values.length ? Math.max(...values) : 0;
-    const min = values.length ? Math.min(...values) : 0;
+    const values = outcomeData(card).map((item) => item.value).sort((a, b) => b - a);
+    const max = values[0] || 0;
+    const second = values[1] || 0;
+    const min = values[values.length - 1] || 0;
     return {
-      venue: venueText === 'İç saha' ? STATE.home : STATE.away,
+      venue: venueForCard(card),
       spread: max - min,
+      leadMargin: max - second,
       max
     };
+  }
+
+  function wireReplaceNavigation(link, target) {
+    if (!link || link.dataset.replaceNavigation === 'true') return;
+    link.dataset.replaceNavigation = 'true';
+    link.addEventListener('click', (event) => {
+      event.preventDefault();
+      window.location.replace(target || link.href);
+    });
   }
 
   function simplifyActions(section) {
@@ -64,7 +91,19 @@
     if (retry) {
       if (retry.textContent !== 'Tekrar Tahmin Et') retry.textContent = 'Tekrar Tahmin Et';
       retry.classList.add('community-retry-button');
+      wireReplaceNavigation(retry);
     }
+
+    let other = actions.querySelector('.community-other-team-button');
+    if (!other) {
+      other = document.createElement('a');
+      other.className = 'action-button community-other-team-button';
+      other.href = appRootHref();
+      other.textContent = 'Başka Bir Takımı Tahmin Et';
+      if (retry) retry.insertAdjacentElement('afterend', other);
+      else actions.appendChild(other);
+    }
+    wireReplaceNavigation(other, appRootHref());
 
     const share = [...actions.querySelectorAll('button')].find((button) => button.textContent.trim() === 'Paylaş');
     if (share) share.classList.add('community-share-button');
@@ -117,6 +156,19 @@
     card.classList.add('has-vertical-chart');
   }
 
+  function addCrestWatermark(card) {
+    if (card.querySelector('.community-card-crest-watermark')) return;
+    const source = card.querySelector('.community-average-opponent .community-team-crest img');
+    if (!source) return;
+    const mark = document.createElement('span');
+    mark.className = 'community-card-crest-watermark';
+    mark.setAttribute('aria-hidden', 'true');
+    const image = source.cloneNode(false);
+    image.alt = '';
+    mark.appendChild(image);
+    card.appendChild(mark);
+  }
+
   function addVerdict(card) {
     if (card.querySelector('.community-match-verdict')) return;
     const ranked = outcomeData(card).sort((a, b) => b.value - a.value);
@@ -158,6 +210,7 @@
         const meta = cardMeta(card);
         card.dataset.venue = meta.venue;
         card.dataset.spread = String(meta.spread);
+        card.dataset.leadMargin = String(meta.leadMargin);
         if (!card.dataset.originalIndex) card.dataset.originalIndex = String(index + 1);
       });
 
@@ -168,7 +221,11 @@
       if (filter === STATE.home || filter === STATE.away) {
         visible = originalOrder.filter((card) => card.dataset.venue === filter);
       } else if (filter === STATE.divided) {
-        visible = [...originalOrder].sort((a, b) => Number(a.dataset.spread) - Number(b.dataset.spread));
+        visible = [...originalOrder].sort((a, b) => {
+          const margin = Number(a.dataset.leadMargin) - Number(b.dataset.leadMargin);
+          if (margin) return margin;
+          return Number(a.dataset.spread) - Number(b.dataset.spread);
+        });
         visible.forEach((card) => grid.appendChild(card));
       }
 
@@ -224,7 +281,9 @@
     tuneCopy(section);
     simplifyActions(section);
     section.querySelectorAll('.community-average-match').forEach((card) => {
+      venueForCard(card);
       ensureVerticalChart(card);
+      addCrestWatermark(card);
       addVerdict(card);
     });
     addFilterBar(section);
@@ -247,6 +306,7 @@
     simplifyActions,
     ensureVerticalChart,
     addFilterBar,
-    cardMeta
+    cardMeta,
+    venueForCard
   });
 })();

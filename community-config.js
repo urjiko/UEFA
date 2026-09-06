@@ -73,6 +73,18 @@
     });
   }
 
+  function appRootUrl() {
+    return new URL(window.UCLDRAW_APP_ROOT || './', document.baseURI).href;
+  }
+
+  function resetRouteToRoot() {
+    const root = appRootUrl();
+    if (window.location.href === root) return;
+    try {
+      history.replaceState({ ucldrawSelection: true }, '', root);
+    } catch {}
+  }
+
   function normalizeFinishButtons() {
     document.querySelectorAll('.prediction-community-finish-button').forEach((button) => {
       // Finish is not a share action. The old selector made V5/V6/refinement handlers
@@ -105,6 +117,17 @@
     const fallbackUrl = averageFallbackUrl(community, payload);
     let request;
 
+    // A finished personal prediction replaces the prediction route instead of pushing
+    // another history entry. Retry / team changes therefore cannot walk back into an
+    // older average page for a different club.
+    try {
+      history.replaceState({
+        communityAverage: true,
+        leagueId: payload.leagueId,
+        teamSlug: payload.teamSlug
+      }, '', fallbackUrl);
+    } catch {}
+
     // Hide the prediction shell immediately after the vote is saved. This is deliberate:
     // from this point on, neither statistics hydration nor image generation is allowed to
     // keep the user staring at a busy Finish button.
@@ -113,7 +136,8 @@
     try {
       request = community.openAveragePage(payload.leagueId, payload.teamSlug, {
         personal: true,
-        submissionResult: result
+        submissionResult: result,
+        updateHistory: false
       });
     } catch (error) {
       console.error(error);
@@ -197,6 +221,14 @@
       });
   }, true);
 
+  // Leaving a prediction for the team picker should also leave the team route.
+  // Otherwise the next club can inherit the previous club's URL/history entry.
+  window.addEventListener('click', (event) => {
+    const button = event.target.closest?.('#changeTeamButton');
+    if (!button) return;
+    window.setTimeout(resetRouteToRoot, 0);
+  }, true);
+
   window.addEventListener('ucldraw:prediction-rendered', normalizeFinishButtons);
   window.addEventListener('ucldraw:ai-predictions-applied', normalizeFinishButtons);
 
@@ -205,6 +237,7 @@
     startAveragePage,
     normalizeFinishButtons,
     announceAverageRendered,
+    resetRouteToRoot,
     finishTimeoutMs: FINISH_TIMEOUT_MS
   });
 
@@ -230,8 +263,8 @@
   }
 
   ensureStylesheet('prediction-community-v2.css?v=20260905d', 'data-prediction-community-v2');
-  ensureStylesheet('prediction-community-v3.css?v=20260905f', 'data-prediction-community-v3');
+  ensureStylesheet('prediction-community-v3.css?v=20260906a', 'data-prediction-community-v3');
   ensureScript('prediction-community-v2.js?v=20260905d', 'data-prediction-community-v2');
-  ensureScript('prediction-community-v3.js?v=20260905f', 'data-prediction-community-v3');
+  ensureScript('prediction-community-v3.js?v=20260906a', 'data-prediction-community-v3');
   ensureScript('prediction-share-export-safety.js?v=20260905b', 'data-prediction-export-safety');
 })();

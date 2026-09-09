@@ -45,6 +45,7 @@ jobs:
           node --check roster-manager.js
           node --check official-league-phase-state.js
           node --check current-fixtures.js
+          node --check current-results.js
           node --check roster-search-ui.js
           node --check league-music.js
           node --check league-routes.js
@@ -85,6 +86,7 @@ jobs:
           node --check scripts/stabilize-coefficient-snapshot.mjs
           node --check scripts/build-home-advantage-profiles.mjs
           node --check scripts/check-home-advantage-profiles.mjs
+          node tests/current-results.test.js
           node tests/prediction-community-v2.test.js
           node tests/prediction-community.test.js
           node tests/prediction-finish-flow.test.js

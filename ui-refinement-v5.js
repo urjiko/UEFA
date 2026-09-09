@@ -257,7 +257,7 @@
     if (document.querySelector('script[data-prediction-share-v8]')) return true;
     if (!window.UCLDRAW_PREDICTION_SHARE_V7) return false;
     const script = document.createElement('script');
-    script.src = 'prediction-share-v8.js?v=20260901hq1';
+    script.src = 'prediction-share-v8.js?v=20260909native1';
     script.async = false;
     script.dataset.predictionShareV8 = 'true';
     document.body.appendChild(script);

@@ -40,17 +40,21 @@ for (const source of [v6, v7, v8]) {
   assert.match(source, /imageSmoothingQuality = 'high'/);
 }
 
-assert.match(v8, /prediction-share-v9\.js\?v=20260901hq1/);
-assert.match(ui, /prediction-share-v8\.js\?v=20260901hq1/);
+assert.match(v8, /prediction-share-v9\.js\?v=20260909native1/);
+assert.match(ui, /prediction-share-v8\.js\?v=20260909native1/);
 assert.ok(html.includes('prediction-share-v6.js?v=20260901hq1'));
 assert.ok(html.includes('prediction-share-v7.js?v=20260901hq1'));
-assert.ok(html.includes('ui-refinement-v5.js?v=20260904lock2'));
+assert.ok(html.includes('ui-refinement-v5.js?v=20260909native1'));
 assert.ok(html.includes('prediction-lock-fix-v2.js?v=20260904lock2'));
 
 assert.doesNotMatch(v9, /function upscaleCanvas/);
 assert.doesNotMatch(v9, /drawImage\(sourceCanvas/);
 assert.match(v9, /canvas\.width !== OUTPUT_WIDTH \|\| canvas\.height !== OUTPUT_HEIGHT/);
 assert.match(v9, /native 2400×3200 çözünürlükte/);
+assert.match(v9, /navigator\.share/);
+assert.match(v9, /navigator\.canShare/);
+assert.match(v9, /files: \[file\]/);
+assert.match(v9, /predictionLink\(output\.snapshot\)/);
 
 // V7/V8/V9 are now the only final render path. The old fidelity module must
 // remain a compatibility marker only and must never repaint the encoded PNG.
@@ -81,4 +85,4 @@ assert.match(lockFix, /setManualScoreWithoutReroll/);
 assert.match(lockFix, /predictAllPreservingLocks/);
 assert.match(lockFix, /stateLabel\.textContent = 'Tahmin edildi'/);
 
-console.log('Native 2400x3200 single-render export and stable-lock checks passed.');
+console.log('Native 2400x3200 share export and stable-lock checks passed.');

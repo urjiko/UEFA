@@ -71,7 +71,7 @@ assert.match(ui, /prediction-share-floating-button/);
 assert.match(ui, /event\.stopImmediatePropagation\(\)/);
 assert.match(ui, /UCLDRAW_PREDICTION_SHARE_V8 \|\| window\.UCLDRAW_PREDICTION_SHARE_V7/);
 assert.match(ui, /function installShareRendererV8\(\)/);
-assert.match(ui, /prediction-share-v8\.js\?v=20260901hq1/);
+assert.match(ui, /prediction-share-v8\.js\?v=20260909native1/);
 assert.match(ui, /legacyShareUiEnabled/);
 assert.match(ui, /ucldraw:prediction-rendered/);
 

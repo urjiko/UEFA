@@ -10,6 +10,16 @@
   const NATIVE_SCALE = 2;
   const OUTPUT_WIDTH = CARD_WIDTH * NATIVE_SCALE;
   const OUTPUT_HEIGHT = CARD_HEIGHT * NATIVE_SCALE;
+  const ROUTE_DIRS = Object.freeze({
+    ucl: 'champions-league',
+    uel: 'europa-league',
+    uecl: 'conference-league'
+  });
+  const JOURNEY_TITLES = Object.freeze({
+    ucl: 'Champions League Tahmini',
+    uel: 'Europa League Tahmini',
+    uecl: 'Conference League Tahmini'
+  });
 
   let cachedKey = '';
   let cachedExport = null;
@@ -26,6 +36,14 @@
       .toLocaleLowerCase('en-US')
       .replace(/[^a-z0-9]+/g, '-')
       .replace(/^-|-$/g, '');
+  }
+
+  function predictionLink(snapshot) {
+    const leagueId = snapshot.competition?.id || document.body.dataset.league || 'ucl';
+    const team = snapshot.competition?.teams?.find((candidate) => candidate.name === snapshot.activeName) || null;
+    const teamSlug = team?.poolSlug || team?.qualificationId || slug(snapshot.activeName);
+    const directory = ROUTE_DIRS[leagueId] || ROUTE_DIRS.ucl;
+    return `https://urjiko.github.io/UEFA/${directory}/tahmin/${teamSlug}/`;
   }
 
   function showToast(message) {
@@ -114,6 +132,44 @@
     return Boolean(navigator.clipboard?.write && typeof ClipboardItem !== 'undefined');
   }
 
+  function nativeSharePayload(output) {
+    if (typeof navigator.share !== 'function' || typeof File === 'undefined') return null;
+    const file = new File([output.blob], output.filename, { type: 'image/png' });
+    try {
+      if (typeof navigator.canShare === 'function' && !navigator.canShare({ files: [file] })) return null;
+    } catch {
+      return null;
+    }
+
+    const leagueId = output.snapshot.competition?.id || document.body.dataset.league || 'ucl';
+    const title = `${output.snapshot.activeName} · ${JOURNEY_TITLES[leagueId] || 'UEFA Tahmini'}`;
+    const url = predictionLink(output.snapshot);
+    const text = `Sen de ${output.snapshot.activeName} için tahminini yap:\n${url}`;
+    return {
+      file,
+      data: {
+        title,
+        text,
+        url,
+        files: [file]
+      }
+    };
+  }
+
+  async function tryNativeShare(output) {
+    const payload = nativeSharePayload(output);
+    if (!payload) return 'unsupported';
+    try {
+      await navigator.share(payload.data);
+      showToast('Görsel ve takım tahmin linki paylaşıma hazır.');
+      return 'shared';
+    } catch (error) {
+      if (error?.name === 'AbortError') return 'cancelled';
+      console.warn('Native paylaşım açılamadı; yedek menü kullanılıyor.', error);
+      return 'failed';
+    }
+  }
+
   async function copyCurrent() {
     if (!clipboardAvailable()) {
       throw new Error('Tarayıcı görseli doğrudan panoya kopyalamayı desteklemiyor.');
@@ -182,8 +238,8 @@
     const note = document.createElement('small');
     note.className = 'prediction-share-menu-note-v9';
     note.textContent = clipboardAvailable()
-      ? 'Kopyala seçeneği panoya yalnızca tek PNG yazar.'
-      : 'Kopyalama desteklenmiyor; görseli kaydedebilirsin.';
+      ? 'Native paylaşım desteklenmiyorsa görseli kopyalayabilir veya kaydedebilirsin.'
+      : 'Native paylaşım desteklenmiyor; görseli kaydedebilirsin.';
 
     panel.append(heading, actions, note);
     backdrop.appendChild(panel);
@@ -209,7 +265,9 @@
   }
 
   async function shareCurrent() {
-    await prepareExport();
+    const output = await prepareExport();
+    const nativeResult = await tryNativeShare(output);
+    if (nativeResult === 'shared' || nativeResult === 'cancelled') return nativeResult;
     openShareMenu();
     return 'menu';
   }
@@ -323,8 +381,10 @@
     try {
       await shareCurrent();
     } catch (error) {
-      console.error(error);
-      showToast(error?.message || 'Görsel çıktısı oluşturulamadı.');
+      if (error?.name !== 'AbortError') {
+        console.error(error);
+        showToast(error?.message || 'Görsel çıktısı oluşturulamadı.');
+      }
     } finally {
       setBusy(group, button, false);
       ensureExportActions();
@@ -444,6 +504,8 @@
     shareCurrent,
     copyCurrent,
     downloadCurrent,
+    predictionLink,
+    nativeSharePayload,
     outputWidth: OUTPUT_WIDTH,
     outputHeight: OUTPUT_HEIGHT
   });

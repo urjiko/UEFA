@@ -41,10 +41,10 @@ for (const source of [v6, v7, v8]) {
 }
 
 assert.match(v8, /prediction-share-v9\.js\?v=20260909native1/);
-assert.match(ui, /prediction-share-v8\.js\?v=20260901hq1/);
+assert.match(ui, /prediction-share-v8\.js\?v=20260909native1/);
 assert.ok(html.includes('prediction-share-v6.js?v=20260901hq1'));
 assert.ok(html.includes('prediction-share-v7.js?v=20260901hq1'));
-assert.ok(html.includes('ui-refinement-v5.js?v=20260904lock2'));
+assert.ok(html.includes('ui-refinement-v5.js?v=20260909native1'));
 assert.ok(html.includes('prediction-lock-fix-v2.js?v=20260904lock2'));
 
 assert.doesNotMatch(v9, /function upscaleCanvas/);

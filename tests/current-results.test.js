@@ -60,8 +60,8 @@ vm.runInContext(source, context, { filename: 'current-results.js' });
 
 const api = context.window.UCLDRAW_CURRENT_RESULTS;
 assert.ok(api, 'Official current-results layer must install.');
-assert.equal(api.snapshotDate, '2026-09-09');
-assert.equal(api.results.ucl.length, 6, 'September 8 UCL snapshot must contain all six completed matches.');
+assert.equal(api.snapshotDate, '2026-09-10');
+assert.equal(api.results.ucl.length, 12, 'September 8-9 UCL snapshot must contain all twelve completed matches.');
 
 const officialTable = {
   'AEK Athens': [{ opponent: lask, home: true, matchday: 1, date: '2026-09-08', officialFixture: true }],
@@ -79,7 +79,7 @@ assert.deepEqual(
     official: true,
     final: true,
     playedDate: '2026-09-08',
-    resultSnapshotDate: '2026-09-09'
+    resultSnapshotDate: '2026-09-10'
   }
 );
 assert.equal(officialState.matchLocks['1:aek-athens:lask'], true, 'Played matches must arrive locked by default.');
@@ -97,5 +97,8 @@ assert.match(source, /Oynandı · Resmî skor/);
 assert.match(source, /choice\.disabled = true/);
 assert.match(source, /Resmî skor kilidini aç/);
 assert.match(source, /source: 'official-result'/);
+assert.match(source, /choice\.prepend\(currentButton\)/);
+assert.match(source, /await navigator\.share\(\{ title, text, url, files: \[file\] \}\)/);
+assert.doesNotMatch(source, /const text = `[^`]*\\n\$\{url\}`/);
 
-console.log('Current mode loads official completed scores as default-unlockable prediction locks.');
+console.log('Current mode loads official completed scores and share payload uses a single URL.');

@@ -3,7 +3,7 @@
 
   if (window.UCLDRAW_CURRENT_RESULTS) return;
 
-  const SNAPSHOT_DATE = '2026-09-09';
+  const SNAPSHOT_DATE = '2026-09-10';
   const SOURCE_LABEL = 'UEFA';
   const RESULTS = Object.freeze({
     ucl: Object.freeze([
@@ -12,7 +12,13 @@
       Object.freeze({ home: 'bvb', away: 'villareal', matchday: 1, date: '2026-09-08', homeGoals: 3, awayGoals: 2 }),
       Object.freeze({ home: 'porto', away: 'city', matchday: 1, date: '2026-09-08', homeGoals: 0, awayGoals: 2 }),
       Object.freeze({ home: 'lille', away: 'realbetis', matchday: 1, date: '2026-09-08', homeGoals: 2, awayGoals: 3 }),
-      Object.freeze({ home: 'real', away: 'inter', matchday: 1, date: '2026-09-08', homeGoals: 2, awayGoals: 1 })
+      Object.freeze({ home: 'real', away: 'inter', matchday: 1, date: '2026-09-08', homeGoals: 2, awayGoals: 1 }),
+      Object.freeze({ home: 'barcelona', away: 'feyenoord', matchday: 1, date: '2026-09-09', homeGoals: 5, awayGoals: 1 }),
+      Object.freeze({ home: 'stuttgart', away: 'viking', matchday: 1, date: '2026-09-09', homeGoals: 3, awayGoals: 1 }),
+      Object.freeze({ home: 'liverpool', away: 'atleti', matchday: 1, date: '2026-09-09', homeGoals: 2, awayGoals: 1 }),
+      Object.freeze({ home: 'psg', away: 'slovanbratislava', matchday: 1, date: '2026-09-09', homeGoals: 6, awayGoals: 1 }),
+      Object.freeze({ home: 'sporting', away: 'galatasaray', matchday: 1, date: '2026-09-09', homeGoals: 3, awayGoals: 1 }),
+      Object.freeze({ home: 'napoli', away: 'arsenal', matchday: 1, date: '2026-09-09', homeGoals: 0, awayGoals: 1 })
     ]),
     uel: Object.freeze([]),
     uecl: Object.freeze([])
@@ -187,7 +193,72 @@
     document.head.appendChild(style);
   }
 
+  function installCurrentModeDefault() {
+    if (typeof document === 'undefined') return;
+    const choice = document.getElementById('initialModeChoice');
+    const backdrop = document.getElementById('confirmBackdrop');
+    const currentButton = choice?.querySelector('[data-initial-mode="current"]');
+    if (!choice || !backdrop || !currentButton) return;
+
+    choice.prepend(currentButton);
+
+    const selectCurrentWhenAvailable = () => {
+      if (backdrop.hidden || currentButton.disabled || currentButton.classList.contains('is-selected')) return;
+      window.setTimeout(() => {
+        if (!backdrop.hidden && !currentButton.disabled) currentButton.click();
+      }, 0);
+    };
+
+    if (typeof MutationObserver !== 'undefined') {
+      new MutationObserver(selectCurrentWhenAvailable).observe(backdrop, {
+        attributes: true,
+        attributeFilter: ['hidden']
+      });
+    }
+  }
+
+  function installSingleLinkNativeShare() {
+    if (typeof window.addEventListener !== 'function') return;
+    window.addEventListener('click', async (event) => {
+      const button = event.target?.closest?.('.prediction-export-v9-button');
+      const api = window.UCLDRAW_PREDICTION_SHARE_V9;
+      if (!button || !api?.prepareExport || typeof navigator?.share !== 'function' || typeof File === 'undefined') return;
+
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      button.disabled = true;
+      const idleText = button.textContent;
+      button.textContent = 'Hazırlanıyor...';
+
+      try {
+        const output = await api.prepareExport();
+        const file = new File([output.blob], output.filename, { type: 'image/png' });
+        if (typeof navigator.canShare === 'function' && !navigator.canShare({ files: [file] })) {
+          await api.downloadCurrent?.();
+          return;
+        }
+        const leagueId = output.snapshot.competition?.id || document.body.dataset.league || 'ucl';
+        const titles = {
+          ucl: 'Şampiyonlar Ligi Yolculuğu',
+          uel: 'Avrupa Ligi Yolculuğu',
+          uecl: 'Konferans Ligi Yolculuğu'
+        };
+        const title = `${output.snapshot.activeName} · ${titles[leagueId] || 'UEFA Tahmini'}`;
+        const url = api.predictionLink(output.snapshot);
+        const text = `Sen de ${output.snapshot.activeName} için tahminini yap:`;
+        await navigator.share({ title, text, url, files: [file] });
+      } catch (error) {
+        if (error?.name !== 'AbortError') console.error(error);
+      } finally {
+        button.disabled = false;
+        button.textContent = idleText;
+      }
+    }, true);
+  }
+
   installStyles();
+  installCurrentModeDefault();
+  installSingleLinkNativeShare();
   if (typeof window.addEventListener === 'function') {
     window.addEventListener('ucldraw:prediction-rendered', queueDecoration);
     window.addEventListener('ucldraw:ai-predictions-applied', queueDecoration);

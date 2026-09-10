@@ -144,7 +144,7 @@
     const leagueId = output.snapshot.competition?.id || document.body.dataset.league || 'ucl';
     const title = `${output.snapshot.activeName} · ${JOURNEY_TITLES[leagueId] || 'UEFA Tahmini'}`;
     const url = predictionLink(output.snapshot);
-    const text = `Sen de ${output.snapshot.activeName} için tahminini yap:\n${url}`;
+    const text = `Sen de ${output.snapshot.activeName} için tahminini yap:`;
     return {
       file,
       data: {

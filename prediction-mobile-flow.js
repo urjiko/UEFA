@@ -4,6 +4,8 @@
   const MOBILE_QUERY = '(max-width: 700px)';
   let completedOnce = false;
   let floatingBar = null;
+  let predictionActionsObserver = null;
+  let observedPredictionActions = null;
   let averageShareFloating = null;
   let averageObserver = null;
 
@@ -24,12 +26,22 @@
     return document.querySelector('#predictionSection .prediction-standings-panel');
   }
 
+  function nativeActionsRow() {
+    return document.querySelector('#predictionSection .prediction-share-actions-v4');
+  }
+
   function nativeAiButton() {
     return document.querySelector('#predictionSection .prediction-ai-v4-button');
   }
 
   function nativeFinishButton() {
     return document.querySelector('#predictionSection .prediction-community-finish-button');
+  }
+
+  function rowIsVisible(row) {
+    if (!row) return false;
+    const rect = row.getBoundingClientRect();
+    return rect.top < window.innerHeight && rect.bottom > 0;
   }
 
   function createFloatingBar() {
@@ -60,18 +72,30 @@
     return floatingBar;
   }
 
+  function observePredictionActions(row) {
+    if (observedPredictionActions === row) return;
+    predictionActionsObserver?.disconnect();
+    predictionActionsObserver = null;
+    observedPredictionActions = row;
+    if (!row || !('IntersectionObserver' in window)) return;
+    predictionActionsObserver = new IntersectionObserver(syncPredictionBar, {
+      root: null,
+      threshold: [0, 0.05, 0.25, 0.5, 1]
+    });
+    predictionActionsObserver.observe(row);
+  }
+
   function syncPredictionBar() {
     const bar = ensureFloatingBar();
     const section = predictionSection();
+    const actionsRow = nativeActionsRow();
+    observePredictionActions(actionsRow);
+
     const active = isMobile()
       && document.body.classList.contains('prediction-active')
       && section
       && !section.hidden
       && !document.body.classList.contains('community-average-active');
-
-    bar.hidden = !active;
-    document.body.classList.toggle('prediction-mobile-flow-active', Boolean(active));
-    if (!active) return;
 
     const complete = predictionsComplete();
     const finish = bar.querySelector('.prediction-mobile-finish-button');
@@ -80,6 +104,11 @@
     bar.classList.toggle('is-complete', complete);
     ai.disabled = Boolean(nativeAiButton()?.disabled);
     finish.disabled = Boolean(nativeFinishButton()?.disabled);
+
+    const nativeVisible = rowIsVisible(actionsRow);
+    const floatingVisible = Boolean(active && !nativeVisible);
+    bar.hidden = !floatingVisible;
+    document.body.classList.toggle('prediction-mobile-flow-active', floatingVisible);
 
     if (complete && !completedOnce) {
       completedOnce = true;
@@ -127,15 +156,18 @@
       return;
     }
 
-    floating.hidden = false;
-    document.body.classList.add('community-average-floating-active');
-    if (!('IntersectionObserver' in window)) return;
-
-    averageObserver = new IntersectionObserver((entries) => {
-      const visible = entries.some((entry) => entry.isIntersecting);
+    const syncAverageFloating = () => {
+      const visible = rowIsVisible(share);
       floating.hidden = visible;
       document.body.classList.toggle('community-average-floating-active', !visible);
-    }, { threshold: 0.15 });
+    };
+
+    syncAverageFloating();
+    if (!('IntersectionObserver' in window)) return;
+
+    averageObserver = new IntersectionObserver(syncAverageFloating, {
+      threshold: [0, 0.05, 0.25, 0.5, 1]
+    });
     averageObserver.observe(share);
   }
 
@@ -151,6 +183,10 @@
     window.requestAnimationFrame(observeAverageActions);
   });
   window.addEventListener('resize', refreshAll, { passive: true });
+  window.addEventListener('scroll', () => {
+    syncPredictionBar();
+    if (document.body.classList.contains('community-average-active')) observeAverageActions();
+  }, { passive: true });
   window.addEventListener('popstate', () => window.requestAnimationFrame(refreshAll));
 
   const rootObserver = new MutationObserver(() => window.requestAnimationFrame(refreshAll));

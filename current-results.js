@@ -3,7 +3,7 @@
 
   if (window.UCLDRAW_CURRENT_RESULTS) return;
 
-  const SNAPSHOT_DATE = '2026-09-10';
+  const SNAPSHOT_DATE = '2026-09-11';
   const SOURCE_LABEL = 'UEFA';
   const RESULTS = Object.freeze({
     ucl: Object.freeze([
@@ -18,7 +18,13 @@
       Object.freeze({ home: 'liverpool', away: 'atleti', matchday: 1, date: '2026-09-09', homeGoals: 2, awayGoals: 1 }),
       Object.freeze({ home: 'psg', away: 'slovanbratislava', matchday: 1, date: '2026-09-09', homeGoals: 6, awayGoals: 1 }),
       Object.freeze({ home: 'sporting', away: 'galatasaray', matchday: 1, date: '2026-09-09', homeGoals: 3, awayGoals: 1 }),
-      Object.freeze({ home: 'napoli', away: 'arsenal', matchday: 1, date: '2026-09-09', homeGoals: 0, awayGoals: 1 })
+      Object.freeze({ home: 'napoli', away: 'arsenal', matchday: 1, date: '2026-09-09', homeGoals: 0, awayGoals: 1 }),
+      Object.freeze({ home: 'fenerbahce', away: 'roma', matchday: 1, date: '2026-09-10', homeGoals: 1, awayGoals: 1 }),
+      Object.freeze({ home: 'psv', away: 'shakhtar', matchday: 1, date: '2026-09-10', homeGoals: 1, awayGoals: 1 }),
+      Object.freeze({ home: 'como', away: 'leipzig', matchday: 1, date: '2026-09-10', homeGoals: 4, awayGoals: 1 }),
+      Object.freeze({ home: 'bayern', away: 'bodo', matchday: 1, date: '2026-09-10', homeGoals: 5, awayGoals: 0 }),
+      Object.freeze({ home: 'manu', away: 'sabah', matchday: 1, date: '2026-09-10', homeGoals: 4, awayGoals: 0 }),
+      Object.freeze({ home: 'slavia', away: 'lens', matchday: 1, date: '2026-09-10', homeGoals: 2, awayGoals: 3 })
     ]),
     uel: Object.freeze([]),
     uecl: Object.freeze([])

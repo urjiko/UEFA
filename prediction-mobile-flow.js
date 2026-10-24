@@ -2,32 +2,25 @@
   'use strict';
 
   const MOBILE_QUERY = '(max-width: 700px)';
-  let completedOnce = false;
+  const motionQuery = '(prefers-reduced-motion: reduce)';
   let floatingBar = null;
-  let predictionActionsObserver = null;
-  let observedPredictionActions = null;
   let averageShareFloating = null;
+  let observedPredictionActions = null;
+  let observedAverageShare = null;
+  let predictionObserver = null;
   let averageObserver = null;
+  let refreshQueued = false;
+  let completionState = null;
+  let completionTeam = null;
+  let previouslyComplete = false;
 
   function isMobile() {
     return window.matchMedia?.(MOBILE_QUERY)?.matches ?? window.innerWidth <= 700;
   }
 
-  function predictionSection() {
-    return document.getElementById('predictionSection');
-  }
-
-  function predictionsComplete() {
-    const cards = [...document.querySelectorAll('#predictionSection .prediction-fixture-card')];
-    return cards.length > 0 && cards.every((card) => card.classList.contains('is-resolved'));
-  }
-
-  function standingPanel() {
-    return document.querySelector('#predictionSection .prediction-standings-panel');
-  }
-
-  function nativeActionsRow() {
-    return document.querySelector('#predictionSection .prediction-share-actions-v4');
+  function isBeforeNativeButton(element) {
+    // Do not revive the floating button after the real action has scrolled above us.
+    return !element || element.getBoundingClientRect().top > window.innerHeight + 2;
   }
 
   function nativeAiButton() {
@@ -38,13 +31,17 @@
     return document.querySelector('#predictionSection .prediction-community-finish-button');
   }
 
-  function rowIsVisible(row) {
-    if (!row) return false;
-    const rect = row.getBoundingClientRect();
-    return rect.top < window.innerHeight && rect.bottom > 0;
+  function nativeActionsRow() {
+    return document.querySelector('#predictionSection .prediction-share-actions-v4');
   }
 
-  function createFloatingBar() {
+  function findAverageShare() {
+    const actions = document.querySelector('#predictionCommunityAverage .community-average-actions');
+    return [...(actions?.querySelectorAll('button') || [])]
+      .find((button) => button.textContent.trim() === 'Paylaş') || null;
+  }
+
+  function createPredictionBar() {
     const bar = document.createElement('div');
     bar.className = 'prediction-mobile-flow-bar';
     bar.hidden = true;
@@ -53,144 +50,183 @@
     ai.type = 'button';
     ai.className = 'action-button prediction-mobile-ai-button';
     ai.textContent = 'Yapay Zeka Tahmini';
-    ai.addEventListener('click', () => nativeAiButton()?.click());
+    ai.addEventListener('click', () => {
+      const original = nativeAiButton();
+      if (original && !original.disabled) original.click();
+    });
 
     const finish = document.createElement('button');
     finish.type = 'button';
     finish.className = 'action-button primary prediction-mobile-finish-button';
     finish.textContent = 'Bitir';
     finish.hidden = true;
-    finish.addEventListener('click', () => nativeFinishButton()?.click());
+    finish.addEventListener('click', () => {
+      const original = nativeFinishButton();
+      if (original && !original.disabled) original.click();
+    });
 
     bar.append(ai, finish);
     document.body.appendChild(bar);
     return bar;
   }
 
-  function ensureFloatingBar() {
-    if (!floatingBar?.isConnected) floatingBar = createFloatingBar();
-    return floatingBar;
-  }
-
-  function observePredictionActions(row) {
-    if (observedPredictionActions === row) return;
-    predictionActionsObserver?.disconnect();
-    predictionActionsObserver = null;
-    observedPredictionActions = row;
-    if (!row || !('IntersectionObserver' in window)) return;
-    predictionActionsObserver = new IntersectionObserver(syncPredictionBar, {
-      root: null,
-      threshold: [0, 0.05, 0.25, 0.5, 1]
-    });
-    predictionActionsObserver.observe(row);
-  }
-
-  function syncPredictionBar() {
-    const bar = ensureFloatingBar();
-    const section = predictionSection();
-    const actionsRow = nativeActionsRow();
-    observePredictionActions(actionsRow);
-
-    const active = isMobile()
-      && document.body.classList.contains('prediction-active')
-      && section
-      && !section.hidden
-      && !document.body.classList.contains('community-average-active');
-
-    const complete = predictionsComplete();
-    const finish = bar.querySelector('.prediction-mobile-finish-button');
-    const ai = bar.querySelector('.prediction-mobile-ai-button');
-    finish.hidden = !complete;
-    bar.classList.toggle('is-complete', complete);
-    ai.disabled = Boolean(nativeAiButton()?.disabled);
-    finish.disabled = Boolean(nativeFinishButton()?.disabled);
-
-    const nativeVisible = rowIsVisible(actionsRow);
-    const floatingVisible = Boolean(active && !nativeVisible);
-    bar.hidden = !floatingVisible;
-    document.body.classList.toggle('prediction-mobile-flow-active', floatingVisible);
-
-    if (complete && !completedOnce) {
-      completedOnce = true;
-      window.requestAnimationFrame(() => {
-        standingPanel()?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      });
-    }
-    if (!complete) completedOnce = false;
-  }
-
-  function findAverageShare() {
-    const actions = document.querySelector('#predictionCommunityAverage .community-average-actions');
-    if (!actions) return null;
-    return [...actions.querySelectorAll('button')].find((button) => button.textContent.trim() === 'Paylaş') || null;
-  }
-
-  function createAverageFloatingShare() {
-    const wrap = document.createElement('div');
-    wrap.className = 'community-average-floating-share';
-    wrap.hidden = true;
+  function createAverageShareBar() {
+    const bar = document.createElement('div');
+    bar.className = 'community-average-floating-share';
+    bar.hidden = true;
     const button = document.createElement('button');
     button.type = 'button';
     button.className = 'action-button primary';
     button.textContent = 'Paylaş';
-    button.addEventListener('click', () => findAverageShare()?.click());
-    wrap.appendChild(button);
-    document.body.appendChild(wrap);
-    return wrap;
+    button.addEventListener('click', () => {
+      const original = findAverageShare();
+      if (original && !original.disabled) original.click();
+    });
+    bar.appendChild(button);
+    document.body.appendChild(bar);
+    return bar;
   }
 
-  function ensureAverageFloatingShare() {
-    if (!averageShareFloating?.isConnected) averageShareFloating = createAverageFloatingShare();
-    return averageShareFloating;
+  function watchActions(row) {
+    if (observedPredictionActions === row) return;
+    predictionObserver?.disconnect();
+    predictionObserver = null;
+    observedPredictionActions = row;
+    if (row && 'IntersectionObserver' in window) {
+      predictionObserver = new IntersectionObserver(scheduleRefresh, { threshold: [0, 1] });
+      predictionObserver.observe(row);
+    }
   }
 
-  function observeAverageActions() {
+  function watchAverageShare(button) {
+    if (observedAverageShare === button) return;
     averageObserver?.disconnect();
     averageObserver = null;
-    const share = findAverageShare();
-    const floating = ensureAverageFloatingShare();
-    const averageActive = isMobile() && document.body.classList.contains('community-average-active');
-    if (!averageActive || !share) {
-      floating.hidden = true;
+    observedAverageShare = button;
+    if (button && 'IntersectionObserver' in window) {
+      averageObserver = new IntersectionObserver(scheduleRefresh, { threshold: [0, 1] });
+      averageObserver.observe(button);
+    }
+  }
+
+  function refreshPrediction(mobile) {
+    const section = document.getElementById('predictionSection');
+    const active = mobile && Boolean(section && !section.hidden
+      && document.body.classList.contains('prediction-active')
+      && !document.body.classList.contains('community-average-active'));
+
+    if (!active) {
+      if (floatingBar) floatingBar.hidden = true;
+      document.body.classList.remove('prediction-mobile-flow-active');
+      watchActions(null);
+      completionState = null;
+      completionTeam = null;
+      previouslyComplete = false;
+      return;
+    }
+
+    if (!floatingBar?.isConnected) floatingBar = createPredictionBar();
+
+    const session = window.UCLDRAW_PREDICTION_SESSION;
+    const state = session?.state?.() || null;
+    const team = session?.activeTeamName?.() || '';
+    const cards = section.querySelectorAll('.prediction-fixture-card');
+    const complete = cards.length > 0 && [...cards].every((card) => card.classList.contains('is-resolved'));
+
+    if (state !== completionState || team !== completionTeam) {
+      completionState = state;
+      completionTeam = team;
+      previouslyComplete = false;
+    }
+
+    const ai = floatingBar.querySelector('.prediction-mobile-ai-button');
+    const finish = floatingBar.querySelector('.prediction-mobile-finish-button');
+    finish.hidden = !complete;
+    floatingBar.classList.toggle('is-complete', complete);
+    ai.disabled = !nativeAiButton() || Boolean(nativeAiButton().disabled);
+    finish.disabled = !nativeFinishButton() || Boolean(nativeFinishButton().disabled);
+
+    const actions = nativeActionsRow();
+    watchActions(actions);
+    const visible = isBeforeNativeButton(actions);
+    floatingBar.hidden = !visible;
+    document.body.classList.toggle('prediction-mobile-flow-active', visible);
+
+    if (complete && !previouslyComplete) {
+      window.requestAnimationFrame(() => {
+        if (!document.body.classList.contains('prediction-active') || section.hidden) return;
+        const panel = section.querySelector('.prediction-standings-panel');
+        panel?.scrollIntoView({
+          behavior: window.matchMedia?.(motionQuery)?.matches ? 'auto' : 'smooth',
+          block: 'start'
+        });
+      });
+    }
+    previouslyComplete = complete;
+  }
+
+  function refreshAverage(mobile) {
+    const active = mobile && document.body.classList.contains('community-average-active');
+    if (!active) {
+      if (averageShareFloating) averageShareFloating.hidden = true;
+      document.body.classList.remove('community-average-floating-active');
+      watchAverageShare(null);
+      return;
+    }
+
+    const nativeShare = findAverageShare();
+    watchAverageShare(nativeShare);
+    if (!nativeShare) {
+      if (averageShareFloating) averageShareFloating.hidden = true;
       document.body.classList.remove('community-average-floating-active');
       return;
     }
 
-    const syncAverageFloating = () => {
-      const visible = rowIsVisible(share);
-      floating.hidden = visible;
-      document.body.classList.toggle('community-average-floating-active', !visible);
-    };
-
-    syncAverageFloating();
-    if (!('IntersectionObserver' in window)) return;
-
-    averageObserver = new IntersectionObserver(syncAverageFloating, {
-      threshold: [0, 0.05, 0.25, 0.5, 1]
-    });
-    averageObserver.observe(share);
+    if (!averageShareFloating?.isConnected) averageShareFloating = createAverageShareBar();
+    const visible = isBeforeNativeButton(nativeShare);
+    averageShareFloating.hidden = !visible;
+    averageShareFloating.querySelector('button').disabled = Boolean(nativeShare.disabled);
+    document.body.classList.toggle('community-average-floating-active', visible);
   }
 
   function refreshAll() {
-    syncPredictionBar();
-    observeAverageActions();
+    const mobile = isMobile();
+    refreshPrediction(mobile);
+    refreshAverage(mobile);
   }
 
-  window.addEventListener('ucldraw:prediction-rendered', syncPredictionBar);
-  window.addEventListener('ucldraw:ai-predictions-applied', syncPredictionBar);
-  window.addEventListener('ucldraw:community-average-rendered', () => {
-    syncPredictionBar();
-    window.requestAnimationFrame(observeAverageActions);
+  function scheduleRefresh() {
+    if (refreshQueued) return;
+    refreshQueued = true;
+    window.requestAnimationFrame(() => {
+      refreshQueued = false;
+      refreshAll();
+    });
+  }
+
+  // Explicit screen events replace a subtree-wide mutation observer.
+  window.addEventListener('ucldraw:prediction-rendered', scheduleRefresh);
+  window.addEventListener('ucldraw:ai-predictions-applied', scheduleRefresh);
+  window.addEventListener('ucldraw:ai-predictions-restored-locks', scheduleRefresh);
+  window.addEventListener('ucldraw:community-average-rendered', scheduleRefresh);
+  window.addEventListener('resize', scheduleRefresh, { passive: true });
+  window.addEventListener('popstate', scheduleRefresh);
+
+  // Fallback for older browsers without IntersectionObserver.
+  if (!('IntersectionObserver' in window)) {
+    window.addEventListener('scroll', scheduleRefresh, { passive: true });
+  }
+
+  // Only observe the two state-bearing elements, never the whole page subtree.
+  new MutationObserver(scheduleRefresh).observe(document.body, {
+    attributes: true, attributeFilter: ['class']
   });
-  window.addEventListener('resize', refreshAll, { passive: true });
-  window.addEventListener('scroll', () => {
-    syncPredictionBar();
-    if (document.body.classList.contains('community-average-active')) observeAverageActions();
-  }, { passive: true });
-  window.addEventListener('popstate', () => window.requestAnimationFrame(refreshAll));
+  const predictionSection = document.getElementById('predictionSection');
+  if (predictionSection) {
+    new MutationObserver(scheduleRefresh).observe(predictionSection, {
+      attributes: true, attributeFilter: ['hidden']
+    });
+  }
 
-  const rootObserver = new MutationObserver(() => window.requestAnimationFrame(refreshAll));
-  rootObserver.observe(document.body, { childList: true, subtree: true, attributes: true, attributeFilter: ['class', 'hidden'] });
-
-  refreshAll();
+  scheduleRefresh();
 })();

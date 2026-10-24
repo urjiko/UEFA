@@ -7,6 +7,7 @@
   let averageShareFloating = null;
   let observedPredictionActions = null;
   let observedAverageShare = null;
+  let cachedAverageShare = null;
   let predictionObserver = null;
   let averageObserver = null;
   let refreshQueued = false;
@@ -37,8 +38,10 @@
 
   function findAverageShare() {
     const actions = document.querySelector('#predictionCommunityAverage .community-average-actions');
-    return [...(actions?.querySelectorAll('button') || [])]
+    if (cachedAverageShare?.isConnected && actions?.contains(cachedAverageShare)) return cachedAverageShare;
+    cachedAverageShare = [...(actions?.querySelectorAll('button') || [])]
       .find((button) => button.textContent.trim() === 'Paylaş') || null;
+    return cachedAverageShare;
   }
 
   function createPredictionBar() {

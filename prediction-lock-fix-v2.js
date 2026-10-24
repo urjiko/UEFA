@@ -148,7 +148,7 @@
       const button = card.querySelector('.prediction-score-apply');
       if (button) {
         button.classList.toggle('is-match-locked', locked);
-        button.textContent = locked ? '🔒' : 'Kilitle';
+        if (button.textContent !== (locked ? '🔒' : 'Kilitle')) button.textContent = locked ? '🔒' : 'Kilitle';
         button.title = locked ? 'Skor kilidini aç' : 'Bu skoru kilitle';
         button.setAttribute('aria-label', button.title);
       }
@@ -185,8 +185,14 @@
     window.requestAnimationFrame(cleanLockCopy);
   }, true);
 
+  let cleanupQueued = false;
   function queueCleanup() {
-    window.requestAnimationFrame(() => window.requestAnimationFrame(cleanLockCopy));
+    if (cleanupQueued) return;
+    cleanupQueued = true;
+    window.requestAnimationFrame(() => window.requestAnimationFrame(() => {
+      cleanupQueued = false;
+      cleanLockCopy();
+    }));
   }
 
   document.addEventListener('DOMContentLoaded', queueCleanup, { once: true });
@@ -194,15 +200,8 @@
   window.addEventListener('ucldraw:ai-predictions-applied', queueCleanup);
   window.addEventListener('ucldraw:ai-predictions-restored-locks', queueCleanup);
 
-  const observer = new MutationObserver((mutations) => {
-    if (mutations.some((mutation) => (
-      mutation.target?.closest?.('#predictionSection')
-      || mutation.addedNodes?.length
-    ))) queueCleanup();
-  });
-  if (document.body) observer.observe(document.body, { childList: true, subtree: true, characterData: true });
-  else document.addEventListener('DOMContentLoaded', () => observer.observe(document.body, { childList: true, subtree: true, characterData: true }), { once: true });
-
+  // The prediction renderer emits events on every re-render. The old global
+  // MutationObserver also reacted to unrelated charts and share-card changes.
   window.UCLDRAW_PREDICTION_LOCK_FIX_V2 = Object.freeze({
     version: 2,
     cleanLockCopy,

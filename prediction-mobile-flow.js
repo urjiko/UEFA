@@ -122,9 +122,7 @@
       if (floatingBar) floatingBar.hidden = true;
       document.body.classList.remove('prediction-mobile-flow-active');
       watchActions(null);
-      completionState = null;
-      completionTeam = null;
-      previouslyComplete = false;
+      // Keep completion state across page transitions to avoid a second jump.
       return;
     }
 
@@ -136,10 +134,11 @@
     const cards = section.querySelectorAll('.prediction-fixture-card');
     const complete = cards.length > 0 && [...cards].every((card) => card.classList.contains('is-resolved'));
 
-    if (state !== completionState || team !== completionTeam) {
+    const newContext = state !== completionState || team !== completionTeam;
+    if (newContext) {
       completionState = state;
       completionTeam = team;
-      previouslyComplete = false;
+      previouslyComplete = complete;
     }
 
     const ai = floatingBar.querySelector('.prediction-mobile-ai-button');
@@ -155,7 +154,7 @@
     floatingBar.hidden = !visible;
     document.body.classList.toggle('prediction-mobile-flow-active', visible);
 
-    if (complete && !previouslyComplete) {
+    if (complete && !previouslyComplete && !newContext) {
       window.requestAnimationFrame(() => {
         if (!document.body.classList.contains('prediction-active') || section.hidden) return;
         const panel = section.querySelector('.prediction-standings-panel');

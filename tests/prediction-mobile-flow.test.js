@@ -41,6 +41,7 @@ class Element {
   click() { this.listeners.click?.(); }
   querySelector(selector) {
     if (selector === '.prediction-standings-panel') return this.standings || null;
+    if (selector === 'button') return this.children.find((item) => item.name === 'button') || null;
     return this.children.find((item) => item.className.split(' ').includes(selector.slice(1))) || null;
   }
   querySelectorAll(selector) {

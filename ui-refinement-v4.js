@@ -127,17 +127,28 @@
   }
 
   refresh();
-  new MutationObserver((mutations) => {
+  // Watch only the draw/selection interfaces. Community charts and floating bars
+  // should not cause full page refinement on each DOM update or scroll.
+  const scopedObserver = new MutationObserver((mutations) => {
     const onlyPredictionMutations = predictionSection && mutations.every((mutation) => (
       mutation.target === predictionSection || predictionSection.contains(mutation.target)
     ));
     if (!onlyPredictionMutations) queueRefresh();
-  }).observe(body, {
+  });
+  for (const id of ['selectionScreen', 'drawScreen', 'confirmBackdrop']) {
+    const target = document.getElementById(id);
+    if (target) scopedObserver.observe(target, {
+      childList: true,
+      subtree: true,
+      attributes: true,
+      attributeFilter: ['hidden', 'class', 'style']
+    });
+  }
+  // Catch top-level modal additions and changes of competition/view state.
+  scopedObserver.observe(body, {
     childList: true,
-    subtree: true,
-    characterData: true,
     attributes: true,
-    attributeFilter: ['hidden', 'class', 'style']
+    attributeFilter: ['class', 'data-league']
   });
   window.addEventListener('ucldraw:prediction-rendered', queueRefresh);
 })();

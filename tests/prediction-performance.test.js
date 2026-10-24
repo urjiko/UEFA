@@ -22,6 +22,7 @@ const polish = read('interface-polish.js');
 const refinement4 = read('ui-refinement-v4.js');
 const refinement5 = read('ui-refinement-v5.js');
 const lockFix = read('prediction-lock-fix-v2.js');
+const mobileFlow = read('prediction-mobile-flow.js');
 
 assert.match(config, /UCLDRAW_DISABLE_LEGACY_SHARE_UI = true/);
 assert.match(config, /UCLDRAW_FINISH_CONTROLLER/);
@@ -52,6 +53,15 @@ assert.match(lockFix, /setManualScoreWithoutReroll/);
 assert.match(lockFix, /predictAllPreservingLocks/);
 assert.match(lockFix, /__stableMatchLock/);
 assert.match(lockFix, /__stableLockPrediction/);
+assert.doesNotMatch(lockFix, /new MutationObserver/, 'Lock cleanup must not watch the whole document.');
+for (const script of [refinement4, refinement5]) {
+  assert.match(script, /scopedObserver\.observe\(body, \{/);
+  assert.doesNotMatch(script, /scopedObserver\.observe\(body, \{\s*childList: true,\s*subtree: true/);
+}
+assert.match(mobileFlow, /isBeforeNativeButton/);
+assert.match(mobileFlow, /IntersectionObserver/);
+assert.match(mobileFlow, /if \(!\('IntersectionObserver' in window\)\)/);
+assert.doesNotMatch(mobileFlow, /subtree:\s*true/, 'Mobile actions must not observe the entire page subtree.');
 
 assert.match(shareV9, /legacyShareUiEnabled/);
 assert.match(shareV9, /if \(legacyShareUiEnabled\)/);
@@ -59,20 +69,21 @@ assert.match(shareV9, /if \(legacyShareUiEnabled\)/);
 for (const asset of [
   'prediction-community.css?v=20260901a',
   'prediction-ai-controller.js?v=20260901b',
-  'prediction-lock-fix-v2.js?v=20260904lock2',
+  'prediction-lock-fix-v2.js?v=20261024perf1',
   'prediction-ui.js?v=20260831a',
   'community-config.js?v=20260905f',
   'prediction-community.js?v=20260901a',
   'interface-polish.js?v=20260828p1',
   'prediction-header-v2.js?v=20260828p1',
-  'ui-refinement-v4.js?v=20260828p1',
-  'ui-refinement-v5.js?v=20260904lock2',
+  'ui-refinement-v4.js?v=20261024perf1',
+  'ui-refinement-v5.js?v=20261024perf1',
   'prediction-share.js?v=20260828p1',
   'prediction-share-v2.js?v=20260828p1',
   'prediction-share-v3.js?v=20260828p1',
   'prediction-share-v4.js?v=20260828f1',
   'prediction-share-v6.js?v=20260901hq1',
-  'prediction-share-v7.js?v=20260901hq1'
+  'prediction-share-v7.js?v=20260901hq1',
+  'prediction-mobile-flow.js?v=20261024perf1'
 ]) {
   assert.ok(html.includes(asset), `performance cache revision missing: ${asset}`);
 }

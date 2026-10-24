@@ -94,6 +94,11 @@ jobs:
           node tests/prediction-export-v9.test.js
           node tests/native-share-resolution.test.js
           node tests/header-lock-share-v7.test.js
+      - name: Check mobile prediction performance
+        run: |
+          node tests/prediction-mobile-flow.test.js
+          node tests/prediction-performance.test.js
+          node tests/native-share-resolution.test.js
       - name: Check generated team pools and coefficients
         run: |
           node scripts/generate-team-pools.mjs

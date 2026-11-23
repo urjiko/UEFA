@@ -3,7 +3,7 @@
 
   if (window.UCLDRAW_CURRENT_RESULTS) return;
 
-  const SNAPSHOT_DATE = '2026-10-24';
+  const SNAPSHOT_DATE = '2026-11-23';
   const SOURCE_LABEL = 'UEFA';
   const RESULTS = Object.freeze({
     ucl: Object.freeze([
@@ -60,7 +60,25 @@
       Object.freeze({ home: 'inter', away: 'shakhtar', matchday: 3, date: '2026-10-21', homeGoals: 1, awayGoals: 0 }),
       Object.freeze({ home: 'real', away: 'leipzig', matchday: 3, date: '2026-10-21', homeGoals: 4, awayGoals: 1 }),
       Object.freeze({ home: 'realbetis', away: 'feyenoord', matchday: 3, date: '2026-10-21', homeGoals: 1, awayGoals: 0 }),
-      Object.freeze({ home: 'sporting', away: 'lask', matchday: 3, date: '2026-10-21', homeGoals: 2, awayGoals: 3 })
+      Object.freeze({ home: 'sporting', away: 'lask', matchday: 3, date: '2026-10-21', homeGoals: 2, awayGoals: 3 }),
+      Object.freeze({ home: 'shakhtar', away: 'sporting', matchday: 4, date: '2026-11-03', homeGoals: 0, awayGoals: 1 }),
+      Object.freeze({ home: 'galatasaray', away: 'stuttgart', matchday: 4, date: '2026-11-03', homeGoals: 2, awayGoals: 0 }),
+      Object.freeze({ home: 'atleti', away: 'bayern', matchday: 4, date: '2026-11-03', homeGoals: 0, awayGoals: 2 }),
+      Object.freeze({ home: 'barcelona', away: 'astonvilla', matchday: 4, date: '2026-11-03', homeGoals: 3, awayGoals: 0 }),
+      Object.freeze({ home: 'feyenoord', away: 'inter', matchday: 4, date: '2026-11-03', homeGoals: 0, awayGoals: 3 }),
+      Object.freeze({ home: 'bodo', away: 'lille', matchday: 4, date: '2026-11-03', homeGoals: 0, awayGoals: 0 }),
+      Object.freeze({ home: 'lask', away: 'slovanbratislava', matchday: 4, date: '2026-11-03', homeGoals: 4, awayGoals: 0 }),
+      Object.freeze({ home: 'manu', away: 'roma', matchday: 4, date: '2026-11-03', homeGoals: 3, awayGoals: 2 }),
+      Object.freeze({ home: 'villareal', away: 'psg', matchday: 4, date: '2026-11-03', homeGoals: 0, awayGoals: 6 }),
+      Object.freeze({ home: 'aek', away: 'real', matchday: 4, date: '2026-11-04', homeGoals: 2, awayGoals: 3 }),
+      Object.freeze({ home: 'fenerbahce', away: 'liverpool', matchday: 4, date: '2026-11-04', homeGoals: 3, awayGoals: 2 }),
+      Object.freeze({ home: 'bvb', away: 'realbetis', matchday: 4, date: '2026-11-04', homeGoals: 2, awayGoals: 1 }),
+      Object.freeze({ home: 'porto', away: 'napoli', matchday: 4, date: '2026-11-04', homeGoals: 4, awayGoals: 1 }),
+      Object.freeze({ home: 'psv', away: 'brugge', matchday: 4, date: '2026-11-04', homeGoals: 1, awayGoals: 2 }),
+      Object.freeze({ home: 'leipzig', away: 'city', matchday: 4, date: '2026-11-04', homeGoals: 2, awayGoals: 3 }),
+      Object.freeze({ home: 'lens', away: 'como', matchday: 4, date: '2026-11-04', homeGoals: 1, awayGoals: 9 }),
+      Object.freeze({ home: 'slavia', away: 'arsenal', matchday: 4, date: '2026-11-04', homeGoals: 1, awayGoals: 2 }),
+      Object.freeze({ home: 'viking', away: 'sabah', matchday: 4, date: '2026-11-04', homeGoals: 4, awayGoals: 1 })
     ]),
     uel: Object.freeze([
       Object.freeze({ home: 'ararat', away: 'spartapraha', matchday: 1, date: '2026-09-16', homeGoals: 1, awayGoals: 4 }),
@@ -116,7 +134,25 @@
       Object.freeze({ home: 'celje', away: 'salzburg', matchday: 3, date: '2026-10-22', homeGoals: 2, awayGoals: 2 }),
       Object.freeze({ home: 'olympiacos', away: 'spartapraha', matchday: 3, date: '2026-10-22', homeGoals: 1, awayGoals: 0 }),
       Object.freeze({ home: 'omonia', away: 'benfica', matchday: 3, date: '2026-10-22', homeGoals: 1, awayGoals: 4 }),
-      Object.freeze({ home: 'hoffenheim', away: 'lyon', matchday: 3, date: '2026-10-22', homeGoals: 3, awayGoals: 0 })
+      Object.freeze({ home: 'hoffenheim', away: 'lyon', matchday: 3, date: '2026-10-22', homeGoals: 3, awayGoals: 0 }),
+      Object.freeze({ home: 'rennais', away: 'olympiacos', matchday: 4, date: '2026-11-04', homeGoals: 0, awayGoals: 0 }),
+      Object.freeze({ home: 'milan', away: 'ferencvarosi', matchday: 4, date: '2026-11-05', homeGoals: 0, awayGoals: 2 }),
+      Object.freeze({ home: 'spartapraha', away: 'bournemouth', matchday: 4, date: '2026-11-05', homeGoals: 1, awayGoals: 3 }),
+      Object.freeze({ home: 'crystalpalace', away: 'hoffenheim', matchday: 4, date: '2026-11-05', homeGoals: 1, awayGoals: 1 }),
+      Object.freeze({ home: 'lillestrom', away: 'viktoriaplzen', matchday: 4, date: '2026-11-05', homeGoals: 0, awayGoals: 1 }),
+      Object.freeze({ home: 'nec', away: 'omonia', matchday: 4, date: '2026-11-05', homeGoals: 3, awayGoals: 1 }),
+      Object.freeze({ home: 'levskisofia', away: 'jagiellonia', matchday: 4, date: '2026-11-05', homeGoals: 1, awayGoals: 0 }),
+      Object.freeze({ home: 'realsociedad', away: 'lyon', matchday: 4, date: '2026-11-05', homeGoals: 1, awayGoals: 1 }),
+      Object.freeze({ home: 'anderlecht', away: 'salzburg', matchday: 4, date: '2026-11-05', homeGoals: 2, awayGoals: 0 }),
+      Object.freeze({ home: 'azalkmaar', away: 'juventus', matchday: 4, date: '2026-11-05', homeGoals: 1, awayGoals: 2 }),
+      Object.freeze({ home: 'bayerleverkusen', away: 'marseille', matchday: 4, date: '2026-11-05', homeGoals: 0, awayGoals: 1 }),
+      Object.freeze({ home: 'celtic', away: 'besiktas', matchday: 4, date: '2026-11-05', homeGoals: 3, awayGoals: 2 }),
+      Object.freeze({ home: 'hapoelbeersheva', away: 'crete', matchday: 4, date: '2026-11-05', homeGoals: 0, awayGoals: 2 }),
+      Object.freeze({ home: 'celtavigo', away: 'union', matchday: 4, date: '2026-11-05', homeGoals: 1, awayGoals: 2 }),
+      Object.freeze({ home: 'torreense', away: 'ararat', matchday: 4, date: '2026-11-05', homeGoals: 3, awayGoals: 2 }),
+      Object.freeze({ home: 'strumgraz', away: 'celje', matchday: 4, date: '2026-11-05', homeGoals: 2, awayGoals: 3 }),
+      Object.freeze({ home: 'benfica', away: 'poznan', matchday: 4, date: '2026-11-05', homeGoals: 3, awayGoals: 1 }),
+      Object.freeze({ home: 'sunderland', away: 'dinamo', matchday: 4, date: '2026-11-05', homeGoals: 0, awayGoals: 2 })
     ]),
     uecl: Object.freeze([
       Object.freeze({ home: 'lugano', away: 'crvenazvezda', matchday: 1, date: '2026-10-15', homeGoals: 3, awayGoals: 2 }),
@@ -154,7 +190,25 @@
       Object.freeze({ home: 'thun', away: 'hajduksplit', matchday: 2, date: '2026-10-22', homeGoals: 0, awayGoals: 1 }),
       Object.freeze({ home: 'borac', away: 'kuopio', matchday: 2, date: '2026-10-22', homeGoals: 2, awayGoals: 0 }),
       Object.freeze({ home: 'lincoln', away: 'twente', matchday: 2, date: '2026-10-22', homeGoals: 1, awayGoals: 4 }),
-      Object.freeze({ home: 'braga', away: 'gent', matchday: 2, date: '2026-10-22', homeGoals: 2, awayGoals: 0 })
+      Object.freeze({ home: 'braga', away: 'gent', matchday: 2, date: '2026-10-22', homeGoals: 2, awayGoals: 0 }),
+      Object.freeze({ home: 'aarhus', away: 'braga', matchday: 3, date: '2026-11-05', homeGoals: 0, awayGoals: 0 }),
+      Object.freeze({ home: 'atalanta', away: 'kairat', matchday: 3, date: '2026-11-05', homeGoals: 1, awayGoals: 1 }),
+      Object.freeze({ home: 'midtjylland', away: 'ajax', matchday: 3, date: '2026-11-05', homeGoals: 1, awayGoals: 6 }),
+      Object.freeze({ home: 'thun', away: 'hearts', matchday: 3, date: '2026-11-05', homeGoals: 3, awayGoals: 1 }),
+      Object.freeze({ home: 'crvenazvezda', away: 'interclubdescaldes', matchday: 3, date: '2026-11-05', homeGoals: 2, awayGoals: 1 }),
+      Object.freeze({ home: 'kuopio', away: 'gent', matchday: 3, date: '2026-11-05', homeGoals: 0, awayGoals: 0 }),
+      Object.freeze({ home: 'lincoln', away: 'hajduksplit', matchday: 3, date: '2026-11-05', homeGoals: 1, awayGoals: 0 }),
+      Object.freeze({ home: 'mjallby', away: 'borac', matchday: 3, date: '2026-11-05', homeGoals: 2, awayGoals: 0 }),
+      Object.freeze({ home: 'trabzonspor', away: 'freiburg', matchday: 3, date: '2026-11-05', homeGoals: 0, awayGoals: 1 }),
+      Object.freeze({ home: 'monaco', away: 'nordsjaelland', matchday: 3, date: '2026-11-05', homeGoals: 2, awayGoals: 0 }),
+      Object.freeze({ home: 'copenhagen', away: 'iberia1999', matchday: 3, date: '2026-11-05', homeGoals: 2, awayGoals: 1 }),
+      Object.freeze({ home: 'lugano', away: 'kaunozalgiris', matchday: 3, date: '2026-11-05', homeGoals: 3, awayGoals: 0 }),
+      Object.freeze({ home: 'twente', away: 'pafos', matchday: 3, date: '2026-11-05', homeGoals: 3, awayGoals: 1 }),
+      Object.freeze({ home: 'getafe', away: 'brighton', matchday: 3, date: '2026-11-05', homeGoals: 0, awayGoals: 1 }),
+      Object.freeze({ home: 'truidense', away: 'brann', matchday: 3, date: '2026-11-05', homeGoals: 1, awayGoals: 1 }),
+      Object.freeze({ home: 'panathinaikos', away: 'cskasofia', matchday: 3, date: '2026-11-05', homeGoals: 2, awayGoals: 1 }),
+      Object.freeze({ home: 'riga', away: 'jablonec', matchday: 3, date: '2026-11-05', homeGoals: 1, awayGoals: 1 }),
+      Object.freeze({ home: 'craiova', away: 'egnatia', matchday: 3, date: '2026-11-05', homeGoals: 2, awayGoals: 0 })
     ])
   });
 
